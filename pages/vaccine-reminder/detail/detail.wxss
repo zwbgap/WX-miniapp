@@ -1,0 +1,83 @@
+.edit-container {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.page-loading {
+  padding-top: 300rpx;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  margin: 24rpx;
+  padding: 28rpx 0 0;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 32rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.card-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.advance-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 24rpx 32rpx;
+}
+
+.advance-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.advance-stepper {
+  margin-left: auto;
+}
+
+.advance-tip {
+  padding: 0 32rpx 20rpx;
+}
+
+.action-bar {
+  display: flex;
+  flex-direction: row;
+  padding: 48rpx 24rpx;
+}
+
+.action-bar van-button:first-child {
+  flex: 1;
+  margin-right: 24rpx;
+}
+
+.action-bar van-button:last-child {
+  flex: 2;
+}
+
+.bottom-safe {
+  height: calc(60rpx + constant(safe-area-inset-bottom));
+  height: calc(60rpx + env(safe-area-inset-bottom));
+}

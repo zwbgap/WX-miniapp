@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="overview-row">
+    <view class="overview-item">
+      <view class="overview-value">{{currentWeight || '--'}}<text class="overview-unit">kg</text></view>
+      <view class="overview-label">当前体重</view>
+    </view>
+    <view class="overview-item">
+      <view class="overview-value" style="color: {{changeWeight > 0 ? '#ee0a24' : '#07c160'}};">
+        {{changeWeight > 0 ? '+' : ''}}{{changeWeight || '0'}}
+      </view>
+      <view class="overview-label">变化</view>
+    </view>
+    <view class="overview-item">
+      <view class="overview-value">{{bmiValue || '--'}}</view>
+      <view class="overview-label">BMI</view>
+    </view>
+  </view>
+
+  <van-tabs active="{{activeTab}}" color="#07c160" bind:change="onTabChange">
+    <van-tab title="30天趋势"></van-tab>
+    <van-tab title="周均值"></van-tab>
+    <van-tab title="目标对比"></van-tab>
+  </van-tabs>
+
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:else>
+    <view class="card">
+      <view class="card-header">
+        <van-icon name="chart-trending-o" size="32rpx" color="#07c160" />
+        <text class="card-title ml-8">体重{{activeTab === 0 ? '趋势' : activeTab === 1 ? '周均值' : '目标对比'}}</text>
+      </view>
+      <ec-canvas
+        wx:if="{{activeTab === 0}}"
+        chart-type="line"
+        options="{{lineOption30}}"
+        canvas-height="{{420}}"
+      ></ec-canvas>
+      <ec-canvas
+        wx:elif="{{activeTab === 1}}"
+        chart-type="bar"
+        options="{{barOptionWeek}}"
+        canvas-height="{{380}}"
+      ></ec-canvas>
+      <ec-canvas
+        wx:else
+        chart-type="line"
+        options="{{lineOptionDual}}"
+        canvas-height="{{420}}"
+      ></ec-canvas>
+    </view>
+  </block>
+
+  <view class="bottom-safe"></view>
+</view>

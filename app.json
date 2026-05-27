@@ -1,0 +1,102 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/health-record/index",
+    "pages/health-record/detail/detail",
+    "pages/health-record/edit/edit",
+    "pages/vaccine-reminder/index",
+    "pages/vaccine-reminder/list/list",
+    "pages/vaccine-reminder/detail/detail",
+    "pages/vaccine-reminder/calendar/calendar",
+    "pages/vaccine-reminder/debug/debug",
+    "pages/sleep-record/index",
+    "pages/sleep-record/list/list",
+    "pages/sleep-record/detail/detail",
+    "pages/sleep-record/statistics/statistics",
+    "pages/health-news/index",
+    "pages/health-news/list/list",
+    "pages/health-news/detail/detail",
+    "pages/health-news/favorites/favorites",
+    "pages/ai-consult/index",
+    "pages/medication-reminder/index",
+    "pages/medication-reminder/list/list",
+    "pages/medication-reminder/setting/setting",
+    "pages/medication-reminder/checkin/checkin",
+    "pages/physical-exam/index",
+    "pages/statistics/index/index",
+    "pages/statistics/sleep/sleep",
+    "pages/statistics/weight/weight",
+    "pages/profile/index",
+    "pages/profile/edit-profile/edit-profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1989fa",
+    "navigationBarTitleText": "个人健康档案",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f7f8fa"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#1989fa",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/health-news/index",
+        "text": "资讯",
+        "iconPath": "images/tab-news.png",
+        "selectedIconPath": "images/tab-news-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/tab-profile.png",
+        "selectedIconPath": "images/tab-profile-active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-notify": "@vant/weapp/notify/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-card": "@vant/weapp/card/index",
+    "van-grid": "@vant/weapp/grid/index",
+    "van-grid-item": "@vant/weapp/grid-item/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-panel": "@vant/weapp/panel/index",
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-switch": "@vant/weapp/switch/index",
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-search": "@vant/weapp/search/index",
+    "van-rate": "@vant/weapp/rate/index",
+    "van-progress": "@vant/weapp/progress/index",
+    "van-skeleton": "@vant/weapp/skeleton/index",
+    "loading": "/components/loading/loading",
+    "empty-state": "/components/empty-state/empty-state",
+    "error-handler": "/components/error-handler/error-handler"
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

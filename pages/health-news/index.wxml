@@ -1,0 +1,60 @@
+<view class="page-container">
+  <view class="header-bar">
+    <view class="header-title">
+      <text class="title-main">健康资讯</text>
+      <text class="title-sub">每日精选 · 守护健康</text>
+    </view>
+    <view class="header-action" bind:tap="onRefreshNews">
+      <van-icon name="replay" size="32rpx" color="#07c160" />
+      <text class="ml-4 text-xs" style="color:#07c160;">刷新</text>
+    </view>
+  </view>
+
+  <scroll-view class="category-scroll" scroll-x enable-flex>
+    <view
+      class="category-chip {{activeCategory === item ? 'chip-active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="*this"
+      wx:for-item="item"
+      data-category="{{item}}"
+      bind:tap="onCategoryTap"
+    >{{item}}</view>
+  </scroll-view>
+
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:elif="{{newsList.length > 0}}">
+    <view class="news-grid">
+      <block wx:for="{{newsList}}" wx:key="_id">
+        <view
+          class="news-card"
+          wx:if="{{activeCategory === '全部' || activeCategory === '' || item.category === activeCategory}}"
+          data-id="{{item._id}}"
+          bind:tap="onViewDetail"
+        >
+        <view class="card-image-wrap">
+          <image class="card-image" src="{{item.picture}}" mode="aspectFill" lazy-load />
+          <view class="card-category-tag">{{item.category || '健康'}}</view>
+        </view>
+        <view class="card-body">
+          <view class="card-title">{{item.title}}</view>
+          <view class="card-summary">{{item.summary}}</view>
+          <view class="card-footer">
+            <view class="card-stats">
+              <van-icon name="eye-o" size="24rpx" color="#c8c9cc" />
+              <text class="ml-4 text-xs" style="color:#c8c9cc;">{{item.views || 0}}</text>
+            </view>
+            <text class="text-xs" style="color:#969799;">{{item.publishTime || item.date || ''}}</text>
+          </view>
+        </view>
+      </view>
+      </block>
+    </view>
+  </block>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无健康资讯">
+    <van-button type="primary" round size="small" bind:tap="onRefreshNews">立即获取</van-button>
+  </van-empty>
+
+  <view class="bottom-safe"></view>
+</view>

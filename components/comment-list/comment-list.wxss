@@ -1,0 +1,107 @@
+.comment-item {
+  display: flex;
+  flex-direction: row;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: #f0f0f0;
+}
+
+.comment-body {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.comment-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6rpx;
+}
+
+.comment-nickname {
+  font-size: 26rpx;
+  color: #576b95;
+  font-weight: 500;
+}
+
+.comment-content {
+  font-size: 28rpx;
+  color: #323233;
+  line-height: 1.6;
+  margin-bottom: 8rpx;
+  word-break: break-all;
+}
+
+.comment-footer {
+  margin-bottom: 4rpx;
+}
+
+.reply-btn {
+  color: #576b95;
+}
+
+/* 子回复 */
+.children-replies {
+  margin-top: 12rpx;
+  padding: 16rpx 20rpx;
+  background-color: #f7f8fa;
+  border-radius: 12rpx;
+}
+
+.child-reply {
+  display: flex;
+  flex-direction: row;
+  padding: 12rpx 0;
+}
+
+.child-reply + .child-reply {
+  border-top: 1rpx solid #e8e8e8;
+}
+
+.child-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: #e8e8e8;
+}
+
+.child-body {
+  flex: 1;
+  margin-left: 16rpx;
+}
+
+.child-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rpx;
+}
+
+.child-nickname {
+  color: #576b95;
+  font-weight: 500;
+}
+
+.child-content {
+  color: #323233;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.child-footer {
+  margin-top: 6rpx;
+}

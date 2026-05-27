@@ -1,0 +1,14 @@
+<view class="ec-canvas-wrap" style="height: {{canvasHeight}}rpx;">
+  <canvas
+    type="2d"
+    id="{{canvasId}}"
+    class="ec-canvas"
+    style="width: 100%; height: {{canvasHeight}}rpx;"
+  ></canvas>
+  <view class="ec-canvas-placeholder" wx:if="{{loading}}">
+    <text class="text-sm text-secondary">数据加载中...</text>
+  </view>
+  <view class="ec-canvas-empty" wx:elif="{{!options}}">
+    <text class="text-sm text-secondary">暂无数据</text>
+  </view>
+</view>

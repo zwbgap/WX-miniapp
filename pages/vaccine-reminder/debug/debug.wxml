@@ -1,0 +1,23 @@
+<view class="debug-container">
+  <view class="header">
+    <text class="title">疫苗提醒 - 云端调试</text>
+    <text class="uid">userId: {{userId}}</text>
+  </view>
+
+  <view class="btn-group">
+    <button class="debug-btn" type="primary" size="mini" bind:tap="testDirectQuery">1.查全部记录</button>
+    <button class="debug-btn" type="primary" size="mini" bind:tap="testUserQuery">2.查当前用户</button>
+    <button class="debug-btn" type="primary" size="mini" bind:tap="testCloudFunction">3.测试云函数</button>
+    <button class="debug-btn" type="warn" size="mini" bind:tap="testFetchOne">4.查单条详情</button>
+    <button class="debug-btn" type="warn" size="mini" bind:tap="testClickFlow">5.模拟点击流程</button>
+    <button class="debug-btn" size="mini" bind:tap="testRecordList">6.列表页数据</button>
+    <button class="debug-btn" type="default" size="mini" bind:tap="clearLogs">清空日志</button>
+  </view>
+
+  <view class="log-area">
+    <view class="log-item" wx:for="{{logs}}" wx:key="_key">
+      <text class="log-time">{{item.time}}</text>
+      <text class="log-text">{{item.text}}</text>
+    </view>
+  </view>
+</view>

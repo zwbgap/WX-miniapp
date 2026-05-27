@@ -1,0 +1,20 @@
+{
+  "usingComponents": {
+    "van-field": "@vant/weapp/field/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-radio": "@vant/weapp/radio/index",
+    "van-radio-group": "@vant/weapp/radio-group/index",
+    "van-tag": "@vant/weapp/tag/index"
+  },
+  "navigationBarTitleText": "提醒设置",
+  "navigationBarBackgroundColor": "#ee0a24",
+  "navigationBarTextStyle": "white"
+}

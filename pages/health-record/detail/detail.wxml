@@ -1,0 +1,248 @@
+<wxs module="genderUtil">
+  var getGenderText = function(val) {
+    if (val == 1 || val == '1' || val === '男') return '男';
+    if (val == 2 || val == '2' || val === '女') return '女';
+    return val || '未设置';
+  };
+  var getGenderIcon = function(val) {
+    if (val == 1 || val == '1' || val === '男') return 'male';
+    if (val == 2 || val == '2' || val === '女') return 'female';
+    return 'question-o';
+  };
+  var getGenderColor = function(val) {
+    if (val == 1 || val == '1' || val === '男') return '#1989fa';
+    if (val == 2 || val == '2' || val === '女') return '#ff4d6d';
+    return '#c8c9cc';
+  };
+  module.exports.getGenderText = getGenderText;
+  module.exports.getGenderIcon = getGenderIcon;
+  module.exports.getGenderColor = getGenderColor;
+</wxs>
+
+<view class="detail-container">
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:elif="{{record}}">
+    <view class="edit-fab" bind:tap="onEdit">
+      <van-icon name="edit" size="36rpx" color="#ffffff" />
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-icon-box" style="background-color: rgba(7, 193, 96, 0.1);">
+          <van-icon name="user-o" size="36rpx" color="#07c160" />
+        </view>
+        <text class="card-title">基本信息</text>
+      </view>
+
+      <view class="info-grid">
+        <view class="info-item">
+          <text class="info-label">姓名</text>
+          <text class="info-value">{{record.xingming || '未填写'}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">性别</text>
+          <view class="info-value-row">
+            <van-icon name="{{genderUtil.getGenderIcon(record.xingbie)}}" size="28rpx" color="{{genderUtil.getGenderColor(record.xingbie)}}" />
+            <text class="ml-8" style="color:{{genderUtil.getGenderColor(record.xingbie)}};">{{genderUtil.getGenderText(record.xingbie)}}</text>
+          </view>
+        </view>
+        <view class="info-item">
+          <text class="info-label">年龄</text>
+          <text class="info-value">{{record.nianling || '未填写'}} 岁</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">血型</text>
+          <text class="info-value highlight">{{record.xuexing || '未知'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-icon-box" style="background-color: rgba(25, 137, 250, 0.1);">
+          <van-icon name="chart-trending-o" size="36rpx" color="#1989fa" />
+        </view>
+        <text class="card-title">身体指标</text>
+      </view>
+
+      <view class="metrics-row">
+        <view class="metric-item">
+          <view class="metric-value">{{record.shengao || '--'}}</view>
+          <view class="metric-unit">cm</view>
+          <view class="metric-label">身高</view>
+        </view>
+        <view class="metric-divider"></view>
+        <view class="metric-item">
+          <view class="metric-value">{{record.tizhong || '--'}}</view>
+          <view class="metric-unit">kg</view>
+          <view class="metric-label">体重</view>
+        </view>
+        <view class="metric-divider"></view>
+        <view class="metric-item">
+          <view class="metric-value" style="color: {{bmiColor}};">{{bmi || '--'}}</view>
+          <view class="metric-unit">BMI</view>
+          <view class="metric-label" style="color: {{bmiColor}};">{{bmiLevel}}</view>
+        </view>
+      </view>
+
+      <view class="bmi-bar-section" wx:if="{{bmi > 0}}">
+        <van-progress percentage="{{bmiProgress}}" stroke-width="12rpx" color="{{bmiColor}}" track-color="#f0f0f0" pivot-text="BMI" pivot-color="{{bmiColor}}" />
+        <view class="bmi-range-labels">
+          <text class="text-xs" style="color:#ff976a;">偏瘦 &lt;18.5</text>
+          <text class="text-xs" style="color:#07c160;">正常 18.5-24</text>
+          <text class="text-xs" style="color:#ff976a;">偏胖 24-28</text>
+          <text class="text-xs" style="color:#ee0a24;">肥胖 &ge;28</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-icon-box" style="background-color: rgba(255, 151, 106, 0.1);">
+          <van-icon name="description" size="36rpx" color="#ff976a" />
+        </view>
+        <text class="card-title">健康史</text>
+      </view>
+
+      <view class="history-section">
+        <view class="history-item">
+          <view class="history-tag danger">过敏史</view>
+          <view class="history-content">{{record.guominshi || '无'}}</view>
+        </view>
+        <view class="history-item">
+          <view class="history-tag warning">疾病史</view>
+          <view class="history-content">{{record.jibingshi || '无'}}</view>
+        </view>
+        <view class="history-item">
+          <view class="history-tag success">健康状况</view>
+          <view class="history-content">{{record.jiankangzhuangkuang || '无'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-icon-box" style="background-color: rgba(7, 193, 96, 0.1);">
+          <van-icon name="clock-o" size="36rpx" color="#07c160" />
+        </view>
+        <text class="card-title">生活方式</text>
+      </view>
+
+      <view class="lifestyle-grid">
+        <view class="lifestyle-item">
+          <van-icon name="fire-o" size="32rpx" color="#969799" />
+          <text class="lifestyle-label">吸烟</text>
+          <text class="lifestyle-value">{{record.xiyan || '无'}}</text>
+        </view>
+        <view class="lifestyle-item">
+          <van-icon name="coupon-o" size="32rpx" color="#969799" />
+          <text class="lifestyle-label">饮酒</text>
+          <text class="lifestyle-value">{{record.yinjiul || '无'}}</text>
+        </view>
+        <view class="lifestyle-item">
+          <van-icon name="aim" size="32rpx" color="#969799" />
+          <text class="lifestyle-label">运动</text>
+          <text class="lifestyle-value">{{record.yundong || '每周几次'}}</text>
+        </view>
+        <view class="lifestyle-item">
+          <van-icon name="underway-o" size="32rpx" color="#969799" />
+          <text class="lifestyle-label">睡眠</text>
+          <text class="lifestyle-value">{{record.shuimian ? record.shuimian + '小时/天' : '--'}}</text>
+        </view>
+        <view class="lifestyle-item">
+          <van-icon name="rest" size="32rpx" color="#969799" />
+          <text class="lifestyle-label">饮食</text>
+          <text class="lifestyle-value">{{record.yinshi || '规律'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-icon-box" style="background-color: rgba(238, 10, 36, 0.1);">
+          <van-icon name="friends-o" size="36rpx" color="#ee0a24" />
+        </view>
+        <text class="card-title">家族病史</text>
+      </view>
+
+      <view class="family-grid">
+        <view class="family-item {{record.jiazu_gaoxueya === '有' ? 'family-risk' : ''}}">
+          <text class="family-label">高血压</text>
+          <van-tag type="{{record.jiazu_gaoxueya === '有' ? 'danger' : (record.jiazu_gaoxueya === '无' ? 'success' : 'default')}}" size="medium">{{record.jiazu_gaoxueya || '不详'}}</van-tag>
+        </view>
+        <view class="family-item {{record.jiazu_tangniaobing === '有' ? 'family-risk' : ''}}">
+          <text class="family-label">糖尿病</text>
+          <van-tag type="{{record.jiazu_tangniaobing === '有' ? 'danger' : (record.jiazu_tangniaobing === '无' ? 'success' : 'default')}}" size="medium">{{record.jiazu_tangniaobing || '不详'}}</van-tag>
+        </view>
+        <view class="family-item {{record.jiazu_xinzang === '有' ? 'family-risk' : ''}}">
+          <text class="family-label">心脏病</text>
+          <van-tag type="{{record.jiazu_xinzang === '有' ? 'danger' : (record.jiazu_xinzang === '无' ? 'success' : 'default')}}" size="medium">{{record.jiazu_xinzang || '不详'}}</van-tag>
+        </view>
+      </view>
+      <view class="family-extra" wx:if="{{record.jiazu_qita}}">
+        <text class="text-sm text-secondary">其他：{{record.jiazu_qita}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-icon-box" style="background-color: rgba(25, 137, 250, 0.1);">
+          <van-icon name="phone-o" size="36rpx" color="#1989fa" />
+        </view>
+        <text class="card-title">应急信息</text>
+      </view>
+
+      <view class="info-grid">
+        <view class="info-item">
+          <text class="info-label">紧急联系人</text>
+          <text class="info-value">{{record.jinji_lianxiren || '未填写'}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">联系电话</text>
+          <text class="info-value highlight">{{record.jinji_dianhua || '未填写'}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">医保类型</text>
+          <text class="info-value">{{record.jinji_yibao || '职工医保'}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">植入器械</text>
+          <text class="info-value {{record.jinjicheng_duixiang !== '无' ? 'text-danger' : ''}}">{{record.jinjicheng_duixiang || '无'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-icon-box" style="background-color: rgba(255, 151, 106, 0.1);">
+          <van-icon name="medicine-box-o" size="36rpx" color="#ff976a" />
+        </view>
+        <text class="card-title">用药信息</text>
+      </view>
+
+      <view class="history-section">
+        <view class="history-item">
+          <view class="history-tag warning">用药类型</view>
+          <view class="history-content">{{record.yongyao_leixing || '无'}}</view>
+        </view>
+        <view class="history-item">
+          <view class="history-tag primary">药物名称</view>
+          <view class="history-content">{{record.yongyao_mingcheng || '无'}}</view>
+        </view>
+        <view class="history-item">
+          <view class="history-tag danger">药物过敏</view>
+          <view class="history-content">{{record.yongyao_guomin || '无'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="update-time">
+      <text class="text-xs" style="color:#c8c9cc;">记录日期：{{record.recordDate || '--'}}</text>
+    </view>
+  </block>
+
+  <van-empty wx:else description="档案数据异常" />
+
+  <view class="bottom-safe"></view>
+</view>

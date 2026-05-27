@@ -1,0 +1,127 @@
+.calendar-container {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+}
+
+.selected-date-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #ff976a, #ff6b3d);
+  padding: 36rpx 40rpx;
+  margin: 0;
+}
+
+.date-display {
+  flex: 1;
+}
+
+.date-day {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.calendar-toggle {
+  width: 80rpx;
+  height: 80rpx;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-loading {
+  padding-top: 200rpx;
+}
+
+/* 当天记录区域 */
+.day-records-section {
+  padding: 24rpx;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding: 0 4rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 12rpx 0 8rpx;
+}
+
+.day-record-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.04);
+}
+
+.item-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+}
+
+.item-icon-box {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
+  background-color: #fff5f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #323233;
+  line-height: 1.4;
+}
+
+.item-location {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 4rpx;
+}
+
+/* 日历弹窗 */
+.calendar-popup-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 32rpx 16rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.calendar-popup-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.bottom-safe {
+  height: calc(40rpx + constant(safe-area-inset-bottom));
+  height: calc(40rpx + env(safe-area-inset-bottom));
+}

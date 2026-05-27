@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="page-section" wx:if="{{recordList.length > 0}}">
+    <van-cell-group>
+      <van-cell
+        wx:for="{{recordList}}"
+        wx:key="_id"
+        title="{{item.title || item.name || '健康档案'}}"
+        value="{{item.createTime}}"
+        label="{{item.description || item.remark || ''}}"
+        is-link
+        data-id="{{item._id}}"
+        bind:tap="onViewDetail"
+        bind:longpress="onDelete"
+      />
+    </van-cell-group>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无健康档案" />
+
+  <van-loading wx:if="{{loading}}" custom-class="flex-center mt-32" />
+
+  <view class="loading-more" wx:if="{{loading && recordList.length > 0}}">
+    <van-loading size="36rpx" />
+    <text class="ml-8 text-sm text-secondary">加载中...</text>
+  </view>
+
+  <view class="no-more" wx:if="{{!hasMore && recordList.length > 0}}">
+    <text class="text-sm text-secondary">没有更多了</text>
+  </view>
+
+  <view class="add-btn">
+    <van-button type="primary" icon="plus" round block bind:tap="onAdd">
+      添加健康档案
+    </van-button>
+  </view>
+</view>

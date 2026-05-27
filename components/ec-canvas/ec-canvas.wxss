@@ -1,0 +1,23 @@
+.ec-canvas-wrap {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.ec-canvas {
+  display: block;
+}
+
+.ec-canvas-placeholder,
+.ec-canvas-empty {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

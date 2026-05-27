@@ -1,0 +1,162 @@
+<wxs module="util">
+var formatDuration = function(minutes) {
+  if (!minutes || minutes <= 0) return '';
+  var h = Math.floor(minutes / 60);
+  var m = minutes % 60;
+  return h + '小时' + m + '分钟';
+};
+
+var getTimeFromDateTime = function(datetime) {
+  if (!datetime) return '';
+  var parts = datetime.split('T');
+  if (parts.length < 2) return '';
+  return parts[1].substring(0, 5);
+};
+
+module.exports = {
+  formatDuration: formatDuration,
+  getTimeFromDateTime: getTimeFromDateTime
+};
+</wxs>
+
+<view class="edit-container">
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:else>
+    <!-- 记录日期 -->
+    <view class="card">
+      <view class="card-title-row">
+        <van-icon name="calendar-o" size="36rpx" color="#1989fa" />
+        <text class="card-title">记录日期</text>
+      </view>
+      <van-cell
+        title="选择日期"
+        value="{{record.jiluriqi || '请选择'}}"
+        is-link
+        bind:tap="onShowDatePicker"
+      />
+    </view>
+
+    <!-- 入睡 & 起床时间 -->
+    <view class="card">
+      <view class="card-title-row">
+        <van-icon name="clock-o" size="36rpx" color="#1989fa" />
+        <text class="card-title">睡眠时间</text>
+      </view>
+      <view class="time-pick-row">
+        <view class="time-pick-item" bind:tap="onShowSleepPicker">
+          <view class="time-pick-icon">
+            <image class="moon-icon" src="/images/moon.png" mode="aspectFit" wx:if="{{false}}" />
+            <view class="moon-placeholder">🌙</view>
+          </view>
+          <view class="time-pick-label">入睡</view>
+          <view class="time-pick-value">{{util.getTimeFromDateTime(record.rushuishijian) || '请选择'}}</view>
+        </view>
+        <view class="time-pick-divider">
+          <view class="divider-line"></view>
+          <view class="divider-icon">
+            <van-icon name="arrow" size="24rpx" color="#c8c9cc" />
+          </view>
+          <view class="divider-line"></view>
+        </view>
+        <view class="time-pick-item" bind:tap="onShowWakePicker">
+          <view class="time-pick-icon">
+            <view class="sun-placeholder">☀️</view>
+          </view>
+          <view class="time-pick-label">起床</view>
+          <view class="time-pick-value">{{util.getTimeFromDateTime(record.qichuangshijian) || '请选择'}}</view>
+        </view>
+      </view>
+
+      <view class="duration-display" wx:if="{{record.shuimianshizhang > 0}}">
+        <text class="duration-text">预计睡眠 </text>
+        <text class="duration-num">{{util.formatDuration(record.shuimianshizhang)}}</text>
+      </view>
+    </view>
+
+    <!-- 睡眠质量 -->
+    <view class="card">
+      <view class="card-title-row">
+        <van-icon name="star-o" size="36rpx" color="#ff976a" />
+        <text class="card-title">睡眠质量</text>
+      </view>
+      <view class="rate-area">
+        <van-rate
+          value="{{record.shuimianzhiliang}}"
+          count="{{5}}"
+          size="48rpx"
+          color="#ff976a"
+          void-color="#e8e8e8"
+          bind:change="onQualityChange"
+        />
+        <text class="rate-text">{{record.shuimianzhiliang}} / 5 分</text>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="card">
+      <view class="card-title-row">
+        <van-icon name="edit" size="36rpx" color="#07c160" />
+        <text class="card-title">备注</text>
+      </view>
+      <van-field
+        value="{{record.jiluneirong}}"
+        type="textarea"
+        placeholder="记录今晚的睡眠感受..."
+        autosize
+        maxlength="500"
+        show-word-limit
+        border="{{false}}"
+        bind:change="onNoteInput"
+      />
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-bar">
+      <van-button size="large" round plain hairline type="default" bind:tap="onCancel">
+        取消
+      </van-button>
+      <van-button
+        size="large"
+        round
+        type="primary"
+        loading="{{submitting}}"
+        loading-text="保存中..."
+        bind:tap="onSubmit"
+      >
+        保存记录
+      </van-button>
+    </view>
+  </block>
+
+  <!-- 入睡时间选择器 -->
+  <van-popup show="{{sleepTimePickerVisible}}" position="bottom" round bind:close="onCancelPicker">
+    <van-datetime-picker
+      type="time"
+      value="{{currentSleepTime}}"
+      bind:confirm="onSleepTimeConfirm"
+      bind:cancel="onCancelPicker"
+    />
+  </van-popup>
+
+  <!-- 起床时间选择器 -->
+  <van-popup show="{{wakeTimePickerVisible}}" position="bottom" round bind:close="onCancelPicker">
+    <van-datetime-picker
+      type="time"
+      value="{{currentWakeTime}}"
+      bind:confirm="onWakeTimeConfirm"
+      bind:cancel="onCancelPicker"
+    />
+  </van-popup>
+
+  <!-- 日期选择器 -->
+  <van-popup show="{{datePickerVisible}}" position="bottom" round bind:close="onCancelPicker">
+    <van-datetime-picker
+      type="date"
+      value="{{currentDate}}"
+      min-date="{{minDate}}"
+      bind:confirm="onDateConfirm"
+      bind:cancel="onCancelPicker"
+    />
+  </van-popup>
+</view>

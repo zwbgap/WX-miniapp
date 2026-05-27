@@ -1,0 +1,17 @@
+<view class="error-overlay" wx:if="{{visible}}">
+  <view class="error-card">
+    <van-icon
+      name="{{errorConfig[type].icon || 'warning-o'}}"
+      size="80rpx"
+      color="#c8c9cc"
+      custom-class="error-icon"
+    />
+    <view class="error-title">{{message || errorConfig[type].title}}</view>
+    <view class="error-desc">{{errorConfig[type].desc}}</view>
+    <view class="error-actions" wx:if="{{showRetry}}">
+      <van-button round type="primary" size="medium" bind:tap="onRetry">
+        {{retryText}}
+      </van-button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,46 @@
+<view class="favorites-container">
+  <view class="list" wx:if="{{favoriteList.length > 0}}">
+    <van-swipe-cell
+      wx:for="{{favoriteList}}"
+      wx:key="_id"
+      right-width="{{65}}"
+    >
+      <van-card
+        title="{{item.name || item.title || ''}}"
+        desc="{{item.type || ''}}"
+        thumb="{{item.picture || ''}}"
+        thumb-mode="aspectFill"
+        price=""
+        origin-price=""
+        data-newsid="{{item.newsId}}"
+        bind:tap="onViewDetail"
+      >
+        <view slot="tags">
+          <text class="text-xs text-secondary">{{item.addtime || ''}}</text>
+        </view>
+      </van-card>
+      <view
+        slot="right"
+        class="swipe-delete"
+        data-newsid="{{item.newsId}}"
+        bind:tap="onRemoveFavorite"
+      >
+        <text>取消收藏</text>
+      </view>
+    </van-swipe-cell>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无收藏的资讯">
+    <van-button type="primary" round size="small" bind:tap="onGoToNews">
+      去看看资讯
+    </van-button>
+  </van-empty>
+
+  <van-loading wx:if="{{loading && favoriteList.length === 0}}" custom-class="page-loading" />
+
+  <view class="no-more" wx:if="{{!hasMore && favoriteList.length > 0}}">
+    <text class="text-sm text-secondary">— 没有更多了 —</text>
+  </view>
+
+  <view class="bottom-safe"></view>
+</view>

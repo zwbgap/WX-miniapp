@@ -1,0 +1,50 @@
+.register-container {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 0 48rpx;
+  box-sizing: border-box;
+}
+
+.register-header {
+  padding-top: 48rpx;
+  padding-bottom: 48rpx;
+}
+
+.register-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12rpx;
+}
+
+.register-subtitle {
+  font-size: 26rpx;
+  color: #969799;
+}
+
+.register-btn-area {
+  margin-top: 56rpx;
+}
+
+.agreement-row {
+  margin-top: 32rpx;
+}
+
+.agreement-text {
+  color: #969799;
+  line-height: 1.6;
+}
+
+.link-text {
+  color: #07c160;
+}
+
+.go-login-row {
+  text-align: center;
+  margin-top: 40rpx;
+  padding-bottom: 40rpx;
+}
+
+.go-login-row .link-text {
+  margin-left: 8rpx;
+}

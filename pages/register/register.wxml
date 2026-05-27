@@ -1,0 +1,50 @@
+<view class="register-container">
+  <view class="register-header">
+    <view class="register-title">创建账号</view>
+    <view class="register-subtitle">注册后可使用全部健康管理功能</view>
+  </view>
+
+  <van-cell-group>
+    <van-field
+      value="{{account}}"
+      placeholder="请输入账号（3-20位）"
+      left-icon="user-o"
+      clearable
+      bind:change="onAccountInput"
+    />
+
+    <van-field
+      value="{{password}}"
+      type="{{passwordVisible ? 'text' : 'password'}}"
+      placeholder="请设置密码（6-20位）"
+      left-icon="lock"
+      right-icon="{{passwordVisible ? 'eye-o' : 'closed-eye'}}"
+      bind:change="onPasswordInput"
+      bind:click-right-icon="onTogglePasswordVisible"
+    />
+
+    <van-field
+      value="{{confirmPassword}}"
+      type="{{confirmPasswordVisible ? 'text' : 'password'}}"
+      placeholder="请再次输入密码"
+      left-icon="lock"
+      right-icon="{{confirmPasswordVisible ? 'eye-o' : 'closed-eye'}}"
+      bind:change="onConfirmPasswordInput"
+      bind:click-right-icon="onToggleConfirmPasswordVisible"
+    />
+  </van-cell-group>
+
+  <view class="register-btn-area">
+    <van-button
+      type="primary"
+      size="large"
+      round
+      block
+      loading="{{submitLoading}}"
+      loading-text="注册中..."
+      bind:tap="onSubmit"
+    >
+      注册
+    </van-button>
+  </view>
+</view>

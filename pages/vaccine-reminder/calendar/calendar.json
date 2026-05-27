@@ -1,0 +1,15 @@
+{
+  "usingComponents": {
+    "van-calendar": "@vant/weapp/calendar/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-empty": "@vant/weapp/empty/index"
+  },
+  "navigationBarTitleText": "接种日历",
+  "navigationBarBackgroundColor": "#ff976a",
+  "navigationBarTextStyle": "white"
+}

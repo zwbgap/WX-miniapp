@@ -1,0 +1,18 @@
+{
+  "usingComponents": {
+    "van-field": "@vant/weapp/field/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-rate": "@vant/weapp/rate/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-tag": "@vant/weapp/tag/index"
+  },
+  "navigationBarTitleText": "睡眠记录",
+  "navigationBarBackgroundColor": "#1989fa",
+  "navigationBarTextStyle": "white"
+}

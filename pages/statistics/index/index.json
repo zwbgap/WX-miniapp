@@ -1,0 +1,15 @@
+{
+  "usingComponents": {
+    "ec-canvas": "/components/ec-canvas/ec-canvas",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-empty": "@vant/weapp/empty/index"
+  },
+  "navigationBarTitleText": "健康数据",
+  "navigationBarBackgroundColor": "#07c160",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true
+}

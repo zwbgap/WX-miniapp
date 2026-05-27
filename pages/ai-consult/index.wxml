@@ -1,0 +1,73 @@
+<view class="chat-page">
+  <view class="chat-body">
+    <scroll-view
+      class="chat-scroll"
+      scroll-y
+      enhanced
+      show-scrollbar="{{false}}"
+      scroll-into-view="{{scrollToView}}"
+      scroll-with-animation
+    >
+      <view wx:for="{{messages}}" wx:key="_id" id="{{item._id}}" class="msg-wrap">
+        <view class="msg-row {{item.role === 'assistant' ? 'msg-left' : 'msg-right'}}">
+          <view class="msg-avatar" wx:if="{{item.role === 'assistant'}}">
+            <view class="robot-avatar">🤖</view>
+          </view>
+          <view class="msg-bubble {{item.role === 'assistant' ? 'bubble-ai' : 'bubble-user'}}">
+            <text class="msg-text" selectable>{{item.content}}</text>
+            <view class="msg-time">{{item.time}}</view>
+          </view>
+          <view class="msg-avatar" wx:if="{{item.role === 'user'}}">
+            <image class="user-avatar-small" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+          </view>
+        </view>
+      </view>
+
+      <view class="typing-indicator" wx:if="{{sending}}">
+        <view class="msg-row msg-left">
+          <view class="msg-avatar">
+            <view class="robot-avatar">🤖</view>
+          </view>
+          <view class="msg-bubble bubble-ai typing-bubble">
+            <view class="typing-dots">
+              <view class="dot"></view>
+              <view class="dot"></view>
+              <view class="dot"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="chat-spacer"></view>
+    </scroll-view>
+  </view>
+
+  <view class="chat-footer">
+    <view class="chat-input-bar">
+      <view class="chat-input-wrap">
+        <input
+          class="chat-input"
+          value="{{inputText}}"
+          placeholder="输入健康问题..."
+          placeholder-class="input-placeholder"
+          confirm-type="send"
+          bindinput="onInput"
+          bindconfirm="onSend"
+          maxlength="500"
+          adjust-position="{{true}}"
+        />
+        <view class="chat-actions">
+          <view class="action-btn" bind:tap="onClearChat">
+            <van-icon name="delete-o" size="36rpx" color="#c8c9cc" />
+          </view>
+          <view class="send-btn {{inputText ? 'send-active' : ''}}" bind:tap="onSend">
+            <van-icon name="arrow-up" size="36rpx" color="#ffffff" />
+          </view>
+        </view>
+      </view>
+      <view class="chat-disclaimer">
+        小健提供健康建议仅供参考，紧急情况请及时就医 🩺
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,85 @@
+<wxs module="util">
+  var getStatusTag = function(s) {
+    if (s === '已接种') return { type: 'success', text: '已接种' };
+    return { type: 'warning', text: '待接种' };
+  };
+  module.exports.getStatusTag = getStatusTag;
+</wxs>
+
+<view class="calendar-container">
+  <!-- 当前选中日期 -->
+  <view class="selected-date-bar">
+    <view class="date-display">
+      <view class="date-day">{{selectedDateText || '选择日期'}}</view>
+    </view>
+    <view class="calendar-toggle" bind:tap="onShowCalendar">
+      <van-icon name="calendar-o" size="40rpx" color="#ff976a" />
+    </view>
+  </view>
+
+  <!-- 当天记录 -->
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <view class="day-records-section" wx:elif="{{todayRecords.length > 0}}">
+    <view class="section-header">
+      <van-icon name="points" size="28rpx" color="#ff976a" />
+      <text class="section-title">当日提醒</text>
+      <van-tag type="warning" size="medium">{{todayRecords.length}}个</van-tag>
+    </view>
+
+    <view
+      class="day-record-item"
+      wx:for="{{todayRecords}}"
+      wx:key="id"
+      data-id="{{item._id}}"
+      bind:tap="onViewDetail"
+    >
+      <view class="item-left">
+        <view class="item-icon-box">
+          <van-icon name="shield-o" size="32rpx" color="#ff976a" />
+        </view>
+        <view class="item-info">
+          <view class="item-name">{{item.yimiaomingcheng}}</view>
+          <view class="item-location" wx:if="{{item.jiezhongdidian}}">
+            <van-icon name="location-o" size="22rpx" color="#969799" />
+            <text class="ml-4 text-xs text-secondary">{{item.jiezhongdidian}}</text>
+          </view>
+        </view>
+      </view>
+      <van-tag type="{{util.getStatusTag(item.zhuangtai).type}}" size="medium">
+        {{util.getStatusTag(item.zhuangtai).text}}
+      </van-tag>
+    </view>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="当天暂无疫苗提醒" />
+
+  <!-- 接种日历 -->
+  <van-popup
+    show="{{calendarVisible}}"
+    position="bottom"
+    round
+    closeable
+    bind:close="onCalendarClose"
+  >
+    <view class="calendar-popup-header">
+      <text class="calendar-popup-title">接种日历</text>
+      <text class="text-xs text-secondary">橙色=待提醒 绿色=已完成</text>
+    </view>
+    <van-calendar
+      show-confirm="{{false}}"
+      show-mark="{{false}}"
+      type="single"
+      min-date="{{minDate}}"
+      max-date="{{maxDate}}"
+      default-date="{{currentDate}}"
+      formatter="{{formatter}}"
+      color="#ff976a"
+      allow-same-day
+      bind:select="onSelectDay"
+      bind:month-show="onMonthShow"
+    />
+  </van-popup>
+
+  <view class="bottom-safe"></view>
+</view>

@@ -1,0 +1,50 @@
+<view class="detail-container">
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:elif="{{news}}">
+    <view class="article-cover" wx:if="{{news.picture || news.coverImage || news.imageUrl}}">
+      <image
+        class="cover-img"
+        src="{{news.picture || news.coverImage || news.imageUrl}}"
+        mode="aspectFill"
+      />
+    </view>
+
+    <view class="article-header">
+      <view class="article-title">{{news.title}}</view>
+      <view class="article-meta">
+        <van-tag type="primary" size="medium">{{news.category || '健康'}}</van-tag>
+        <text class="text-xs text-secondary ml-16">{{news.publishTime || news.date || ''}}</text>
+      </view>
+    </view>
+
+    <view class="action-bar">
+      <view class="action-item {{isFavorited ? 'action-active' : ''}}" bind:tap="onToggleFavorite">
+        <van-icon
+          name="{{isFavorited ? 'star' : 'star-o'}}"
+          size="36rpx"
+          color="{{isFavorited ? '#ff976a' : '#969799'}}"
+        />
+        <text class="text-xs mt-4" style="color:{{isFavorited ? '#ff976a' : '#969799'}};">
+          {{isFavorited ? '已收藏' : '收藏'}}
+        </text>
+      </view>
+      <view class="action-item">
+        <van-icon name="eye-o" size="36rpx" color="#969799" />
+        <text class="text-xs mt-4 text-secondary">{{news.views || 0}} 阅读</text>
+      </view>
+      <view class="action-item" bind:tap="onShare">
+        <van-icon name="share-o" size="36rpx" color="#969799" />
+        <text class="text-xs mt-4 text-secondary">分享</text>
+      </view>
+    </view>
+
+    <view class="article-content">
+      <view class="article-text">{{news.content}}</view>
+    </view>
+  </block>
+
+  <van-empty wx:else description="文章加载失败" />
+
+  <view class="bottom-safe"></view>
+</view>

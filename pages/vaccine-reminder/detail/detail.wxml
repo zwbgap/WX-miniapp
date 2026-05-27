@@ -1,0 +1,124 @@
+<view class="edit-container">
+  <van-loading wx:if="{{loading && !name}}" custom-class="page-loading" />
+
+  <block wx:if="{{!loading || name}}">
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #ff976a;"></view>
+        <text class="card-title">疫苗信息</text>
+      </view>
+
+      <van-field
+        label="疫苗名称"
+        value="{{name}}"
+        placeholder="例如：乙肝疫苗第三针"
+        left-icon="shield-o"
+        clearable
+        required
+        input-align="right"
+        bind:change="onNameInput"
+      />
+
+      <van-cell
+        title="提醒时间"
+        value="{{date || '请选择'}}"
+        is-link
+        required
+        data-type="remind"
+        bind:tap="onOpenDatePicker"
+      />
+
+      <van-field
+        label="接种地点"
+        value="{{location}}"
+        placeholder="请输入接种地点"
+        left-icon="location-o"
+        clearable
+        input-align="right"
+        bind:change="onLocationInput"
+      />
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #1989fa;"></view>
+        <text class="card-title">提醒设置</text>
+      </view>
+
+      <view class="advance-row">
+        <view class="advance-label">
+          <van-icon name="bell" size="32rpx" color="#1989fa" />
+          <text class="ml-8">提前提醒</text>
+        </view>
+        <van-stepper
+          value="{{advanceDays}}"
+          min="{{1}}"
+          max="{{30}}"
+          integer
+          custom-class="advance-stepper"
+          bind:change="onAdvanceChange"
+        />
+        <text class="text-sm text-secondary ml-8">天</text>
+      </view>
+
+      <view class="advance-tip">
+        <text class="text-xs text-secondary">
+          将在提醒时间前 {{advanceDays}} 天发送通知
+        </text>
+      </view>
+
+      <van-cell
+        title="实际接种日"
+        value="{{doneDate || '待定'}}"
+        is-link
+        data-type="done"
+        bind:tap="onOpenDatePicker"
+      />
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #07c160;"></view>
+        <text class="card-title">备注</text>
+      </view>
+
+      <van-field
+        value="{{note}}"
+        type="textarea"
+        placeholder="添加备注信息..."
+        autosize
+        maxlength="300"
+        show-word-limit
+        border="{{false}}"
+        bind:change="onNoteInput"
+      />
+    </view>
+
+    <view class="action-bar">
+      <van-button size="large" round plain hairline type="default" bind:tap="onCancel">
+        取消
+      </van-button>
+      <van-button
+        size="large"
+        round
+        type="warning"
+        loading="{{submitting}}"
+        bind:tap="onSubmit"
+      >
+        保存提醒
+      </van-button>
+    </view>
+  </block>
+
+  <van-popup show="{{datePickerVisible}}" position="bottom" round bind:close="onDateCancel">
+    <van-datetime-picker
+      type="date"
+      value="{{currentDate}}"
+      min-date="{{minDate}}"
+      bind:confirm="onDateConfirm"
+      bind:cancel="onDateCancel"
+    />
+  </van-popup>
+
+  <view class="bottom-safe"></view>
+</view>

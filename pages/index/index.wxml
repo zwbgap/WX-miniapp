@@ -1,0 +1,243 @@
+<wxs module="utils">
+  var getScoreLevel = function(score) {
+    if (score >= 90) return { label: '优秀', color: '#07c160' };
+    if (score >= 75) return { label: '良好', color: '#1989fa' };
+    if (score >= 60) return { label: '一般', color: '#ff976a' };
+    return { label: '需关注', color: '#ee0a24' };
+  };
+  module.exports.getScoreLevel = getScoreLevel;
+</wxs>
+
+<view class="page-container">
+
+  <!-- ========== 顶部用户信息区 ========== -->
+  <view class="user-header" wx:if="{{isLoggedIn}}">
+    <view class="user-header-bg"></view>
+    <view class="user-header-content">
+      <view class="user-info-left">
+        <image
+          class="user-avatar"
+          src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}"
+          mode="aspectFill"
+        />
+        <view class="user-text">
+          <view class="user-name">{{userInfo.nickName || '用户'}}</view>
+          <view class="user-greeting">早上好，祝您健康每一天</view>
+        </view>
+      </view>
+      <view class="health-score-box">
+        <view class="score-ring">
+          <view class="score-ring-inner">
+            <text class="score-value">{{healthScore}}</text>
+            <text class="score-label">健康分</text>
+          </view>
+          <view class="score-ring-progress" style="background: conic-gradient(#07c160 {{healthScore * 3.6}}deg, #e8e8e8 {{healthScore * 3.6}}deg);"></view>
+        </view>
+      </view>
+    </view>
+    <view class="user-header-tags">
+      <view class="score-level-tag" style="background-color: {{utils.getScoreLevel(healthScore).color}};">
+        {{utils.getScoreLevel(healthScore).label}}
+      </view>
+    </view>
+  </view>
+
+  <view class="user-header user-header-guest" wx:else>
+    <view class="user-header-bg"></view>
+    <view class="user-header-content">
+      <view class="user-info-left">
+        <image class="user-avatar" src="/images/default-avatar.png" mode="aspectFill" />
+        <view class="user-text">
+          <view class="user-name">未登录</view>
+          <view class="user-greeting">登录后查看健康数据</view>
+        </view>
+      </view>
+      <van-button type="info" size="small" round bind:tap="onGoLogin">立即登录</van-button>
+    </view>
+  </view>
+
+  <!-- ========== 快捷功能入口（两列） ========== -->
+  <view class="section quick-entry-section">
+    <view class="quick-entry-grid">
+      <view
+        class="quick-entry-item"
+        wx:for="{{quickEntries}}"
+        wx:key="id"
+        data-url="{{item.url}}"
+        bind:tap="onQuickEntryTap"
+      >
+        <view class="entry-icon-box" style="background-color: {{item.color}};">
+          <van-icon name="{{item.icon}}" size="40rpx" color="#ffffff" />
+        </view>
+        <view class="entry-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 今日提醒卡片 ========== -->
+  <view class="section reminders-section" wx:if="{{isLoggedIn}}">
+    <view class="section-header">
+      <text class="section-title">今日提醒</text>
+      <text class="section-subtitle">及时关注，守护健康</text>
+    </view>
+
+    <van-loading wx:if="{{remindersLoading}}" custom-class="flex-center mt-24" />
+    <view class="reminders-empty" wx:elif="{{todayReminders.vaccineCount === 0 && todayReminders.medicationCount === 0}}">
+      <van-icon name="bell" size="48rpx" color="#c8c9cc" />
+      <text class="text-sm text-secondary mt-8">今日暂无提醒</text>
+    </view>
+
+    <!-- 疫苗提醒 -->
+    <view class="reminder-group" wx:if="{{todayReminders.vaccineList.length > 0}}">
+      <view class="reminder-group-header">
+        <view class="flex-row">
+          <view class="reminder-dot" style="background-color: #ff976a;"></view>
+          <text class="reminder-group-title">疫苗提醒</text>
+          <van-tag type="warning" size="medium">{{todayReminders.vaccineCount}}项</van-tag>
+        </view>
+        <text
+          class="text-sm"
+          style="color: #1989fa;"
+          data-type="vaccine"
+          bind:tap="onViewAllReminders"
+        >全部</text>
+      </view>
+      <view
+        class="reminder-item"
+        wx:for="{{todayReminders.vaccineList}}"
+        wx:key="id"
+        wx:for-item="reminder"
+        data-type="vaccine"
+        data-id="{{reminder.id}}"
+        bind:tap="onReminderTap"
+      >
+        <van-icon name="shield-o" size="32rpx" color="#ff976a" />
+        <text class="reminder-name">{{reminder.name}}</text>
+        <text class="reminder-time">{{reminder.date}}</text>
+        <van-icon name="arrow" size="28rpx" color="#c8c9cc" />
+      </view>
+    </view>
+
+    <!-- 用药提醒 -->
+    <view class="reminder-group" wx:if="{{todayReminders.medicationList.length > 0}}">
+      <view class="reminder-group-header">
+        <view class="flex-row">
+          <view class="reminder-dot" style="background-color: #ee0a24;"></view>
+          <text class="reminder-group-title">用药提醒</text>
+          <van-tag type="danger" size="medium">{{todayReminders.medicationCount}}项</van-tag>
+        </view>
+        <text
+          class="text-sm"
+          style="color: #1989fa;"
+          data-type="medication"
+          bind:tap="onViewAllReminders"
+        >全部</text>
+      </view>
+      <view
+        class="reminder-item"
+        wx:for="{{todayReminders.medicationList}}"
+        wx:key="id"
+        wx:for-item="reminder"
+        data-type="medication"
+        data-id="{{reminder.id}}"
+        bind:tap="onReminderTap"
+      >
+        <van-icon name="clock-o" size="32rpx" color="#ee0a24" />
+        <text class="reminder-name">{{reminder.name}}</text>
+        <text class="reminder-time">{{reminder.time}}</text>
+        <van-icon name="arrow" size="28rpx" color="#c8c9cc" />
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 健康数据概览 - 7天睡眠趋势 ========== -->
+  <view class="section sleep-chart-section" wx:if="{{isLoggedIn}}">
+    <view class="section-header">
+      <text class="section-title">睡眠趋势</text>
+      <text class="section-subtitle">近7天</text>
+    </view>
+
+    <van-loading wx:if="{{dashboardLoading}}" custom-class="flex-center mt-24" />
+    <block wx:else>
+      <view class="chart-container">
+        <view class="chart-bars">
+          <view
+            class="chart-bar-wrap"
+            wx:for="{{sleepTrend}}"
+            wx:key="date"
+          >
+            <view class="chart-bar-value text-sm">{{item.hours}}h</view>
+            <view
+              class="chart-bar"
+              style="height: {{item.hours / sleepMaxHours * 200}}rpx; background: linear-gradient(180deg, #1989fa, #07c160);"
+            ></view>
+            <view class="chart-bar-label text-sm">{{item.date}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="chart-legend">
+        <view class="flex-row">
+          <view class="legend-dot" style="background-color: #07c160;"></view>
+          <text class="text-sm text-secondary">优质睡眠建议 7-8 小时</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- ========== 推荐资讯轮播 ========== -->
+  <view class="section news-section">
+    <view class="section-header">
+      <text class="section-title">健康推荐</text>
+      <text class="text-sm" style="color: #1989fa;" bind:tap="onMoreNews">更多</text>
+    </view>
+
+    <van-loading wx:if="{{newsLoading}}" custom-class="flex-center mt-24" />
+    <van-empty wx:elif="{{newsList.length === 0}}" description="暂无推荐资讯" />
+
+    <view class="news-swiper-wrap" wx:elif="{{newsList.length > 0}}">
+      <swiper
+        indicator-dots="{{false}}"
+        autoplay="{{true}}"
+        interval="{{3000}}"
+        circular="{{true}}"
+        bindchange="onSwiperChange"
+        class="news-swiper"
+      >
+        <swiper-item wx:for="{{newsList}}" wx:key="_id">
+          <view
+            class="news-slide"
+            data-id="{{item._id}}"
+            bind:tap="onNewsTap"
+          >
+            <van-image
+              class="news-slide-img"
+              src="{{item.picture || ''}}"
+              fit="cover"
+              width="100%"
+              height="340rpx"
+              use-loading-slot
+            >
+              <van-loading slot="loading" type="spinner" size="40rpx" />
+            </van-image>
+            <view class="news-slide-info">
+              <view class="news-slide-title">{{item.title}}</view>
+              <view class="news-slide-desc">{{item.summary || item.description || ''}}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+
+      <view class="swiper-indicator-custom">
+        <view
+          class="indicator-dot {{swiperCurrent === index ? 'indicator-dot-active' : ''}}"
+          wx:for="{{newsList}}"
+          wx:key="_id"
+          wx:for-index="index"
+        ></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部安全距离 -->
+  <view class="bottom-safe"></view>
+</view>

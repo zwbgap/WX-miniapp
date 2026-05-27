@@ -1,0 +1,60 @@
+<view class="login-container">
+  <view class="login-header">
+    <image class="login-logo" src="/images/logo.png" mode="aspectFit" />
+    <view class="login-title">个人健康档案</view>
+    <view class="login-subtitle">登录即享专属健康管理服务</view>
+  </view>
+
+  <!-- 账号密码登录 -->
+  <view class="account-login-panel">
+    <van-cell-group>
+      <van-field
+        value="{{account}}"
+        placeholder="请输入账号"
+        left-icon="user-o"
+        clearable
+        bind:change="onAccountInput"
+      />
+      <van-field
+        value="{{password}}"
+        type="{{passwordVisible ? 'text' : 'password'}}"
+        placeholder="请输入密码"
+        left-icon="lock"
+        right-icon="{{passwordVisible ? 'eye-o' : 'closed-eye'}}"
+        bind:change="onPasswordInput"
+        bind:click-right-icon="onTogglePasswordVisible"
+      />
+    </van-cell-group>
+
+    <view class="account-options">
+      <view class="flex-row">
+        <van-checkbox
+          value="{{rememberPassword}}"
+          checked-color="#07c160"
+          icon-size="32rpx"
+          bind:change="onToggleRemember"
+        >
+          <text class="text-sm" style="color: #646566;">记住密码</text>
+        </van-checkbox>
+      </view>
+      <text class="text-sm forgot-pwd" bind:tap="onForgetPassword">忘记密码？</text>
+    </view>
+
+    <van-button
+      type="primary"
+      size="large"
+      round
+      block
+      loading="{{accountLoading}}"
+      loading-text="登录中..."
+      bind:tap="onAccountLogin"
+    >
+      登录
+    </van-button>
+  </view>
+
+  <view class="login-footer">
+    <text class="text-sm text-secondary">还没有账号？</text>
+    <text class="text-sm register-link" bind:tap="onGoRegister">立即注册</text>
+  </view>
+</view>

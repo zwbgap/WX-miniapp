@@ -1,0 +1,27 @@
+<view class="container">
+  <view class="page-section" wx:if="{{recordList.length > 0}}">
+    <van-cell-group>
+      <van-cell
+        wx:for="{{recordList}}"
+        wx:key="_id"
+        title="睡眠记录"
+        value="{{item.jiluriqi}}"
+        label="时长：{{item.durationDisplay || '--'}} | 质量：{{item.shuimianzhiliang || '--'}}分"
+        is-link
+        data-id="{{item._id}}"
+        bind:tap="onViewDetail"
+        bind:longpress="onDelete"
+      />
+    </van-cell-group>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无睡眠记录" />
+
+  <van-loading wx:if="{{loading}}" custom-class="flex-center mt-32" />
+
+  <view class="add-btn">
+    <van-button type="primary" icon="plus" round block bind:tap="onAdd">
+      添加睡眠记录
+    </van-button>
+  </view>
+</view>

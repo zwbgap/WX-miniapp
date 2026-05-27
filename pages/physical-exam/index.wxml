@@ -1,0 +1,34 @@
+<view class="container">
+  <view class="page-section" wx:if="{{reportList.length > 0}}">
+    <van-cell-group>
+      <van-cell
+        wx:for="{{reportList}}"
+        wx:key="id"
+        title="{{item.examName || item.title || '体检报告'}}"
+        value="{{item.examDate || item.createTime}}"
+        label="体检机构：{{item.hospital || item.institution || '--'}}"
+        is-link
+        data-id="{{item._id}}"
+        bind:tap="onViewDetail"
+      >
+        <van-tag
+          slot="right-icon"
+          type="{{item.status === '正常' ? 'success' : 'warning'}}"
+          size="medium"
+        >
+          {{item.status || '待查看'}}
+        </van-tag>
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无体检报告" />
+
+  <van-loading wx:if="{{loading}}" custom-class="flex-center mt-32" />
+
+  <view class="add-btn">
+    <van-button type="primary" icon="plus" round block bind:tap="onAdd">
+      添加体检报告
+    </van-button>
+  </view>
+</view>

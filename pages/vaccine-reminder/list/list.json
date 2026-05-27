@@ -1,0 +1,19 @@
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-swipe-cell": "@vant/weapp/swipe-cell/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-dialog": "@vant/weapp/dialog/index"
+  },
+  "navigationBarTitleText": "疫苗提醒",
+  "navigationBarBackgroundColor": "#ff976a",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true
+}

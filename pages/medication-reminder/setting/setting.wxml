@@ -1,0 +1,176 @@
+<view class="setting-container">
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:else>
+    <!-- 药品名称 & 剂量 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #ee0a24;"></view>
+        <text class="card-title">药品信息</text>
+      </view>
+
+      <van-field
+        label="药品名称"
+        value="{{form.name}}"
+        placeholder="例如：阿莫西林胶囊"
+        left-icon="medel-o"
+        clearable
+        required
+        data-field="name"
+        bind:change="onFieldChange"
+      />
+
+      <van-field
+        label="用药剂量"
+        value="{{form.dosage}}"
+        placeholder="例如：每次1片，500mg"
+        left-icon="balance-o"
+        clearable
+        required
+        data-field="dosage"
+        bind:change="onFieldChange"
+      />
+    </view>
+
+    <!-- 多时间段 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #1989fa;"></view>
+        <text class="card-title">用药时间</text>
+      </view>
+
+      <view class="time-tags" wx:if="{{form.times.length > 0}}">
+        <view
+          class="time-tag"
+          wx:for="{{form.times}}"
+          wx:key="*this"
+        >
+          <van-icon name="clock-o" size="24rpx" color="#1989fa" />
+          <text class="ml-4">{{item}}</text>
+          <van-icon
+            name="clear"
+            size="28rpx"
+            color="#c8c9cc"
+            class="ml-8"
+            data-index="{{index}}"
+            bind:tap="onRemoveTime"
+          />
+        </view>
+      </view>
+
+      <view class="add-time-btn" bind:tap="showTimePicker">
+        <van-icon name="plus" size="28rpx" color="#1989fa" />
+        <text class="ml-4 text-sm" style="color:#1989fa;">添加时间</text>
+      </view>
+    </view>
+
+    <!-- 提醒频率 & 周期 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #ff976a;"></view>
+        <text class="card-title">提醒设置</text>
+      </view>
+
+      <view class="field-row">
+        <text class="field-label">提醒频率</text>
+        <van-radio-group
+          value="{{form.frequency}}"
+          direction="horizontal"
+          bind:change="onFrequencyChange"
+        >
+          <van-radio
+            wx:for="{{frequencyOptions}}"
+            wx:key="value"
+            name="{{item.value}}"
+            checked-color="#ee0a24"
+            icon-size="32rpx"
+          >{{item.text}}</van-radio>
+        </van-radio-group>
+      </view>
+
+      <van-field
+        wx:if="{{form.frequency === '自定义'}}"
+        value="{{form.customFrequency}}"
+        placeholder="请输入自定义频率，如：每2天一次"
+        left-icon="edit"
+        border="{{true}}"
+        data-field="customFrequency"
+        bind:change="onFieldChange"
+      />
+
+      <van-cell
+        title="开始日期"
+        value="{{form.startDate || '请选择'}}"
+        is-link
+        required
+        data-type="start"
+        bind:tap="onOpenDatePicker"
+      />
+      <van-cell
+        title="结束日期"
+        value="{{form.endDate || '请选择'}}"
+        is-link
+        required
+        data-type="end"
+        bind:tap="onOpenDatePicker"
+      />
+    </view>
+
+    <!-- 备注 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #07c160;"></view>
+        <text class="card-title">备注</text>
+      </view>
+      <van-field
+        value="{{form.notes}}"
+        type="textarea"
+        placeholder="添加备注，如饭前/饭后服用..."
+        autosize
+        maxlength="200"
+        border="{{false}}"
+        data-field="notes"
+        bind:change="onFieldChange"
+      />
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-bar">
+      <van-button size="large" round plain hairline type="default" bind:tap="onCancel">
+        取消
+      </van-button>
+      <van-button
+        size="large"
+        round
+        type="danger"
+        loading="{{submitting}}"
+        loading-text="保存中..."
+        bind:tap="onSubmit"
+      >
+        保存提醒
+      </van-button>
+    </view>
+  </block>
+
+  <!-- 时间选择器 -->
+  <van-popup show="{{timePickerVisible}}" position="bottom" round bind:close="onCancelTimePicker">
+    <van-datetime-picker
+      type="time"
+      value="{{timePickerValue}}"
+      bind:confirm="onTimeConfirm"
+      bind:cancel="onCancelTimePicker"
+    />
+  </van-popup>
+
+  <!-- 日期选择器 -->
+  <van-popup show="{{datePickerVisible}}" position="bottom" round bind:close="onDateCancel">
+    <van-datetime-picker
+      type="date"
+      value="{{currentPickerDate}}"
+      bind:confirm="onDateConfirm"
+      bind:cancel="onDateCancel"
+    />
+  </van-popup>
+
+  <view class="bottom-safe"></view>
+</view>

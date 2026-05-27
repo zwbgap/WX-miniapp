@@ -1,0 +1,38 @@
+<view class="container">
+  <view class="page-section" wx:if="{{reminderList.length > 0}}">
+    <van-cell-group>
+      <van-cell
+        wx:for="{{reminderList}}"
+        wx:key="_id"
+        title="{{item.name || '用药提醒'}}"
+        value="{{item.frequency === 'daily' ? '每天' : '每周'}}"
+        label="剂量：{{item.dosage || '--'}} | 时长：{{item.startDate || ''}} ~ {{item.endDate || ''}}"
+        is-link
+        data-id="{{item._id}}"
+        bind:tap="onViewDetail"
+      >
+        <van-switch
+          slot="right-icon"
+          checked="{{item.status === 'active'}}"
+          size="48rpx"
+          data-id="{{item._id}}"
+          data-active="{{item.status === 'active'}}"
+          bind:change="onToggle"
+        />
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无用药提醒" />
+
+  <van-loading wx:if="{{loading}}" custom-class="flex-center mt-32" />
+
+  <view class="add-btn" style="display:flex; gap:20rpx; padding: 0 32rpx;">
+    <van-button type="warning" icon="bell" round block bind:tap="onTestAlert" style="flex:1">
+      测试弹窗
+    </van-button>
+    <van-button type="primary" icon="plus" round block bind:tap="onAdd" style="flex:1">
+      添加用药提醒
+    </van-button>
+  </view>
+</view>

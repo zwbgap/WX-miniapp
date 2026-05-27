@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="page-section" wx:if="{{reminderList.length > 0}}">
+    <view
+      class="reminder-item"
+      wx:for="{{reminderList}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      data-name="{{item.yimiaomingcheng}}"
+      hover-class="hover-class"
+      bind:tap="onViewDetail"
+      bind:longpress="onDelete"
+    >
+      <view class="reminder-top">
+        <view class="reminder-icon">
+          <van-icon name="shield-o" size="40rpx" color="#ff976a" />
+        </view>
+        <view class="reminder-info">
+          <view class="reminder-name">{{item.yimiaomingcheng || '疫苗名称'}}</view>
+          <view class="reminder-location" wx:if="{{item.jiezhongdidian}}">{{item.jiezhongdidian}}</view>
+        </view>
+        <van-tag
+          type="{{item.zhuangtai === '已接种' ? 'success' : 'warning'}}"
+          size="medium"
+        >
+          {{item.zhuangtai || '待接种'}}
+        </van-tag>
+      </view>
+      <view class="reminder-bottom">
+        <text class="text-xs text-secondary">提醒时间：{{item.tixingshijian || '未设置'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无疫苗提醒" />
+
+  <van-loading wx:if="{{loading && reminderList.length === 0}}" custom-class="flex-center mt-32" />
+
+  <view class="loading-more" wx:if="{{loading && reminderList.length > 0}}">
+    <van-loading size="36rpx" />
+    <text class="ml-8 text-sm text-secondary">加载中...</text>
+  </view>
+
+  <view class="no-more" wx:if="{{!hasMore && reminderList.length > 0}}">
+    <text class="text-sm text-secondary">没有更多了</text>
+  </view>
+
+  <view class="add-btn" style="display:flex; gap:20rpx; padding: 0 32rpx;">
+    <van-button type="info" icon="info-o" round block bind:tap="onDebug" style="flex:1">
+      云端调试
+    </van-button>
+    <van-button type="primary" icon="plus" round block bind:tap="onAdd" style="flex:1">
+      添加疫苗提醒
+    </van-button>
+  </view>
+</view>

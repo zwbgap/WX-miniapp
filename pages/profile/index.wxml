@@ -1,0 +1,88 @@
+<view class="profile-container">
+  <!-- 登录态：用户信息区 -->
+  <view wx:if="{{isLoggedIn}}">
+    <view class="profile-header-card">
+      <view class="profile-header-bg"></view>
+      <view class="profile-header-content">
+        <image
+          class="profile-avatar"
+          src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}"
+          mode="aspectFill"
+        />
+        <view class="profile-info">
+          <view class="profile-nickname">{{userInfo.nickName || '用户'}}</view>
+          <view class="profile-id">账号: {{userInfo.account || '--'}}</view>
+        </view>
+        <view class="profile-edit-btn" bind:tap="onEditProfile">
+          <van-icon name="edit" size="32rpx" color="#07c160" />
+          <text class="text-sm" style="color:#07c160;margin-left:4rpx;">编辑</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 数据统计 -->
+    <view class="stats-grid">
+      <view class="stats-item" bind:tap="onNavHealthRecord">
+        <view class="stats-value">{{dataStats.recordCount}}</view>
+        <view class="stats-label">档案数</view>
+      </view>
+      <view class="stats-item">
+        <view class="stats-value">{{dataStats.examCount}}</view>
+        <view class="stats-label">体检报告</view>
+      </view>
+      <view class="stats-item" bind:tap="onNavFavorites">
+        <view class="stats-value">{{dataStats.newsFavCount}}</view>
+        <view class="stats-label">收藏资讯</view>
+        <van-icon name="arrow" size="20rpx" color="#c8c9cc" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 未登录态 -->
+  <view wx:else>
+    <view class="profile-header-card">
+      <view class="profile-header-bg"></view>
+      <view class="profile-header-content profile-guest" bind:tap="onGoLogin">
+        <image class="profile-avatar" src="/images/default-avatar.png" mode="aspectFill" />
+        <view class="profile-info">
+          <view class="profile-nickname">点击登录</view>
+          <view class="profile-id">登录后可查看完整健康数据</view>
+        </view>
+        <van-icon name="arrow" size="32rpx" color="#c8c9cc" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 健康服务 -->
+  <view class="menu-section">
+    <view class="menu-title">健康服务</view>
+    <van-cell-group>
+      <van-cell title="健康档案" icon="records" is-link bind:tap="onNavHealthRecord" />
+      <van-cell title="睡眠记录" icon="underway-o" is-link bind:tap="onNavSleep" />
+      <van-cell title="疫苗提醒" icon="shield-o" is-link bind:tap="onNavVaccine" />
+      <van-cell title="用药提醒" icon="clock-o" is-link bind:tap="onNavMedication" />
+      <van-cell title="体检报告" icon="description" is-link bind:tap="onNavExam" />
+      <van-cell title="健康资讯" icon="newspaper-o" is-link bind:tap="onNavNews" />
+    </van-cell-group>
+  </view>
+
+  <!-- 其他服务 -->
+  <view class="menu-section">
+    <view class="menu-title">其他服务</view>
+    <van-cell-group>
+      <van-cell title="设置" icon="setting-o" is-link bind:tap="onNavSettings" />
+      <van-cell title="意见反馈" icon="chat-o" is-link bind:tap="onNavFeedback" />
+      <van-cell title="关于我们" icon="info-o" is-link bind:tap="onNavAbout" />
+      <van-cell title="清除缓存" icon="delete-o" is-link bind:tap="onClearCache" />
+    </van-cell-group>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section" wx:if="{{isLoggedIn}}">
+    <van-button type="danger" size="large" round block bind:tap="onLogout">
+      退出登录
+    </van-button>
+  </view>
+
+  <view class="bottom-safe"></view>
+</view>

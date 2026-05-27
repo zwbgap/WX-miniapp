@@ -1,0 +1,19 @@
+{
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "comment-list": "/components/comment-list/comment-list"
+  },
+  "navigationBarTitleText": "资讯详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black"
+}

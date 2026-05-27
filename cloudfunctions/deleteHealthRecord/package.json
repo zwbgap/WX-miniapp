@@ -1,0 +1,9 @@
+{
+  "name": "deleteHealthRecord",
+  "version": "1.0.0",
+  "description": "删除健康档案记录",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

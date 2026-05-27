@@ -1,0 +1,32 @@
+.list-container {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+}
+
+.favorites-entry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20rpx 32rpx;
+  background-color: #ffffff;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.news-list {
+  padding: 16rpx 24rpx;
+}
+
+.page-loading {
+  padding-top: 200rpx;
+}
+
+.loading-more,
+.no-more {
+  text-align: center;
+  padding: 32rpx 0;
+}
+
+.bottom-safe {
+  height: calc(40rpx + constant(safe-area-inset-bottom));
+  height: calc(40rpx + env(safe-area-inset-bottom));
+}

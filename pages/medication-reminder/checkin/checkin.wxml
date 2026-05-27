@@ -1,0 +1,98 @@
+<view class="checkin-container">
+  <!-- 顶部统计 -->
+  <view class="stats-card">
+    <view class="stats-card-bg"></view>
+    <view class="stats-card-content">
+      <view class="stats-row">
+        <view class="stats-item">
+          <view class="stats-value">{{stats.todayDone}}/{{stats.todayTotal}}</view>
+          <view class="stats-label">今日完成</view>
+        </view>
+        <view class="stats-divider"></view>
+        <view class="stats-item">
+          <view class="stats-value" style="color:{{getAdherenceColor(stats.weekAdherence)}};">{{stats.weekAdherence}}%</view>
+          <view class="stats-label">本周依从性</view>
+        </view>
+        <view class="stats-divider"></view>
+        <view class="stats-item">
+          <view class="stats-value">🔥 {{stats.streakDays}}</view>
+          <view class="stats-label">连续天数</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <van-tabs active="{{activeTab}}" color="#07c160" bind:change="onTabChange">
+    <van-tab title="今日用药"></van-tab>
+    <van-tab title="服药记录"></van-tab>
+  </van-tabs>
+
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <!-- 今日用药 -->
+  <block wx:elif="{{activeTab === 0}}">
+    <view class="checkin-list" wx:if="{{todayList.length > 0}}">
+      <view
+        class="checkin-item {{todayChecked[item.id] ? 'item-done' : ''}}"
+        wx:for="{{todayList}}"
+        wx:key="id"
+        data-id="{{item._id}}"
+        bind:tap="onCheckin"
+      >
+        <view class="checkin-check">
+          <view class="check-circle {{todayChecked[item.id] ? 'check-circle-done' : ''}}">
+            <van-icon
+              wx:if="{{todayChecked[item.id]}}"
+              name="success"
+              size="36rpx"
+              color="#ffffff"
+            />
+          </view>
+        </view>
+        <view class="checkin-info">
+          <view class="checkin-name">{{item.name}}</view>
+          <view class="checkin-meta">
+            <text class="text-xs text-secondary">
+              {{item.times ? item.times.join('、') : '--'}} · {{item.dosage || '--'}}
+            </text>
+          </view>
+        </view>
+        <view class="checkin-status">
+          <van-tag wx:if="{{todayChecked[item.id]}}" type="success" size="medium">已服药</van-tag>
+          <van-tag wx:else type="danger" size="medium">待服药</van-tag>
+        </view>
+      </view>
+    </view>
+
+    <van-empty
+      wx:elif="{{!loading}}"
+      image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+      description="今日暂无用药计划"
+    />
+  </block>
+
+  <!-- 服药记录 -->
+  <block wx:elif="{{activeTab === 1}}">
+    <view class="history-list" wx:if="{{historyList.length > 0}}">
+      <view class="history-date-group" wx:for="{{historyList}}" wx:key="date">
+        <view class="history-date-title">
+          <van-icon name="calendar-o" size="28rpx" color="#1989fa" />
+          <text class="ml-8 text-sm">{{item.date}}</text>
+        </view>
+        <view class="history-item" wx:for="{{item.list}}" wx:key="id" wx:for-item="record">
+          <view class="history-dot {{record.checked ? 'dot-done' : 'dot-miss'}}"></view>
+          <view class="history-info">
+            <text class="text-sm">{{record.name}}</text>
+            <text class="text-xs text-secondary ml-8">{{record.time || ''}}</text>
+          </view>
+          <van-tag wx:if="{{record.checked}}" type="success" size="small">已服</van-tag>
+          <van-tag wx:else type="danger" size="small">漏服</van-tag>
+        </view>
+      </view>
+    </view>
+
+    <van-empty wx:elif="{{!loading}}" description="暂无服药记录" />
+  </block>
+
+  <view class="bottom-safe"></view>
+</view>

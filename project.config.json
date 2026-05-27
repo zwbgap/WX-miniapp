@@ -1,0 +1,82 @@
+{
+  "description": "个人健康档案管理系统",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "minified": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minifyWXSS": true,
+    "lazyloadPlaceholderEnable": false,
+    "useStaticServer": true,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "lazyCodeLoading": "requiredComponents",
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "enableEngineNative": false,
+    "useIsolateContext": true,
+    "userConfirmedBundleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXML": true,
+    "disableUseStrict": false,
+    "minifyWXSSLevel": "medium",
+    "autoAudits": false,
+    "newFeature": false,
+    "uglify": true,
+    "useCompilerPlugins": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.19.4",
+  "appid": "wx51c57bb49d5f6dd9",
+  "projectname": "health-record",
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "scripts": {},
+  "staticServerOptions": {
+    "baseURL": "",
+    "servePath": ""
+  },
+  "isGameTourist": false,
+  "condition": {
+    "search": {
+      "list": []
+    },
+    "conversation": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "plugin": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": []
+    }
+  },
+  "miniprogramRoot": "./",
+  "cloudfunctionRoot": "./cloudfunctions/",
+  "cloudbaseroot": "./cloudfunctions/",
+  "envId": "cloud1-d9gpfxefje09fa7f9",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
+}

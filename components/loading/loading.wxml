@@ -1,0 +1,18 @@
+<view class="loading-overlay {{fullscreen ? 'loading-fullscreen' : ''}}" wx:if="{{visible}}">
+  <view class="loading-content">
+    <view class="spinner-wrap" wx:if="{{type === 'spinner'}}">
+      <view class="spinner"></view>
+    </view>
+    <view class="dots-wrap" wx:elif="{{type === 'dots'}}">
+      <view class="dot"></view>
+      <view class="dot dot-2"></view>
+      <view class="dot dot-3"></view>
+    </view>
+    <view class="skeleton-wrap" wx:elif="{{type === 'skeleton'}}">
+      <view class="skeleton-line skeleton-line-1"></view>
+      <view class="skeleton-line skeleton-line-2"></view>
+      <view class="skeleton-line skeleton-line-3"></view>
+    </view>
+    <view class="loading-text" wx:if="{{text}}">{{text}}</view>
+  </view>
+</view>

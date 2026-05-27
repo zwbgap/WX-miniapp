@@ -1,0 +1,51 @@
+<view class="container">
+  <view class="overview-row">
+    <view class="overview-item">
+      <view class="overview-value">{{formatDuration(avgDuration)}}</view>
+      <view class="overview-label">平均时长</view>
+    </view>
+    <view class="overview-item">
+      <view class="overview-value">{{avgQuality}}</view>
+      <view class="overview-label">平均质量</view>
+    </view>
+    <view class="overview-item">
+      <view class="overview-value">{{totalRecords}}</view>
+      <view class="overview-label">记录数</view>
+    </view>
+  </view>
+
+  <van-tabs active="{{activeTab}}" color="#1989fa" bind:change="onTabChange">
+    <van-tab title="近7天"></van-tab>
+    <van-tab title="近30天"></van-tab>
+  </van-tabs>
+
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:else>
+    <view class="card">
+      <view class="card-header">
+        <van-icon name="chart-trending-o" size="32rpx" color="#1989fa" />
+        <text class="card-title ml-8">睡眠时长趋势</text>
+      </view>
+      <ec-canvas
+        chart-type="line"
+        options="{{activeTab === 0 ? lineOption7 : lineOption30}}"
+        canvas-height="{{420}}"
+      ></ec-canvas>
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <van-icon name="star-o" size="32rpx" color="#ff976a" />
+        <text class="card-title ml-8">质量分布</text>
+      </view>
+      <ec-canvas
+        chart-type="bar"
+        options="{{barQualityOption}}"
+        canvas-height="{{380}}"
+      ></ec-canvas>
+    </view>
+  </block>
+
+  <view class="bottom-safe"></view>
+</view>

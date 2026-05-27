@@ -1,0 +1,9 @@
+{
+  "name": "generateHealthNews",
+  "version": "1.0.0",
+  "description": "调用DeepSeek API每日生成5篇健康资讯",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

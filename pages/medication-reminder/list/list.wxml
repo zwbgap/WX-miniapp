@@ -1,0 +1,141 @@
+<wxs module="util">
+  var getStatusTag = function(s) {
+    if (s === 'completed' || s === '已完成') return { type: 'success', text: '已完成' };
+    if (s === 'paused' || s === '已暂停') return { type: 'default', text: '已暂停' };
+    return { type: 'danger', text: '进行中' };
+  };
+  module.exports.getStatusTag = getStatusTag;
+</wxs>
+
+<view class="list-container">
+  <!-- 今日用药醒目卡片 -->
+  <view class="today-card" wx:if="{{todayList.length > 0}}">
+    <view class="today-card-bg"></view>
+    <view class="today-card-content">
+      <view class="today-card-header">
+        <view class="today-title-row">
+          <van-icon name="clock-o" size="36rpx" color="#ffffff" />
+          <text class="today-title">今日用药</text>
+        </view>
+        <view class="today-progress-badge">
+          {{todayDone}}/{{todayTotal}}
+        </view>
+      </view>
+
+      <view class="today-progress-bar">
+        <view class="today-progress-fill" style="width: {{todayTotal > 0 ? todayDone / todayTotal * 100 : 0}}%;"></view>
+      </view>
+
+      <view class="today-med-list">
+        <view
+          class="today-med-item {{todayChecked[item.id] ? 'med-checked' : ''}}"
+          wx:for="{{todayList}}"
+          wx:key="id"
+          data-id="{{item._id}}"
+          data-item="{{item}}"
+          bind:tap="onTodayCheckin"
+        >
+          <view class="today-med-check">
+            <van-icon
+              name="{{todayChecked[item.id] ? 'checked' : 'circle'}}"
+              size="40rpx"
+              color="{{todayChecked[item.id] ? '#07c160' : '#c8c9cc'}}"
+            />
+          </view>
+          <view class="today-med-info">
+            <view class="today-med-name">{{item.name}}</view>
+            <view class="today-med-meta">
+              <text class="text-xs">{{item.times ? item.times.join('、') : ''}}</text>
+              <text class="ml-16 text-xs text-secondary">{{item.dosage || ''}}</text>
+            </view>
+          </view>
+          <view class="today-med-tag">
+            <van-tag wx:if="{{todayChecked[item.id]}}" type="success" size="medium">已服药</van-tag>
+            <van-tag wx:else type="danger" size="medium">待服药</van-tag>
+          </view>
+        </view>
+      </view>
+
+      <view class="today-card-footer" bind:tap="onGoCheckin" wx:if="{{todayDone > 0}}">
+        <text class="text-sm" style="color: rgba(255,255,255,0.8);">查看历史记录</text>
+        <van-icon name="arrow" size="24rpx" color="rgba(255,255,255,0.8)" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <view class="tabs-row">
+      <view
+        class="mini-tab {{activeTab === index ? 'mini-tab-active' : ''}}"
+        wx:for="{{tabs}}"
+        wx:key="key"
+        wx:for-index="index"
+        data-index="{{index}}"
+        bind:tap="onTabChange"
+      >{{item.title}}</view>
+    </view>
+    <van-button type="danger" size="small" round icon="plus" bind:tap="onAdd">
+      添加
+    </van-button>
+  </view>
+
+  <!-- 全部提醒列表 -->
+  <view class="record-list" wx:if="{{filterList().length > 0}}">
+    <van-swipe-cell
+      wx:for="{{filterList()}}"
+      wx:key="id"
+      right-width="{{65}}"
+    >
+      <view
+        class="record-card"
+        data-id="{{item._id}}"
+        bind:tap="onViewDetail"
+      >
+        <view class="card-top">
+          <view class="med-icon-box">
+            <van-icon name="medel-o" size="40rpx" color="#ee0a24" />
+          </view>
+          <view class="card-info">
+            <view class="med-name">{{item.name}}</view>
+            <view class="med-meta">
+              <text class="text-xs text-secondary">
+                {{item.times ? item.times.join('、') : ''}} · {{item.dosage || '--'}}
+              </text>
+            </view>
+          </view>
+          <van-tag type="{{util.getStatusTag(item.status).type}}" size="medium">
+            {{util.getStatusTag(item.status).text}}
+          </van-tag>
+        </view>
+        <view class="card-bottom">
+          <view class="card-period">
+            <van-icon name="calendar-o" size="24rpx" color="#969799" />
+            <text class="ml-4 text-xs text-secondary">
+              {{item.startDate || '--'}} ~ {{item.endDate || '--'}}
+            </text>
+          </view>
+          <view class="card-frequency">
+            <text class="text-xs" style="color:#1989fa;">{{item.frequency === 'daily' ? '每天' : item.frequency === 'weekly' ? '每周' : item.frequency || '--'}}</text>
+          </view>
+        </view>
+      </view>
+      <view slot="right" class="swipe-delete" data-id="{{item._id}}" bind:tap="onDelete">
+        <text>删除</text>
+      </view>
+    </van-swipe-cell>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无用药提醒">
+    <van-button type="danger" round size="small" bind:tap="onAdd">添加提醒</van-button>
+  </van-empty>
+
+  <van-loading wx:if="{{loading && allList.length === 0}}" custom-class="page-loading" />
+
+  <view class="loading-more" wx:if="{{loading && allList.length > 0}}">
+    <van-loading size="36rpx" color="#ee0a24" />
+    <text class="ml-8 text-sm text-secondary">加载中...</text>
+  </view>
+
+  <view class="bottom-safe"></view>
+</view>

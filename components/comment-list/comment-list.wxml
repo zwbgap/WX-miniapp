@@ -1,0 +1,72 @@
+<view class="comment-tree">
+  <block wx:for="{{commentTree}}" wx:key="id">
+    <view class="comment-item">
+      <image
+        class="comment-avatar"
+        src="{{item.avatarUrl || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+      />
+      <view class="comment-body">
+        <view class="comment-header">
+          <text class="comment-nickname">{{item.nickname || '用户'}}</text>
+          <text class="comment-time text-xs text-secondary">{{item.addtime || ''}}</text>
+        </view>
+        <view class="comment-content">{{item.content}}</view>
+        <view class="comment-footer">
+          <text
+            class="reply-btn text-xs"
+            data-item="{{item}}"
+            bind:tap="onReply"
+          >回复</text>
+        </view>
+
+        <!-- 子回复 -->
+        <view class="children-replies" wx:if="{{item.children && item.children.length > 0}}">
+          <block wx:for="{{item.children}}" wx:key="id" wx:for-item="child">
+            <view class="child-reply">
+              <image
+                class="child-avatar"
+                src="{{child.avatarUrl || '/images/default-avatar.png'}}"
+                mode="aspectFill"
+              />
+              <view class="child-body">
+                <view class="child-header">
+                  <text class="child-nickname text-xs">{{child.nickname || '用户'}}</text>
+                  <text class="child-time text-xs text-secondary">{{child.addtime || ''}}</text>
+                </view>
+                <view class="child-content text-sm">{{child.content}}</view>
+                <view class="child-footer">
+                  <text
+                    class="reply-btn text-xs"
+                    data-item="{{item}}"
+                    bind:tap="onReply"
+                  >回复</text>
+                </view>
+
+                <!-- 二级嵌套 -->
+                <view class="children-replies" wx:if="{{child.children && child.children.length > 0}}">
+                  <block wx:for="{{child.children}}" wx:key="id" wx:for-item="grandChild">
+                    <view class="child-reply">
+                      <image
+                        class="child-avatar"
+                        src="{{grandChild.avatarUrl || '/images/default-avatar.png'}}"
+                        mode="aspectFill"
+                      />
+                      <view class="child-body">
+                        <view class="child-header">
+                          <text class="child-nickname text-xs">{{grandChild.nickname || '用户'}}</text>
+                          <text class="child-time text-xs text-secondary">{{grandChild.addtime || ''}}</text>
+                        </view>
+                        <view class="child-content text-sm">{{grandChild.content}}</view>
+                      </view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

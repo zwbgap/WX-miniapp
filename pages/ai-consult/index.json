@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-button": "@vant/weapp/button/index"
+  },
+  "navigationBarTitleText": "AI 健康咨询",
+  "navigationBarBackgroundColor": "#07c160",
+  "navigationBarTextStyle": "white",
+  "disableScroll": true
+}

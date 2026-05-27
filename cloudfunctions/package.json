@@ -1,0 +1,11 @@
+{
+  "name": "health-record-cloud",
+  "version": "1.0.0",
+  "description": "健康档案管理系统云函数",
+  "scripts": {
+    "deploy": "wxcloud deploy"
+  },
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

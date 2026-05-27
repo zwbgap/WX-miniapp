@@ -1,0 +1,6 @@
+{
+  "name": "updateUser",
+  "timeout": 3,
+  "memorySize": 256,
+  "envVariables": {}
+}

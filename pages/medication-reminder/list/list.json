@@ -1,0 +1,20 @@
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-swipe-cell": "@vant/weapp/swipe-cell/index",
+    "van-switch": "@vant/weapp/switch/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-tab": "@vant/weapp/tab/index"
+  },
+  "navigationBarTitleText": "用药提醒",
+  "navigationBarBackgroundColor": "#ee0a24",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true
+}

@@ -1,0 +1,125 @@
+<wxs module="util">
+  var getStatusTagType = function(zhuangtai, remindDate) {
+    if (zhuangtai === '已接种') return 'success';
+    if (!remindDate || remindDate === '') return 'warning';
+    var parts = remindDate.split('-');
+    if (parts.length < 3) return 'warning';
+    var year = parseInt(parts[0]);
+    var month = parseInt(parts[1]) - 1;
+    var day = parseInt(parts[2]);
+    var d = getDate(year, month, day);
+    if (d.getTime() < getDate().getTime()) return 'danger';
+    return 'warning';
+  };
+  var getStatusTagText = function(zhuangtai, remindDate) {
+    if (zhuangtai === '已接种') return '已接种';
+    if (!remindDate || remindDate === '') return '待接种';
+    var parts = remindDate.split('-');
+    if (parts.length < 3) return '待接种';
+    var year = parseInt(parts[0]);
+    var month = parseInt(parts[1]) - 1;
+    var day = parseInt(parts[2]);
+    var d = getDate(year, month, day);
+    if (d.getTime() < getDate().getTime()) return '已过期';
+    return '待接种';
+  };
+  module.exports.getStatusTagType = getStatusTagType;
+  module.exports.getStatusTagText = getStatusTagText;
+</wxs>
+
+<view class="list-container">
+  <view class="stats-bar">
+    <view class="stats-item">
+      <view class="stats-num warning">{{pendingCount || 0}}</view>
+      <view class="stats-label">待接种</view>
+    </view>
+    <view class="stats-item">
+      <view class="stats-num success">{{doneCount || 0}}</view>
+      <view class="stats-label">已完成</view>
+    </view>
+    <view class="stats-item">
+      <view class="stats-num danger">{{overdueCount || 0}}</view>
+      <view class="stats-label">已过期</view>
+    </view>
+  </view>
+
+  <van-tabs
+    active="{{activeTab}}"
+    color="#ff976a"
+    swipeable
+    border="{{false}}"
+    bind:change="onTabChange"
+  >
+    <van-tab wx:for="{{statusTabs}}" wx:key="value" title="{{item.title}}" />
+  </van-tabs>
+
+  <view class="action-row">
+    <view class="action-btn" bind:tap="onCalendar">
+      <van-icon name="calendar-o" size="32rpx" color="#ff976a" />
+      <text class="ml-4 text-xs">日历</text>
+    </view>
+    <view class="action-btn" bind:tap="onDebug">
+      <van-icon name="info-o" size="32rpx" color="#1989fa" />
+      <text class="ml-4 text-xs">调试</text>
+    </view>
+    <view class="action-btn" bind:tap="onAdd">
+      <van-icon name="plus" size="32rpx" color="#ff976a" />
+      <text class="ml-4 text-xs">添加</text>
+    </view>
+  </view>
+
+  <view class="record-list" wx:if="{{recordList.length > 0}}">
+    <view
+      class="record-item"
+      wx:for="{{recordList}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      data-name="{{item.yimiaomingcheng}}"
+      hover-class="record-item-hover"
+      bind:tap="onViewDetail"
+      bind:longpress="onDelete"
+    >
+      <view class="record-top">
+        <view class="record-icon">
+          <van-icon name="shield-o" size="40rpx" color="#ff976a" />
+        </view>
+        <view class="record-info">
+          <view class="record-name">{{item.yimiaomingcheng || '疫苗名称'}}</view>
+          <view class="record-location" wx:if="{{item.jiezhongdidian}}">
+            <van-icon name="location-o" size="22rpx" color="#969799" />
+            <text class="ml-4 text-xs text-secondary">{{item.jiezhongdidian}}</text>
+          </view>
+        </view>
+        <view class="record-status">
+          <van-tag type="{{util.getStatusTagType(item.zhuangtai, item.tixingshijian)}}" size="medium">
+            {{util.getStatusTagText(item.zhuangtai, item.tixingshijian)}}
+          </van-tag>
+        </view>
+      </view>
+      <view class="record-bottom">
+        <view class="record-date">
+          <van-icon name="clock-o" size="24rpx" color="#969799" />
+          <text class="ml-4 text-xs text-secondary">提醒：{{item.tixingshijian || '未设置'}}</text>
+        </view>
+        <view class="record-actions">
+          <text
+            class="action-text action-done"
+            wx:if="{{item.zhuangtai !== '已接种'}}"
+            data-id="{{item._id}}"
+            catch:tap="onMarkDone"
+          >标记接种</text>
+          <text
+            class="action-text action-delete"
+            data-id="{{item._id}}"
+            catch:tap="onDelete"
+          >删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无疫苗提醒" />
+  <van-loading wx:if="{{loading}}" />
+
+  <view class="bottom-safe"></view>
+</view>

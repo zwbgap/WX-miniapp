@@ -1,0 +1,132 @@
+<wxs module="util">
+  var formatDuration = function(m) {
+    if (!m && m !== 0) return '--';
+    var h = Math.floor(m / 60);
+    var mi = m % 60;
+    return h + 'h ' + mi + 'min';
+  };
+  var getQualityTag = function(q) {
+    q = parseInt(q) || 0;
+    if (q >= 5) return { text: '非常好', type: 'success' };
+    if (q >= 4) return { text: '良好', type: 'primary' };
+    if (q >= 3) return { text: '一般', type: 'warning' };
+    return { text: '较差', type: 'danger' };
+  };
+  var getQualityStars = function(q) {
+    q = parseInt(q) || 0;
+    var s = '';
+    for (var i = 0; i < q; i++) s += '★';
+    for (var i = q; i < 5; i++) s += '☆';
+    return s;
+  };
+  module.exports.formatDuration = formatDuration;
+  module.exports.getQualityTag = getQualityTag;
+  module.exports.getQualityStars = getQualityStars;
+</wxs>
+
+<view class="list-container">
+  <!-- 日期筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-item {{dateFilter ? 'filter-active' : ''}}" bind:tap="onShowDatePicker">
+      <van-icon name="calendar-o" size="32rpx" color="{{dateFilter ? '#1989fa' : '#969799'}}" />
+      <text class="ml-8 text-sm">{{dateFilter || '选择日期'}}</text>
+    </view>
+    <text
+      wx:if="{{dateFilter}}"
+      class="text-sm clear-filter"
+      bind:tap="onClearDateFilter"
+    >清除筛选</text>
+    <van-icon
+      wx:else
+      name="chart-trending-o"
+      size="36rpx"
+      color="#1989fa"
+      bind:tap="onStatistics"
+    />
+  </view>
+
+  <!-- 记录列表 -->
+  <view class="record-list" wx:if="{{recordList.length > 0}}">
+    <van-swipe-cell
+      wx:for="{{recordList}}"
+      wx:key="_id"
+      right-width="{{65}}"
+    >
+      <view
+        class="record-card"
+        data-id="{{item._id}}"
+        bind:tap="onViewDetail"
+      >
+        <view class="record-card-header">
+          <view class="record-date-row">
+            <view class="record-date-icon">
+              <view class="date-day">{{item.jiluriqi}}</view>
+            </view>
+            <view class="record-date-info">
+              <view class="sleep-time-range">
+                <van-icon name="clock-o" size="24rpx" color="#969799" />
+                <text class="ml-4 text-sm text-secondary">{{item.rushuishijian || '--'}} - {{item.qichuangshijian || '--'}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="record-card-body">
+          <view class="duration-block">
+            <view class="duration-value">{{util.formatDuration(item.shuimianshizhang)}}</view>
+            <view class="duration-label">睡眠时长</view>
+          </view>
+          <view class="quality-block">
+            <view class="quality-stars">{{util.getQualityStars(item.shuimianzhiliang)}}</view>
+            <van-tag type="{{util.getQualityTag(item.shuimianzhiliang).type}}" size="medium">
+              {{util.getQualityTag(item.shuimianzhiliang).text}}
+            </van-tag>
+          </view>
+        </view>
+        <view class="record-card-footer" wx:if="{{item.jiluneirong}}">
+          <text class="text-sm text-secondary record-note">{{item.jiluneirong}}</text>
+        </view>
+      </view>
+      <view slot="right" class="swipe-delete" data-id="{{item._id}}" bind:tap="onDelete">
+        <text>删除</text>
+      </view>
+    </van-swipe-cell>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无睡眠记录" />
+
+  <van-loading wx:if="{{loading && recordList.length === 0}}" custom-class="page-loading" />
+
+  <view class="loading-more" wx:if="{{loading && recordList.length > 0}}">
+    <van-loading size="36rpx" color="#1989fa" />
+    <text class="ml-8 text-sm text-secondary">加载中...</text>
+  </view>
+
+  <view class="no-more" wx:if="{{!hasMore && recordList.length > 0}}">
+    <text class="text-sm text-secondary">没有更多了</text>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="stat-btn" bind:tap="onStatistics">
+      <van-icon name="chart-trending-o" size="36rpx" color="#1989fa" />
+      <text class="text-xs ml-4">统计</text>
+    </view>
+    <van-button type="primary" icon="plus" round bind:tap="onAdd">
+      添加记录
+    </van-button>
+  </view>
+
+  <!-- 日期选择弹出层 -->
+  <van-popup show="{{datePickerVisible}}" position="bottom" round bind:close="onDateCancel">
+    <van-datetime-picker
+      type="date"
+      value="{{currentDate}}"
+      min-date="{{946684800000}}"
+      max-date="{{currentDate}}"
+      bind:confirm="onDateConfirm"
+      bind:cancel="onDateCancel"
+    />
+  </van-popup>
+
+  <view class="bottom-safe"></view>
+</view>

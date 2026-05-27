@@ -1,0 +1,50 @@
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 64rpx;
+  min-height: 400rpx;
+}
+
+.empty-icon {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background-color: #f7f8fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32rpx;
+}
+
+.empty-icon-text {
+  font-size: 64rpx;
+}
+
+.empty-title {
+  font-size: 30rpx;
+  color: #323233;
+  font-weight: 500;
+  margin-bottom: 12rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #969799;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.empty-action {
+  margin-top: 40rpx;
+}
+
+.empty-btn {
+  padding: 16rpx 48rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  color: #1989fa;
+  background-color: transparent;
+  border: 2rpx solid #1989fa;
+}

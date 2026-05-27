@@ -1,0 +1,112 @@
+<wxs module="util">
+  var formatDuration = function(m) {
+    if (!m && m !== 0) return '--';
+    var h = Math.floor(m / 60);
+    var mi = m % 60;
+    return h + 'h ' + mi + 'min';
+  };
+  var getQualityText = function(q) {
+    q = parseFloat(q) || 0;
+    if (q >= 4.5) return '优秀';
+    if (q >= 3.5) return '良好';
+    if (q >= 2.5) return '一般';
+    return '较差';
+  };
+  var getQualityColor = function(q) {
+    q = parseFloat(q) || 0;
+    if (q >= 4.5) return '#07c160';
+    if (q >= 3.5) return '#1989fa';
+    if (q >= 2.5) return '#ff976a';
+    return '#ee0a24';
+  };
+  module.exports.formatDuration = formatDuration;
+  module.exports.getQualityText = getQualityText;
+  module.exports.getQualityColor = getQualityColor;
+</wxs>
+
+<view class="stats-container">
+  <van-tabs active="{{activeTab}}" color="#1989fa" bind:change="onTabChange">
+    <van-tab title="近7天"></van-tab>
+    <van-tab title="近30天"></van-tab>
+  </van-tabs>
+
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:else>
+    <!-- 概览卡片 -->
+    <view class="overview-row">
+      <view class="overview-item">
+        <view class="overview-value primary">{{util.formatDuration(avgDuration)}}</view>
+        <view class="overview-label">平均时长</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value" style="color: {{util.getQualityColor(avgQuality)}};">{{avgQuality || '--'}}</view>
+        <view class="overview-label">平均质量</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value primary">{{totalRecords}}</view>
+        <view class="overview-label">记录数</view>
+      </view>
+    </view>
+
+    <!-- 最佳 / 最差 -->
+    <view class="best-worst-row" wx:if="{{bestSleep || worstSleep}}">
+      <view class="best-badge" wx:if="{{bestSleep}}">
+        <van-icon name="smile-o" size="28rpx" color="#07c160" />
+        <text class="ml-4 text-xs">最佳：{{bestSleep}}</text>
+      </view>
+      <view class="worst-badge" wx:if="{{worstSleep}}">
+        <van-icon name="cry-o" size="28rpx" color="#ff976a" />
+        <text class="ml-4 text-xs">最差：{{worstSleep}}</text>
+      </view>
+    </view>
+
+    <!-- 趋势图 -->
+    <view class="card">
+      <view class="card-header">
+        <van-icon name="chart-trending-o" size="32rpx" color="#1989fa" />
+        <text class="card-title">睡眠趋势</text>
+      </view>
+      <view class="chart-wrap">
+        <canvas
+          type="2d"
+          id="sleepChart"
+          class="sleep-chart"
+          style="width: 100%; height: 400rpx;"
+        ></canvas>
+      </view>
+    </view>
+
+    <!-- 质量分布 -->
+    <view class="card" wx:if="{{qualityDistribution.length > 0}}">
+      <view class="card-header">
+        <van-icon name="star-o" size="32rpx" color="#ff976a" />
+        <text class="card-title">质量分布</text>
+      </view>
+      <view class="dist-list">
+        <view
+          class="dist-item"
+          wx:for="{{qualityDistribution}}"
+          wx:key="level"
+        >
+          <view class="dist-label">
+            <view class="dist-dot" style="background-color: {{item.color || '#1989fa'}};"></view>
+            <text class="text-sm">{{item.level || item.label || ''}}</text>
+          </view>
+          <view class="dist-bar-wrap">
+            <van-progress
+              percentage="{{item.percentage || 0}}"
+              stroke-width="16rpx"
+              color="{{item.color || '#1989fa'}}"
+              track-color="#f5f5f5"
+              pivot-text="{{item.count || 0}}次"
+              pivot-color="{{item.color || '#1989fa'}}"
+            />
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="bottom-safe"></view>
+</view>

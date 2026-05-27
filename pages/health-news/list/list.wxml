@@ -1,0 +1,65 @@
+<view class="list-container">
+  <van-search
+    value="{{keyword}}"
+    placeholder="搜索健康资讯"
+    shape="round"
+    background="#07c160"
+    input-align="center"
+    bind:change="onSearch"
+  />
+
+  <van-tabs
+    active="{{activeTab}}"
+    color="#07c160"
+    swipeable
+    sticky
+    bind:change="onTabChange"
+  >
+    <van-tab
+      wx:for="{{categories}}"
+      wx:key="value"
+      title="{{item.title}}"
+    ></van-tab>
+  </van-tabs>
+
+  <view class="favorites-entry" bind:tap="onGoFavorites">
+    <van-icon name="star-o" size="28rpx" color="#ff976a" />
+    <text class="ml-8 text-sm">我的收藏</text>
+    <van-icon name="arrow" size="24rpx" color="#c8c9cc" class="ml-8" />
+  </view>
+
+  <view class="news-list" wx:if="{{newsList.length > 0}}">
+    <van-card
+      wx:for="{{newsList}}"
+      wx:key="_id"
+      title="{{item.title}}"
+      desc="{{item.summary || ''}}"
+      thumb="{{item.picture || item.coverImage || item.imageUrl || ''}}"
+      thumb-mode="aspectFill"
+      price=""
+      origin-price=""
+      data-id="{{item._id}}"
+      bind:tap="onViewDetail"
+    >
+      <view slot="tags">
+        <van-tag type="primary" size="medium">{{item.category || '健康'}}</van-tag>
+        <text class="text-xs text-secondary ml-8">{{item.publishTime || item.date || ''}}</text>
+      </view>
+    </van-card>
+  </view>
+
+  <van-empty wx:elif="{{!loading}}" description="暂无相关资讯" />
+
+  <van-loading wx:if="{{loading && newsList.length === 0}}" custom-class="page-loading" />
+
+  <view class="loading-more" wx:if="{{loading && newsList.length > 0}}">
+    <van-loading size="36rpx" color="#07c160" />
+    <text class="ml-8 text-sm text-secondary">加载中...</text>
+  </view>
+
+  <view class="no-more" wx:if="{{!hasMore && newsList.length > 0}}">
+    <text class="text-sm text-secondary">已经到底了</text>
+  </view>
+
+  <view class="bottom-safe"></view>
+</view>

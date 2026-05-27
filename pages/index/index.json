@@ -1,0 +1,20 @@
+{
+  "usingComponents": {
+    "van-grid": "@vant/weapp/grid/index",
+    "van-grid-item": "@vant/weapp/grid-item/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-progress": "@vant/weapp/progress/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index"
+  },
+  "navigationBarTitleText": "个人健康档案",
+  "navigationBarBackgroundColor": "#07c160",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f6f6f6"
+}

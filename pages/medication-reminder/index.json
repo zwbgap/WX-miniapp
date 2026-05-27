@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-switch": "@vant/weapp/switch/index"
+  },
+  "navigationBarTitleText": "用药提醒",
+  "enablePullDownRefresh": true
+}
