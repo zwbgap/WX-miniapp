@@ -1,15 +1,21 @@
-# 个人健康档案管理系统 - 微信小程序
+# 健康小助手 - 微信小程序
 
 ## 项目简介
 
-个人健康档案管理系统微信小程序，对接 SpringBoot 后端 RESTful API，为用户提供健康档案管理、疫苗提醒、睡眠记录、用药提醒、体检报告管理和健康资讯浏览等功能。
+健康小助手是一款功能丰富的微信小程序，提供健康档案管理、AI健康咨询、健康资讯浏览、疫苗提醒、用药提醒、睡眠记录、数据统计等全方位的健康管理服务。采用云开发架构，无需自建后端服务器。
 
 ## 技术栈
 
 - **框架**: 微信小程序原生开发
 - **UI 组件库**: [Vant Weapp](https://vant-ui.github.io/vant-weapp/)
-- **认证机制**: JWT Token + 微信登录
-- **后端**: SpringBoot RESTful API
+- **后端**: 微信云开发（云函数、云数据库）
+- **AI 服务**: DeepSeek API 智能问诊
+
+## 项目统计
+
+- **代码行数**: 约 19,500 行
+- **主要模块**: 12 个功能模块
+- **云函数**: 15+ 个
 
 ## 项目结构
 
@@ -19,30 +25,129 @@
 ├── app.wxss                    # 全局样式
 ├── project.config.json         # 项目配置文件
 ├── sitemap.json                # 站点地图
-├── utils/
-│   ├── auth.js                 # 认证工具类（Token管理、JWT解析）
-│   └── request.js              # HTTP请求封装（拦截器、Token自动刷新）
+├── cloudfunctions/             # 云函数目录
+│   ├── accountLogin/          # 账号登录
+│   ├── register/             # 用户注册
+│   ├── addHealthRecord/      # 添加健康档案
+│   ├── getHealthRecords/     # 获取健康档案
+│   ├── updateHealthRecord/   # 更新健康档案
+│   ├── deleteHealthRecord/   # 删除健康档案
+│   ├── getVaccines/          # 获取疫苗提醒
+│   ├── addVaccine/           # 添加疫苗提醒
+│   ├── updateVaccine/        # 更新疫苗提醒
+│   ├── deleteVaccine/        # 删除疫苗提醒
+│   ├── getMedicationReminders/ # 获取用药提醒
+│   ├── addMedicationReminder/ # 添加用药提醒
+│   ├── aiConsultation/       # AI健康咨询（DeepSeek）
+│   ├── generateHealthNews/   # 生成健康资讯
+│   ├── newsFavorite/         # 资讯收藏
+│   └── updateUser/           # 更新用户信息
 ├── pages/
-│   ├── index/                  # 首页 - 功能导航与健康概览
-│   ├── login/                  # 登录页 - 微信一键登录
-│   ├── health-record/          # 健康档案 - 档案列表管理
-│   ├── vaccine-reminder/       # 疫苗提醒 - 疫苗接种提醒管理
-│   ├── sleep-record/           # 睡眠记录 - 睡眠数据管理
-│   ├── health-news/            # 健康资讯 - 资讯浏览
-│   ├── medication-reminder/    # 用药提醒 - 用药提醒管理
-│   ├── physical-exam/          # 体检报告 - 体检报告管理
-│   └── profile/                # 个人中心 - 用户信息与设置
+│   ├── index/                 # 首页 - 功能导航与健康概览
+│   ├── login/                 # 登录页 - 账号登录
+│   ├── health-record/         # 健康档案 - 档案列表管理
+│   │   ├── index/             # 档案列表
+│   │   ├── detail/            # 档案详情
+│   │   └── edit/              # 编辑档案
+│   ├── vaccine-reminder/      # 疫苗提醒
+│   │   ├── index/             # 疫苗列表
+│   │   ├── add/               # 添加疫苗
+│   │   └── list/              # 提醒列表
+│   ├── sleep-record/          # 睡眠记录
+│   │   └── index/             # 睡眠记录管理
+│   ├── health-news/           # 健康资讯
+│   │   ├── index/             # 资讯首页
+│   │   ├── list/              # 资讯列表
+│   │   ├── detail/            # 资讯详情
+│   │   └── favorites/         # 我的收藏
+│   ├── ai-consult/            # AI健康咨询
+│   ├── medication-reminder/    # 用药提醒
+│   │   ├── index/             # 提醒首页
+│   │   └── setting/           # 设置提醒
+│   ├── statistics/            # 数据统计
+│   ├── physical-exam/         # 体检报告
+│   └── profile/               # 个人中心
+│       ├── index/             # 个人信息
+│       ├── edit-profile/      # 快速编辑
+│       ├── settings/          # 设置
+│       └── about/             # 关于我们
 ├── components/                 # 自定义组件目录
 └── images/                     # 图片资源目录
 ```
+
+## 功能模块
+
+### 1. 用户模块
+- 账号注册与登录
+- 个人信息管理
+- 头像自动生成（多种风格）
+- 快速编辑常用信息
+
+### 2. 健康档案
+- 个人信息：姓名、年龄、血型、身高、体重
+- 生活方式：吸烟、饮酒、运动、睡眠、饮食习惯
+- 家族病史：高血压、糖尿病、心脏病等
+- 应急信息：紧急联系人、医保类型、植入器械
+- 用药信息：用药类型、药物名称、过敏史
+- 支持新增、编辑、详情查看
+
+### 3. AI健康咨询
+- 接入 DeepSeek API 智能问诊
+- 可爱的迷你机器人医生形象
+- 支持多轮对话上下文记忆
+- 退出咨询自动清空历史记录
+- 消息排版美化，无星号
+
+### 4. 健康资讯
+- DeepSeek AI 每日自动生成5篇健康热点
+- 精美配图自动匹配
+- 收藏功能（云端保存，跨设备同步）
+- 阅读量统计
+- 分享功能
+
+### 5. 疫苗提醒
+- 疫苗接种记录管理
+- 接种状态跟踪（待接种/已接种/已过期）
+- 长按删除记录
+- 弹窗提醒功能
+
+### 6. 用药提醒
+- 多个用药时间设置
+- 时间选择器
+- 弹窗提醒
+- 支持修改已有提醒
+
+### 7. 睡眠记录
+- 睡眠时长记录
+- 睡眠质量追踪
+- 数据可视化展示
+
+### 8. 数据统计
+- 健康数据图表展示
+- 睡眠趋势分析
+- 体重变化记录
+- 档案数量统计
+
+## 云数据库集合
+
+| 集合名称 | 说明 |
+|---------|------|
+| `users` | 用户信息 |
+| `health_records` | 健康档案 |
+| `vaccine_reminders` | 疫苗提醒 |
+| `medication_reminders` | 用药提醒 |
+| `sleep_records` | 睡眠记录 |
+| `health_news` | 健康资讯 |
+| `news_favorites` | 资讯收藏 |
+| `ai_conversations` | AI对话记录 |
 
 ## 快速开始
 
 ### 环境要求
 
 - 微信开发者工具（最新版）
+- 已开通云开发能力
 - Node.js >= 12
-- npm >= 6
 
 ### 安装步骤
 
@@ -50,7 +155,7 @@
 
 ```bash
 git clone <repository-url>
-cd health-record-miniapp
+cd WX
 ```
 
 2. **安装 Vant Weapp**
@@ -70,119 +175,112 @@ npm install @vant/weapp -S --production
 
 修改 [project.config.json](project.config.json) 中的 `appid` 字段为你的小程序 AppID。
 
-5. **启动后端服务**
+5. **开通云开发**
 
-确保 SpringBoot 后端服务已在 `http://localhost:8080` 启动。
+- 登录微信公众平台
+- 进入「开发」→「开发管理」→「开发设置」
+- 找到「云开发」选项，开通云开发能力
 
-6. **运行项目**
+6. **创建数据库集合**
+
+在云开发控制台中创建以下集合：
+- `users`
+- `health_records`
+- `vaccine_reminders`
+- `medication_reminders`
+- `sleep_records`
+- `health_news`
+- `news_favorites`
+- `ai_conversations`
+
+7. **部署云函数**
+
+在微信开发者工具中，右键点击 `cloudfunctions` 文件夹下的每个云函数，选择「上传并部署：云端安装依赖」。
+
+需要部署的云函数：
+- `accountLogin`
+- `register`
+- `addHealthRecord`
+- `getHealthRecords`
+- `updateHealthRecord`
+- `deleteHealthRecord`
+- `getVaccines`
+- `addVaccine`
+- `updateVaccine`
+- `deleteVaccine`
+- `getMedicationReminders`
+- `addMedicationReminder`
+- `updateMedicationReminder`
+- `deleteMedicationReminder`
+- `aiConsultation`
+- `generateHealthNews`
+- `newsFavorite`
+- `updateUser`
+- `updateNewsView`
+
+8. **配置 AI 服务**
+
+在云开发控制台中为 `aiConsultation` 和 `generateHealthNews` 云函数配置环境变量：
+- `DEEPSEEK_API_KEY`: 你的 DeepSeek API Key
+- `DEEPSEEK_BASE_URL`: DeepSeek API 地址（可选，默认为官方地址）
+
+9. **运行项目**
 
 使用微信开发者工具打开项目根目录，点击编译即可。
 
-## 后端 API 对接说明
+## 云函数超时配置
 
-### 基础配置
+部分云函数（如 AI 咨询、资讯生成）可能需要较长处理时间，建议在云开发控制台中将超时时间设置为 60 秒。
 
-- **Base URL**: `http://localhost:8080`
-- 可在 `utils/request.js` 中修改 `BASE_URL` 变量
+## 主要页面预览
 
-### 认证流程
+### 首页
+- 用户头像与账号信息
+- 快捷功能入口（健康档案、疫苗提醒、用药提醒、睡眠记录、数据统计等）
+- 健康资讯轮播展示
+- AI 健康咨询入口
 
-1. 用户点击微信一键登录
-2. 调用 `wx.login()` 获取临时 code
-3. 将 code 发送到后端 `POST /login` 接口
-4. 后端验证后返回 `token`、`refreshToken` 和 `userInfo`
-5. 前端将 token 存储在本地 storage 中
-6. 后续所有请求自动在 Header 中携带 `Authorization: Bearer {token}`
+### 健康档案
+- 生活方式记录
+- 家族病史登记
+- 应急信息管理
+- 用药信息登记
 
-### Token 自动刷新机制
+### AI 健康咨询
+- 可爱机器人医生形象
+- 智能对话交互
+- 上下文记忆
 
-当请求返回 401 状态码时：
+### 个人中心
+- 头像自动生成
+- 快速编辑常用信息
+- 收藏资讯管理
+- 各项健康服务入口
 
-1. 检查是否已有刷新请求在进行中（防止并发刷新）
-2. 使用 `refreshToken` 调用 `POST /refresh-token` 刷新 token
-3. 刷新成功后重试原请求
-4. 其他并发请求等待 token 刷新完成后自动重试
-5. 刷新失败则清除登录状态，跳转到登录页
+## 更新日志
 
-### API 接口约定
+### v2.0（当前版本）
+- 全面迁移至云开发架构
+- 新增 AI 健康咨询功能（DeepSeek）
+- 新增健康资讯自动生成
+- 新增资讯收藏功能（云端同步）
+- 重构健康档案模块，扩充信息类别
+- 新增快速编辑页面
+- 优化数据统计图表展示
+- 代码优化与性能提升
 
-| 接口路径 | 方法 | 说明 |
-|---------|------|------|
-| `/login` | POST | 微信登录 |
-| `/register` | POST | 用户注册 |
-| `/refresh-token` | POST | 刷新Token |
-| `/health-record` | GET/POST | 健康档案列表/新增 |
-| `/health-record/:id` | GET/PUT/DELETE | 健康档案详情/更新/删除 |
-| `/health-record/overview` | GET | 健康概览 |
-| `/vaccine-reminder` | GET/POST | 疫苗提醒列表/新增 |
-| `/vaccine-reminder/:id` | GET/PUT/DELETE | 疫苗提醒详情/更新/删除 |
-| `/vaccine-reminder/count` | GET | 疫苗提醒数量 |
-| `/sleep-record` | GET/POST | 睡眠记录列表/新增 |
-| `/sleep-record/:id` | GET/PUT/DELETE | 睡眠记录详情/更新/删除 |
-| `/health-news` | GET | 健康资讯列表 |
-| `/health-news/:id` | GET | 健康资讯详情 |
-| `/medication-reminder` | GET/POST | 用药提醒列表/新增 |
-| `/medication-reminder/:id` | GET/PUT/DELETE | 用药提醒详情/更新/删除 |
-| `/medication-reminder/count` | GET | 用药提醒数量 |
-| `/physical-exam` | GET/POST | 体检报告列表/新增 |
-| `/physical-exam/:id` | GET/PUT/DELETE | 体检报告详情/更新/删除 |
-
-### 数据返回格式
-
-```json
-{
-  "code": 0,
-  "message": "success",
-  "data": {}
-}
-```
-
-## utils/request.js 使用示例
-
-```javascript
-const http = require('../../utils/request');
-
-// GET 请求
-const data = await http.get('/health-record', { page: 1, pageSize: 10 });
-
-// POST 请求
-await http.post('/health-record', { title: '血压记录', value: '120/80' });
-
-// PUT 请求
-await http.put('/health-record/1', { title: '更新标题' });
-
-// DELETE 请求
-await http.delete('/health-record/1');
-
-// 文件上传
-await http.upload('/upload', tempFilePath, 'file', { type: 'report' });
-```
-
-## utils/auth.js 使用示例
-
-```javascript
-const auth = require('../../utils/auth');
-
-// 检查登录状态
-if (auth.isLoggedIn()) { /* ... */ }
-
-// 获取Token
-const token = auth.getToken();
-
-// 判断Token是否过期
-if (auth.isTokenExpired()) { /* ... */ }
-
-// 解析JWT载荷
-const payload = auth.parseJwtPayload(token);
-
-// 清除所有认证信息
-auth.clearAll();
-```
+### v1.0
+- 基础功能实现
+- 健康档案管理
+- 疫苗提醒
+- 用药提醒
+- 睡眠记录
 
 ## 注意事项
 
-1. 调试时可在 `project.config.json` 中将 `urlCheck` 设为 `false`，关闭域名校验
-2. 正式发布前需要将请求域名添加到微信小程序后台的 request 合法域名中
-3. tabBar 的 iconPath 图标需要自行准备放入 `images/` 目录
-4. 各列表页面只实现了基础骨架，详情页和编辑页需要根据实际业务扩展
-5. Vant Weapp 组件已在 `app.json` 中全局注册，页面中按需在 `usingComponents` 中引用
+1. 首次部署云函数需要手动上传并安装依赖
+2. AI 相关功能需要配置 DeepSeek API Key
+3. 部分页面需要用户登录后才能使用
+4. Vant Weapp 组件已在 `app.json` 中全局注册
+5. 头像使用 DiceBear API 随机生成多种风格
+6. 资讯配图使用 Picsum Photos 随机图片服务
