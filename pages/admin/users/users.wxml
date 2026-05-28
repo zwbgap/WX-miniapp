@@ -1,0 +1,43 @@
+<view class="users-container">
+  <view class="search-bar">
+    <van-search
+      value="{{keyword}}"
+      placeholder="搜索用户账号或姓名"
+      show-action
+      bind:search="onSearch"
+      bind:change="onKeywordChange"
+    />
+  </view>
+
+  <view class="users-list">
+    <van-cell-group inset wx:if="{{users.length > 0}}">
+      <van-swipe-cell wx:for="{{users}}" wx:key="_id" right-width="{{ 120 }}">
+        <van-cell
+          title="{{item.nickName || item.account}}"
+          label="账号: {{item.account}}"
+          bind:tap="onUserDetail"
+          data-id="{{item._id}}"
+        >
+          <template slot="icon">
+            <view class="user-avatar">
+              <image wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill" />
+              <text wx:else>👤</text>
+            </view>
+          </template>
+          <view slot="right-icon" class="bind-status">
+            <text wx:if="{{item.doctorId}}" class="bound">已绑定</text>
+            <text wx:else class="unbound">未绑定</text>
+          </view>
+        </van-cell>
+        <view slot="right" class="swipe-action">
+          <view class="delete-btn" bind:tap="onDeleteUser" data-id="{{item._id}}">删除</view>
+        </view>
+      </van-swipe-cell>
+    </van-cell-group>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">👤</text>
+      <text class="empty-text">暂无用户</text>
+    </view>
+  </view>
+</view>

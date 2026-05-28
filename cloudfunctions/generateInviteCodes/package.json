@@ -1,0 +1,9 @@
+{
+  "name": "generateInviteCodes",
+  "version": "1.0.0",
+  "description": "生成医生邀请码",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

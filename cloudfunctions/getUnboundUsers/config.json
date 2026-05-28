@@ -1,0 +1,6 @@
+{
+  "name": "getUnboundUsers",
+  "description": "获取未绑定用户列表",
+  "timeout": 10,
+  "envVariables": {}
+}

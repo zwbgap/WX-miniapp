@@ -1,3 +1,5 @@
+const { ensureUser } = require('../../utils/security');
+
 Page({
   data: {
     userInfo: null,
@@ -11,10 +13,9 @@ Page({
   },
 
   onShow() {
+    if (!ensureUser()) return;
     this.refreshUserState();
-    if (this.data.isLoggedIn) {
-      this.loadUserStats();
-    }
+    this.loadUserStats();
   },
 
   refreshUserState() {
@@ -36,6 +37,16 @@ Page({
         .where({ userId: userInfo._id })
         .count();
 
+      var examCount = 0;
+      try {
+        var examResult = await db.collection('physical_exam')
+          .where({ userId: userInfo._id })
+          .count();
+        examCount = examResult.total || 0;
+      } catch (e) {
+        console.log('体检报告集合未创建或无数据:', e.message);
+      }
+
       const favResult = await wx.cloud.callFunction({
         name: 'newsFavorite',
         data: { userId: userInfo._id, action: 'count' }
@@ -44,7 +55,7 @@ Page({
       this.setData({
         dataStats: {
           recordCount: countResult.total || 0,
-          examCount: 0,
+          examCount: examCount,
           newsFavCount: favResult.result?.data?.count || 0
         }
       });
@@ -135,13 +146,18 @@ Page({
   },
 
   onNavAbout() {
-    wx.navigateTo({ url: '/pages/profile/about' });
+    wx.showModal({
+      title: '关于我们',
+      content: '合肥工业大学计算机科学与技术专业任海涵毕业设计',
+      showCancel: false,
+      confirmText: '知道了'
+    });
   },
 
   onNavFeedback() {
     wx.showModal({
       title: '意见反馈',
-      content: '如有建议或问题，请联系客服',
+      content: '如有建议或问题，请联系客服：2634567890@qq.com',
       showCancel: false,
       confirmText: '知道了'
     });

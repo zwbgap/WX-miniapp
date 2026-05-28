@@ -41,6 +41,124 @@
   color: #1a1a1a;
 }
 
+/* ========== 身体指标卡片 ========== */
+.body-index-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  border: 2rpx solid #e0f2fe;
+}
+
+.body-index-card .card-header {
+  border-bottom-color: #e0f2fe;
+}
+
+.body-index-card .card-dot {
+  background: linear-gradient(135deg, #1989fa 0%, #06b6d4 100%);
+  box-shadow: 0 4rpx 12rpx rgba(25, 137, 250, 0.3);
+}
+
+.body-index-card .card-title {
+  color: #0369a1;
+}
+
+/* ========== 指标输入项 ========== */
+.index-item {
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid #e0f2fe;
+}
+
+.index-item:last-child {
+  border-bottom: none;
+}
+
+.index-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.index-label {
+  font-size: 28rpx;
+  color: #374151;
+  font-weight: 500;
+}
+
+.index-value-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.index-value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1e40af;
+  margin-right: 8rpx;
+}
+
+.index-unit {
+  font-size: 24rpx;
+  color: #64748b;
+}
+
+/* ========== 滑块区域 ========== */
+.slider-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16rpx 32rpx 20rpx;
+  background-color: rgba(25, 137, 250, 0.04);
+  margin: 0 24rpx;
+  border-radius: 16rpx;
+}
+
+.slider-end {
+  flex-shrink: 0;
+  width: 80rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #64748b;
+}
+
+/* ========== BMI 实时预览 ========== */
+.bmi-section {
+  background: linear-gradient(135deg, #1989fa 0%, #06b6d4 100%);
+  margin: 24rpx;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 32rpx rgba(25, 137, 250, 0.3);
+}
+
+.bmi-title {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12rpx;
+}
+
+.bmi-value {
+  font-size: 72rpx;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
+  margin-bottom: 16rpx;
+}
+
+.bmi-level {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.25);
+  padding: 8rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+}
+
+.bmi-tips {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 16rpx;
+}
+
 /* ========== 性别选择行 ========== */
 .field-row {
   display: flex;
@@ -54,40 +172,6 @@
   width: 180rpx;
   font-size: 28rpx;
   color: #323233;
-}
-
-/* ========== 滑块区域 ========== */
-.slider-wrap {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8rpx 40rpx 24rpx;
-}
-
-.slider-end {
-  flex-shrink: 0;
-  width: 80rpx;
-  text-align: center;
-}
-
-/* ========== BMI 实时预览 ========== */
-.bmi-preview {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 16rpx 32rpx 28rpx;
-}
-
-.bmi-preview-value {
-  font-size: 44rpx;
-  font-weight: 700;
-  margin-right: 16rpx;
-}
-
-.bmi-preview-label {
-  display: flex;
-  align-items: center;
 }
 
 /* ========== 操作按钮区 ========== */

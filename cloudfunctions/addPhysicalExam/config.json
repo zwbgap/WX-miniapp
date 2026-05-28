@@ -1,0 +1,6 @@
+{
+  "name": "addPhysicalExam",
+  "description": "医生给绑定用户发送体检报告",
+  "timeout": 10,
+  "envVariables": {}
+}

@@ -40,6 +40,12 @@
   color: #1a1a1a;
 }
 
+.card-hint {
+  font-size: 24rpx;
+  color: #969799;
+  margin-left: 12rpx;
+}
+
 .field-row {
   display: flex;
   flex-direction: row;
@@ -56,6 +62,40 @@
 
 .field-value {
   font-size: 28rpx;
+  flex: 1;
+}
+
+.text-secondary {
+  color: #969799;
+}
+
+.doctor-bind-section {
+  padding: 0 32rpx 24rpx;
+}
+
+.doctor-info {
+  background-color: #f8fafc;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-top: 16rpx;
+}
+
+.doctor-info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.doctor-info-label {
+  width: 100rpx;
+  font-size: 26rpx;
+  color: #969799;
+}
+
+.doctor-info-value {
+  font-size: 26rpx;
+  color: #323233;
   flex: 1;
 }
 
@@ -77,4 +117,118 @@
 .bottom-safe {
   height: constant(safe-area-inset-bottom);
   height: env(safe-area-inset-bottom);
+}
+
+.doctor-picker-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.picker-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.doctor-picker-content {
+  height: calc(100% - 180rpx);
+  padding: 16rpx;
+}
+
+.doctor-picker-footer {
+  padding: 20rpx 24rpx;
+  border-top: 1rpx solid #f5f5f5;
+  background-color: #ffffff;
+}
+
+.doctor-picker-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 24rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  transition: all 0.2s ease;
+}
+
+.doctor-picker-item:active {
+  background-color: #f5f5f5;
+}
+
+.doctor-picker-item.selected {
+  background-color: #ecfdf5;
+  border: 2rpx solid #07c160;
+}
+
+.doctor-picker-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #07c160 0%, #06b6d4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.doctor-picker-info {
+  flex: 1;
+}
+
+.doctor-picker-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8rpx;
+}
+
+.doctor-picker-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.detail-tag {
+  font-size: 22rpx;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.doctor-picker-check {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background-color: #07c160;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #969799;
 }

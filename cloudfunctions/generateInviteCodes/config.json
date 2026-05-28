@@ -1,0 +1,6 @@
+{
+  "name": "generateInviteCodes",
+  "description": "生成医生邀请码",
+  "timeout": 10,
+  "envVariables": {}
+}

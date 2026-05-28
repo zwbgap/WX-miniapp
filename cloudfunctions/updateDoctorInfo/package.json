@@ -1,0 +1,9 @@
+{
+  "name": "updateDoctorInfo",
+  "version": "1.0.0",
+  "description": "更新医生信息并同步到绑定用户",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

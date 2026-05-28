@@ -2,83 +2,84 @@
   <van-loading wx:if="{{loading}}" custom-class="page-loading" />
 
   <block wx:else>
+    <!-- 档案标题 -->
     <view class="card">
-      <view class="card-header">
-        <view class="card-dot" style="background-color: #07c160;"></view>
-        <text class="card-title">基本信息</text>
-      </view>
-
-      <van-field
-        label="姓名"
-        value="{{form.xingming}}"
-        placeholder="请输入姓名"
-        left-icon="user-o"
-        clearable
-        required
-        data-field="xingming"
-        bind:change="onFieldChange"
-      />
-
-      <view class="field-row">
-        <text class="field-label">性别</text>
-        <van-radio-group value="{{form.xingbie}}" direction="horizontal" bind:change="onGenderChange">
-          <van-radio name="男" checked-color="#1989fa" icon-size="32rpx">男</van-radio>
-          <van-radio name="女" checked-color="#ff4d6d" icon-size="32rpx">女</van-radio>
-        </van-radio-group>
-      </view>
-
-      <van-field
-        label="年龄"
-        value="{{form.nianling}}"
-        type="number"
-        placeholder="请输入年龄"
-        left-icon="birthday-cake-o"
-        clearable
-        required
-        data-field="nianling"
-        bind:change="onFieldChange"
-      />
-
-      <van-field
-        label="血型"
-        value="{{form.xuexing || ''}}"
-        placeholder="请选择血型"
-        left-icon="medel-o"
-        is-link
-        readonly
-        data-type="xuexing"
-        bind:tap="onOpenPicker"
+      <van-field 
+        label="档案名称" 
+        value="{{title}}" 
+        placeholder="请输入档案名称" 
+        left-icon="file-text-o"
+        bind:change="onTitleChange"
       />
     </view>
 
-    <view class="card">
+    <!-- 身体指标卡片 -->
+    <view class="card body-index-card">
       <view class="card-header">
-        <view class="card-dot" style="background-color: #1989fa;"></view>
+        <view class="card-dot"></view>
         <text class="card-title">身体指标</text>
       </view>
 
-      <van-field label="身高" value="{{form.shengao}}" type="number" placeholder="请输入身高(cm)" left-icon="ascending" clearable required data-field="shengao" bind:change="onFieldChange" />
-      <view class="slider-wrap">
-        <text class="slider-end text-xs text-secondary">50cm</text>
-        <van-slider value="{{form.shengao || 170}}" min="50" max="250" step="1" bar-height="8rpx" active-color="#1989fa" custom-class="flex-1" bind:change="onHeightSliderChange" />
-        <text class="slider-end text-xs text-secondary">250cm</text>
+      <!-- 身高 -->
+      <view class="index-item">
+        <view class="index-row">
+          <text class="index-label">身高</text>
+          <view class="index-value-wrap">
+            <text class="index-value">{{form.shengao || '--'}}</text>
+            <text class="index-unit">cm</text>
+          </view>
+        </view>
+        <van-field 
+          value="{{form.shengao}}" 
+          type="number" 
+          placeholder="请输入身高" 
+          left-icon="ascending"
+          data-field="shengao"
+          bind:change="onFieldChange"
+          custom-class="mt-8"
+        />
+        <view class="slider-wrap">
+          <text class="slider-end">50cm</text>
+          <van-slider value="{{form.shengao || 170}}" min="50" max="250" step="1" bar-height="8rpx" active-color="#1989fa" custom-class="flex-1" bind:change="onHeightSliderChange" />
+          <text class="slider-end">250cm</text>
+        </view>
       </view>
 
-      <van-field label="体重" value="{{form.tizhong}}" type="number" placeholder="请输入体重(kg)" left-icon="balance-o" clearable required data-field="tizhong" bind:change="onFieldChange" />
-      <view class="slider-wrap">
-        <text class="slider-end text-xs text-secondary">10kg</text>
-        <van-slider value="{{form.tizhong || 65}}" min="10" max="300" step="1" bar-height="8rpx" active-color="#1989fa" custom-class="flex-1" bind:change="onWeightSliderChange" />
-        <text class="slider-end text-xs text-secondary">300kg</text>
-      </view>
-
-      <view class="bmi-preview" wx:if="{{bmi > 0}}">
-        <view class="bmi-preview-value" style="color: {{bmiColor}};">{{bmi}}</view>
-        <view class="bmi-preview-label">
-          <van-tag type="{{bmiLevel === '正常' ? 'success' : (bmiLevel === '偏瘦' || bmiLevel === '偏胖' ? 'warning' : 'danger')}}" size="medium">BMI {{bmiLevel}}</van-tag>
+      <!-- 体重 -->
+      <view class="index-item">
+        <view class="index-row">
+          <text class="index-label">体重</text>
+          <view class="index-value-wrap">
+            <text class="index-value">{{form.tizhong || '--'}}</text>
+            <text class="index-unit">kg</text>
+          </view>
+        </view>
+        <van-field 
+          value="{{form.tizhong}}" 
+          type="number" 
+          placeholder="请输入体重" 
+          left-icon="balance-o"
+          data-field="tizhong"
+          bind:change="onFieldChange"
+          custom-class="mt-8"
+        />
+        <view class="slider-wrap">
+          <text class="slider-end">10kg</text>
+          <van-slider value="{{form.tizhong || 65}}" min="10" max="300" step="1" bar-height="8rpx" active-color="#1989fa" custom-class="flex-1" bind:change="onWeightSliderChange" />
+          <text class="slider-end">300kg</text>
         </view>
       </view>
     </view>
 
+    <!-- BMI 实时预览 -->
+    <view class="bmi-section" wx:if="{{bmi > 0}}">
+      <view class="bmi-title">您的 BMI 指数</view>
+      <view class="bmi-value">{{bmi}}</view>
+      <view class="bmi-level">{{bmiLevel}}</view>
+      <view class="bmi-tips">健康体重建议：BMI 18.5 - 23.9</view>
+    </view>
+
+    <!-- 健康史 -->
     <view class="card">
       <view class="card-header">
         <view class="card-dot" style="background-color: #ff976a;"></view>
@@ -90,6 +91,7 @@
       <van-field label="健康状况" value="{{form.jiankangzhuangkuang}}" type="textarea" placeholder="请描述当前健康状况" autosize left-icon="smile-o" data-field="jiankangzhuangkuang" bind:change="onFieldChange" />
     </view>
 
+    <!-- 生活方式 -->
     <view class="card">
       <view class="card-header">
         <view class="card-dot" style="background-color: #07c160;"></view>
@@ -126,10 +128,6 @@
         </van-radio-group>
       </view>
 
-      <van-field label="睡眠时长" value="{{form.shuimian}}" type="number" placeholder="平均每日睡眠小时数" left-icon="clock-o" clearable data-field="shuimian" bind:change="onFieldChange">
-        <text slot="right-icon" class="text-secondary">小时/天</text>
-      </van-field>
-
       <view class="field-row">
         <text class="field-label">饮食习惯</text>
         <van-radio-group value="{{form.yinshi}}" direction="horizontal" bind:change="onRadioChange" data-field="yinshi">
@@ -140,72 +138,7 @@
       </view>
     </view>
 
-    <view class="card">
-      <view class="card-header">
-        <view class="card-dot" style="background-color: #ee0a24;"></view>
-        <text class="card-title">家族病史</text>
-      </view>
-
-      <view class="field-row">
-        <text class="field-label">高血压</text>
-        <van-radio-group value="{{form.jiazu_gaoxueya}}" direction="horizontal" bind:change="onRadioChange" data-field="jiazu_gaoxueya">
-          <van-radio name="有" checked-color="#ee0a24" icon-size="28rpx">有</van-radio>
-          <van-radio name="无" checked-color="#07c160" icon-size="28rpx">无</van-radio>
-          <van-radio name="不详" checked-color="#969799" icon-size="28rpx">不详</van-radio>
-        </van-radio-group>
-      </view>
-
-      <view class="field-row">
-        <text class="field-label">糖尿病</text>
-        <van-radio-group value="{{form.jiazu_tangniaobing}}" direction="horizontal" bind:change="onRadioChange" data-field="jiazu_tangniaobing">
-          <van-radio name="有" checked-color="#ee0a24" icon-size="28rpx">有</van-radio>
-          <van-radio name="无" checked-color="#07c160" icon-size="28rpx">无</van-radio>
-          <van-radio name="不详" checked-color="#969799" icon-size="28rpx">不详</van-radio>
-        </van-radio-group>
-      </view>
-
-      <view class="field-row">
-        <text class="field-label">心脏病</text>
-        <van-radio-group value="{{form.jiazu_xinzang}}" direction="horizontal" bind:change="onRadioChange" data-field="jiazu_xinzang">
-          <van-radio name="有" checked-color="#ee0a24" icon-size="28rpx">有</van-radio>
-          <van-radio name="无" checked-color="#07c160" icon-size="28rpx">无</van-radio>
-          <van-radio name="不详" checked-color="#969799" icon-size="28rpx">不详</van-radio>
-        </van-radio-group>
-      </view>
-
-      <van-field label="其他病史" value="{{form.jiazu_qita}}" type="textarea" placeholder="请输入其他家族病史" autosize left-icon="notes-o" data-field="jiazu_qita" bind:change="onFieldChange" />
-    </view>
-
-    <view class="card">
-      <view class="card-header">
-        <view class="card-dot" style="background-color: #1989fa;"></view>
-        <text class="card-title">应急信息</text>
-      </view>
-
-      <van-field label="紧急联系人" value="{{form.jinji_lianxiren}}" placeholder="请输入姓名" left-icon="contact-o" clearable data-field="jinji_lianxiren" bind:change="onFieldChange" />
-      <van-field label="联系电话" value="{{form.jinji_dianhua}}" type="number" placeholder="请输入手机号" left-icon="phone-o" clearable data-field="jinji_dianhua" bind:change="onFieldChange" />
-
-      <view class="field-row">
-        <text class="field-label">医保类型</text>
-        <van-radio-group value="{{form.jinji_yibao}}" direction="horizontal" bind:change="onRadioChange" data-field="jinji_yibao">
-          <van-radio name="职工医保" checked-color="#1989fa" icon-size="28rpx">职工</van-radio>
-          <van-radio name="居民医保" checked-color="#1989fa" icon-size="28rpx">居民</van-radio>
-          <van-radio name="商业保险" checked-color="#1989fa" icon-size="28rpx">商业</van-radio>
-          <van-radio name="自费" checked-color="#1989fa" icon-size="28rpx">自费</van-radio>
-        </van-radio-group>
-      </view>
-
-      <view class="field-row">
-        <text class="field-label">植入器械</text>
-        <van-radio-group value="{{form.jinjicheng_duixiang}}" direction="horizontal" bind:change="onRadioChange" data-field="jinjicheng_duixiang">
-          <van-radio name="无" checked-color="#07c160" icon-size="28rpx">无</van-radio>
-          <van-radio name="心脏起搏器" checked-color="#ee0a24" icon-size="28rpx">起搏器</van-radio>
-          <van-radio name="支架" checked-color="#ee0a24" icon-size="28rpx">支架</van-radio>
-          <van-radio name="其他" checked-color="#ff976a" icon-size="28rpx">其他</van-radio>
-        </van-radio-group>
-      </view>
-    </view>
-
+    <!-- 用药信息 -->
     <view class="card">
       <view class="card-header">
         <view class="card-dot" style="background-color: #ff976a;"></view>
@@ -223,9 +156,7 @@
     </view>
   </block>
 
-  <van-popup show="{{pickerVisible}}" position="bottom" round bind:close="onPickerCancel">
-    <van-picker columns="{{bloodTypeColumns}}" default-index="{{pickerValue}}" show-toolbar title="选择血型" bind:confirm="onPickerConfirm" bind:cancel="onPickerCancel" />
-  </van-popup>
-
   <view class="bottom-safe"></view>
+
+
 </view>

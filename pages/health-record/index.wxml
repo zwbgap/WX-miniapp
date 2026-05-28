@@ -4,9 +4,8 @@
       <van-cell
         wx:for="{{recordList}}"
         wx:key="_id"
-        title="{{item.title || item.name || '健康档案'}}"
-        value="{{item.createTime}}"
-        label="{{item.description || item.remark || ''}}"
+        title="{{item.title || '健康档案'}}"
+        value="{{item.recordDate}}"
         is-link
         data-id="{{item._id}}"
         bind:tap="onViewDetail"
@@ -28,7 +27,7 @@
     <text class="text-sm text-secondary">没有更多了</text>
   </view>
 
-  <view class="add-btn">
+  <view class="add-btn" wx:if="{{!isDoctorView}}">
     <van-button type="primary" icon="plus" round block bind:tap="onAdd">
       添加健康档案
     </van-button>

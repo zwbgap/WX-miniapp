@@ -1,0 +1,74 @@
+<view class="manage-container">
+  <view class="page-header">
+    <view class="header-title">医生管理</view>
+    <view class="header-desc">管理医生账号，医生可添加其他医生</view>
+  </view>
+
+  <view class="add-section">
+    <van-cell-group inset>
+      <van-field
+        value="{{form.account}}"
+        placeholder="请输入医生账号"
+        left-icon="user-o"
+        clearable
+        bind:change="onAccountInput"
+      />
+      <van-field
+        value="{{form.password}}"
+        type="{{passwordVisible ? 'text' : 'password'}}"
+        placeholder="请输入密码"
+        left-icon="lock"
+        right-icon="{{passwordVisible ? 'eye-o' : 'closed-eye'}}"
+        bind:change="onPasswordInput"
+        bind:click-right-icon="onTogglePasswordVisible"
+      />
+      <van-field
+        value="{{form.nickName}}"
+        placeholder="请输入医生姓名"
+        left-icon="idcard"
+        clearable
+        bind:change="onNickNameInput"
+      />
+    </van-cell-group>
+
+    <van-button
+      type="primary"
+      size="large"
+      round
+      block
+      loading="{{loading}}"
+      loading-text="添加中..."
+      bind:tap="onAddDoctor"
+    >
+      添加医生
+    </van-button>
+  </view>
+
+  <view class="doctor-list">
+    <view class="list-header">
+      <text class="list-title">医生列表</text>
+      <text class="list-count">共 {{doctors.length}} 人</text>
+    </view>
+
+    <van-cell-group inset wx:if="{{doctors.length > 0}}">
+      <van-cell
+        wx:for="{{doctors}}"
+        wx:key="_id"
+        title="{{item.nickName || item.account}}"
+        value="账号: {{item.account}}"
+        right-icon="arrow-right"
+        bind:tap="onDoctorDetail"
+        data-id="{{item._id}}"
+      >
+        <template slot="icon">
+          <view class="doctor-avatar">👨‍⚕️</view>
+        </template>
+      </van-cell>
+    </van-cell-group>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">👨‍⚕️</text>
+      <text class="empty-text">暂无医生</text>
+    </view>
+  </view>
+</view>

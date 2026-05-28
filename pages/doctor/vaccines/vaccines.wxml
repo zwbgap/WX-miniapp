@@ -1,0 +1,39 @@
+<view class="records-container">
+  <view class="search-bar">
+    <van-search
+      value="{{keyword}}"
+      placeholder="搜索疫苗名称"
+      show-action
+      bind:search="onSearch"
+      bind:change="onKeywordChange"
+    />
+  </view>
+
+  <view class="records-list">
+    <van-cell-group inset wx:if="{{records.length > 0}}">
+      <van-cell
+        wx:for="{{records}}"
+        wx:key="_id"
+        title="{{item.yimiaomingcheng || '未填写'}}"
+        value="{{item.tixingshijian || '-'}}"
+        right-icon="arrow-right"
+        bind:tap="onRecordDetail"
+        data-id="{{item._id}}"
+      >
+        <template slot="icon">
+          <view class="record-avatar">💉</view>
+        </template>
+        <template slot="right-icon">
+          <van-tag wx:if="{{item.zhuangtai}}" class="status-tag" color="{{item.zhuangtai === '已接种' ? '#07c160' : item.zhuangtai === '待接种' ? '#ff976a' : '#969799'}}">
+            {{item.zhuangtai}}
+          </van-tag>
+        </template>
+      </van-cell>
+    </van-cell-group>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">💉</text>
+      <text class="empty-text">暂无疫苗记录</text>
+    </view>
+  </view>
+</view>

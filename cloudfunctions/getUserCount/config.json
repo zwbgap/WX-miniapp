@@ -1,0 +1,6 @@
+{
+  "name": "getUserCount",
+  "description": "统计用户数量",
+  "timeout": 3,
+  "envVariables": {}
+}

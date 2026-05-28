@@ -1,0 +1,6 @@
+{
+  "name": "unbindDoctorUsers",
+  "description": "解除医生用户绑定",
+  "timeout": 10,
+  "envVariables": {}
+}

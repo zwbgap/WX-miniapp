@@ -1,0 +1,6 @@
+{
+  "name": "clearAllData",
+  "description": "清除数据库所有数据",
+  "timeout": 60,
+  "envVariables": {}
+}

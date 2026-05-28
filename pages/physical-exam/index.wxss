@@ -1,6 +1,136 @@
-.add-btn {
-  position: fixed;
-  bottom: 64rpx;
-  left: 32rpx;
-  right: 32rpx;
+.container {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+
+.page-header {
+  padding: 32rpx 0 16rpx;
+}
+
+.header-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  padding: 0 32rpx;
+}
+
+.header-desc {
+  font-size: 26rpx;
+  color: #969799;
+  margin-top: 8rpx;
+}
+
+.report-list {
+  padding: 0 24rpx;
+}
+
+.report-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.card-icon-wrap {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.card-emoji {
+  font-size: 28rpx;
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.card-doctor {
+  font-size: 24rpx;
+  color: #07c160;
+}
+
+.card-body {
+  padding: 16rpx 0;
+}
+
+.card-content {
+  font-size: 26rpx;
+  color: #646566;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.card-date {
+  font-size: 22rpx;
+  color: #c8c9cc;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #646566;
+  font-weight: 500;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #969799;
+  margin-top: 8rpx;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.mt-32 {
+  margin-top: 32rpx;
 }

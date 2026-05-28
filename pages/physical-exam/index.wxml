@@ -1,34 +1,35 @@
 <view class="container">
-  <view class="page-section" wx:if="{{reportList.length > 0}}">
-    <van-cell-group>
-      <van-cell
-        wx:for="{{reportList}}"
-        wx:key="id"
-        title="{{item.examName || item.title || '体检报告'}}"
-        value="{{item.examDate || item.createTime}}"
-        label="体检机构：{{item.hospital || item.institution || '--'}}"
-        is-link
-        data-id="{{item._id}}"
-        bind:tap="onViewDetail"
-      >
-        <van-tag
-          slot="right-icon"
-          type="{{item.status === '正常' ? 'success' : 'warning'}}"
-          size="medium"
-        >
-          {{item.status || '待查看'}}
-        </van-tag>
-      </van-cell>
-    </van-cell-group>
+  <view class="page-header">
+    <view class="header-title">体检报告</view>
+    <view class="header-desc mx-32">由您的绑定医生发送</view>
   </view>
 
-  <van-empty wx:elif="{{!loading}}" description="暂无体检报告" />
+  <view class="report-list" wx:if="{{reportList.length > 0}}">
+    <view class="report-card" wx:for="{{reportList}}" wx:key="_id" bind:tap="onViewDetail" data-id="{{item._id}}">
+      <view class="card-header">
+        <view class="card-icon-wrap" style="background-color: rgba(7, 193, 96, 0.1);">
+          <text class="card-emoji">📋</text>
+        </view>
+        <view class="card-info">
+          <text class="card-title">{{item.title || '体检报告'}}</text>
+          <text class="card-doctor">{{item.doctorDepartment ? item.doctorDepartment + ' · ' : ''}}{{item.doctorName || '医生'}}</text>
+        </view>
+        <van-icon name="arrow" size="32rpx" color="#c8c9cc" />
+      </view>
+      <view class="card-body">
+        <text class="card-content">{{item.content}}</text>
+      </view>
+      <view class="card-footer">
+        <text class="card-date">报告日期：{{item.reportDate || '--'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:elif="{{!loading}}">
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">暂无体检报告</text>
+    <text class="empty-hint">医生为您发送的体检报告将显示在这里</text>
+  </view>
 
   <van-loading wx:if="{{loading}}" custom-class="flex-center mt-32" />
-
-  <view class="add-btn">
-    <van-button type="primary" icon="plus" round block bind:tap="onAdd">
-      添加体检报告
-    </van-button>
-  </view>
 </view>

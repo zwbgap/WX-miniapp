@@ -1,0 +1,9 @@
+{
+  "name": "getUnboundUsers",
+  "version": "1.0.0",
+  "description": "获取未绑定用户列表",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

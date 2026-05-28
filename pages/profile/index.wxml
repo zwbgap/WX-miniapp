@@ -70,7 +70,6 @@
   <view class="menu-section">
     <view class="menu-title">其他服务</view>
     <van-cell-group>
-      <van-cell title="设置" icon="setting-o" is-link bind:tap="onNavSettings" />
       <van-cell title="意见反馈" icon="chat-o" is-link bind:tap="onNavFeedback" />
       <van-cell title="关于我们" icon="info-o" is-link bind:tap="onNavAbout" />
       <van-cell title="清除缓存" icon="delete-o" is-link bind:tap="onClearCache" />

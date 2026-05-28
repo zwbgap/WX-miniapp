@@ -1,0 +1,9 @@
+{
+  "name": "getInviteCount",
+  "version": "1.0.0",
+  "description": "统计邀请码数量",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

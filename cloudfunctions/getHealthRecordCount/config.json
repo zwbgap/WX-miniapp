@@ -1,0 +1,6 @@
+{
+  "name": "getHealthRecordCount",
+  "description": "统计健康档案数量",
+  "timeout": 3,
+  "envVariables": {}
+}

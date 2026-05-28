@@ -1,0 +1,34 @@
+<view class="detail-container">
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:elif="{{report}}">
+    <view class="detail-header">
+      <view class="back-btn" bind:tap="onBack">← 返回</view>
+      <text class="detail-title">{{report.title || '体检报告'}}</text>
+    </view>
+
+    <view class="info-card">
+      <view class="info-row">
+        <text class="info-label">报告日期</text>
+        <text class="info-value">{{report.reportDate || '--'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">发送医生</text>
+        <text class="info-value">{{report.doctorDepartment ? report.doctorDepartment + ' · ' : ''}}{{report.doctorTitle || ''}} {{report.doctorName || '--'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">接收用户</text>
+        <text class="info-value">{{report.userName || '--'}}（{{report.userAccount || '--'}}）</text>
+      </view>
+    </view>
+
+    <view class="content-card">
+      <view class="content-title">报告内容</view>
+      <view class="content-body">
+        <text>{{report.content}}</text>
+      </view>
+    </view>
+  </block>
+
+  <van-empty wx:else description="报告不存在或已删除" />
+</view>

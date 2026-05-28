@@ -6,6 +6,7 @@
     "van-button": "@vant/weapp/button/index",
     "van-popup": "@vant/weapp/popup/index",
     "van-picker": "@vant/weapp/picker/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
     "van-slider": "@vant/weapp/slider/index",
     "van-stepper": "@vant/weapp/stepper/index",
     "van-icon": "@vant/weapp/icon/index",

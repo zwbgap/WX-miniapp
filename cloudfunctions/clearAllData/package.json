@@ -1,0 +1,9 @@
+{
+  "name": "clearAllData",
+  "version": "1.0.0",
+  "description": "清除数据库所有数据",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

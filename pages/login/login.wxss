@@ -31,64 +31,65 @@
   color: #969799;
 }
 
-/* 登录方式Tab */
-.login-tabs {
+/* 身份选择器 */
+.identity-selector {
+  padding: 16rpx 0;
+  margin-bottom: 8rpx;
+}
+
+.selector-title {
+  font-size: 24rpx;
+  color: #969799;
+  text-align: center;
+  margin-bottom: 16rpx;
+}
+
+.identity-options {
   display: flex;
   flex-direction: row;
-  margin-bottom: 48rpx;
-  border-bottom: 2rpx solid #f0f0f0;
+  justify-content: center;
+  gap: 32rpx;
 }
 
-.login-tab {
-  flex: 1;
-  text-align: center;
-  padding: 24rpx 0;
-  font-size: 30rpx;
-  color: #969799;
-  position: relative;
-  transition: color 0.3s;
-}
-
-.login-tab.tab-active {
-  color: #07c160;
-  font-weight: 600;
-}
-
-.login-tab.tab-active::after {
-  content: '';
-  position: absolute;
-  bottom: -2rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60rpx;
-  height: 6rpx;
-  background-color: #07c160;
-  border-radius: 3rpx;
-}
-
-/* 微信登录面板 */
-.wechat-login-panel {
+.identity-option {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 40rpx;
+  padding: 16rpx 24rpx;
+  border-radius: 12rpx;
+  background-color: #f5f5f5;
+  transition: all 0.3s;
+  min-width: 120rpx;
 }
 
-.wechat-icon-wrap {
-  width: 160rpx;
-  height: 160rpx;
+.identity-option.active {
+  background-color: #07c160;
+}
+
+.identity-icon {
+  width: 64rpx;
+  height: 64rpx;
   border-radius: 50%;
-  background-color: #f0faf3;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 32rpx;
+  font-size: 36rpx;
+  margin-bottom: 8rpx;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
-.wechat-login-desc {
-  font-size: 28rpx;
-  color: #969799;
-  margin-bottom: 48rpx;
+.identity-option.active .identity-icon {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.identity-label {
+  font-size: 24rpx;
+  color: #646566;
+}
+
+.identity-option.active .identity-label {
+  color: #ffffff;
+  font-weight: 600;
 }
 
 /* 账号登录面板 */
@@ -108,26 +109,17 @@
   color: #1989fa;
 }
 
-.register-link {
+.login-footer {
   text-align: center;
   padding: 40rpx 0 20rpx;
 }
 
-.link-text {
+.register-link {
   color: #07c160;
   margin-left: 8rpx;
 }
 
-/* 协议区域 */
-.agreement-section {
-  position: fixed;
-  bottom: calc(80rpx + constant(safe-area-inset-bottom));
-  bottom: calc(80rpx + env(safe-area-inset-bottom));
-  left: 48rpx;
-  right: 48rpx;
-}
-
-.agreement-text {
+.doctor-tip {
+  font-size: 24rpx;
   color: #969799;
-  line-height: 1.6;
 }

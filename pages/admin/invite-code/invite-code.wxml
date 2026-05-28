@@ -1,0 +1,76 @@
+<view class="invite-container">
+  <view class="page-header">
+    <view class="header-title">生成邀请码</view>
+    <view class="header-desc">为医生注册生成邀请码</view>
+  </view>
+
+  <view class="form-section">
+    <van-cell-group inset>
+      <van-field
+        value="{{account}}"
+        placeholder="指定医生账号（可选，不填则不限制）"
+        left-icon="user-o"
+        clearable
+        bind:change="onAccountInput"
+      />
+      <van-field
+        value="{{count}}"
+        placeholder="生成数量（1-10）"
+        type="number"
+        left-icon="orders-o"
+        clearable
+        bind:change="onCountInput"
+      />
+    </van-cell-group>
+
+    <view class="tip-section">
+      <view class="tip-title">说明</view>
+      <view class="tip-text">• 不指定账号时，任何医生账号均可使用此邀请码</view>
+      <view class="tip-text">• 指定账号后，仅该账号可以使用</view>
+      <view class="tip-text">• 邀请码使用后不可重复使用</view>
+    </view>
+
+    <van-button
+      type="primary"
+      size="large"
+      round
+      block
+      loading="{{loading}}"
+      loading-text="生成中..."
+      bind:tap="onGenerate"
+    >
+      生成邀请码
+    </van-button>
+  </view>
+
+  <view class="codes-section" wx:if="{{codes.length > 0}}">
+    <view class="section-title">生成的邀请码</view>
+    <view class="codes-list">
+      <view class="code-item" wx:for="{{codes}}" wx:key="index">
+        <view class="code-value">{{item.code}}</view>
+        <view class="code-info">
+          <text wx:if="{{item.account}}">指定账号: {{item.account}}</text>
+          <text wx:else>不限制账号</text>
+        </view>
+        <view class="copy-btn" bind:tap="onCopy" data-code="{{item.code}}">复制</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="history-section">
+    <view class="section-title">历史邀请码</view>
+    <van-cell-group inset wx:if="{{history.length > 0}}">
+      <van-cell
+        wx:for="{{history}}"
+        wx:key="_id"
+        title="{{item.code}}"
+        label="{{item.account || '不限制账号'}}"
+        value="{{item.used ? '已使用' : '未使用'}}"
+        value-class="{{item.used ? 'used-status' : 'unused-status'}}"
+      />
+    </van-cell-group>
+    <view class="empty-state" wx:else>
+      <text>暂无历史邀请码</text>
+    </view>
+  </view>
+</view>

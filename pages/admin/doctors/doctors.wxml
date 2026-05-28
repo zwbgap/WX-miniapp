@@ -1,0 +1,39 @@
+<view class="doctors-container">
+  <view class="search-bar">
+    <van-search
+      value="{{keyword}}"
+      placeholder="搜索医生账号或姓名"
+      show-action
+      bind:search="onSearch"
+      bind:change="onKeywordChange"
+    />
+  </view>
+
+  <view class="doctors-list">
+    <van-cell-group inset wx:if="{{doctors.length > 0}}">
+      <van-swipe-cell wx:for="{{doctors}}" wx:key="_id" right-width="{{ 120 }}">
+        <van-cell
+          title="{{item.nickName || item.account}}"
+          label="账号: {{item.account}}"
+          bind:tap="onDoctorDetail"
+          data-id="{{item._id}}"
+        >
+          <template slot="icon">
+            <view class="doctor-avatar">
+              <image wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill" />
+              <text wx:else>👨‍⚕️</text>
+            </view>
+          </template>
+        </van-cell>
+        <view slot="right" class="swipe-action">
+          <view class="delete-btn" bind:tap="onDeleteDoctor" data-id="{{item._id}}">删除</view>
+        </view>
+      </van-swipe-cell>
+    </van-cell-group>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">👨‍⚕️</text>
+      <text class="empty-text">暂无医生</text>
+    </view>
+  </view>
+</view>

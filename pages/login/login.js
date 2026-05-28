@@ -2,9 +2,11 @@ Page({
   data: {
     account: '',
     password: '',
+    inviteCode: '',
     rememberPassword: false,
     passwordVisible: false,
-    accountLoading: false
+    accountLoading: false,
+    identity: 'user'
   },
 
   onLoad() {
@@ -13,7 +15,8 @@ Page({
       this.setData({
         account: remembered.account || '',
         password: remembered.password || '',
-        rememberPassword: true
+        rememberPassword: true,
+        identity: remembered.identity || 'user'
       });
     }
   },
@@ -27,8 +30,8 @@ Page({
     }
   },
 
-  rememberAccount(account, password) {
-    wx.setStorageSync('rememberedAccount', JSON.stringify({ account, password }));
+  rememberAccount(account, password, identity) {
+    wx.setStorageSync('rememberedAccount', JSON.stringify({ account, password, identity }));
   },
 
   clearRememberedAccount() {
@@ -43,6 +46,10 @@ Page({
     this.setData({ password: e.detail });
   },
 
+  onInviteCodeInput(e) {
+    this.setData({ inviteCode: e.detail });
+  },
+
   onTogglePasswordVisible() {
     this.setData({ passwordVisible: !this.data.passwordVisible });
   },
@@ -51,9 +58,15 @@ Page({
     this.setData({ rememberPassword: !this.data.rememberPassword });
   },
 
+  onSelectIdentity(e) {
+    const identity = e.currentTarget.dataset.identity;
+    this.setData({ identity });
+  },
+
   async onAccountLogin() {
     var account = this.data.account.trim();
     var password = this.data.password;
+    var identity = this.data.identity;
 
     if (!account) {
       wx.showToast({ title: '请输入账号', icon: 'none' });
@@ -71,14 +84,17 @@ Page({
         name: 'accountLogin',
         data: {
           account: account,
-          password: password
+          password: password,
+          identity: identity,
+          inviteCode: identity === 'doctor' ? this.data.inviteCode : ''
         }
       });
 
       if (result.result.code === 0) {
         const userInfo = result.result.data;
+        userInfo.identity = identity;
 
-        if (!userInfo.avatarUrl) {
+        if (!userInfo.avatarUrl && identity !== 'admin') {
           const seed = userInfo.account || userInfo._id || Math.random().toString(36);
           const avatarStyles = ['avataaars', 'bottts', 'croodles', 'micah', 'miniavs', 'personas', 'pixel-art', 'shapes', 'thumbs'];
           const style = avatarStyles[Math.floor(Math.random() * avatarStyles.length)];
@@ -98,7 +114,7 @@ Page({
         }
 
         if (this.data.rememberPassword) {
-          this.rememberAccount(account, password);
+          this.rememberAccount(account, password, identity);
         } else {
           this.clearRememberedAccount();
         }
@@ -106,10 +122,17 @@ Page({
         wx.setStorageSync('userInfo', userInfo);
         getApp().globalData.userInfo = userInfo;
         getApp().globalData.isLoggedIn = true;
+        getApp().globalData.identity = identity;
 
         wx.showToast({ title: '登录成功', icon: 'success' });
         setTimeout(() => {
-          wx.switchTab({ url: '/pages/index/index' });
+          if (identity === 'doctor') {
+            wx.redirectTo({ url: '/pages/doctor/index/index' });
+          } else if (identity === 'admin') {
+            wx.redirectTo({ url: '/pages/admin/index/index' });
+          } else {
+            wx.switchTab({ url: '/pages/index/index' });
+          }
         }, 800);
       } else {
         wx.showToast({ title: result.result.message, icon: 'none' });
@@ -124,9 +147,5 @@ Page({
 
   onGoRegister() {
     wx.navigateTo({ url: '/pages/register/register' });
-  },
-
-  onForgetPassword() {
-    wx.showToast({ title: '请联系客服重置密码', icon: 'none' });
   }
 });

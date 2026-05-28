@@ -11,9 +11,14 @@ Page({
     this.loadReports();
   },
 
+  onShow() {
+    this.setData({ page: 1, hasMore: true, reportList: [] });
+    this.loadReports();
+  },
+
   onPullDownRefresh() {
     this.setData({ page: 1, hasMore: true, reportList: [] });
-    this.loadReports().then(() => wx.stopPullDownRefresh());
+    this.loadReports().then(function() { wx.stopPullDownRefresh(); });
   },
 
   onReachBottom() {
@@ -26,39 +31,42 @@ Page({
     if (this.data.loading) return;
     this.setData({ loading: true });
     try {
-      const userInfo = wx.getStorageSync('userInfo');
+      var userInfo = wx.getStorageSync('userInfo');
       if (!userInfo || !userInfo._id) {
         this.setData({ loading: false });
         return;
       }
 
-      const db = wx.cloud.database();
-      const result = await db.collection('physical_exams')
+      var db = wx.cloud.database();
+      var pageSize = this.data.pageSize;
+      var skip = (this.data.page - 1) * pageSize;
+
+      var countResult = await db.collection('physical_exam')
         .where({ userId: userInfo._id })
-        .orderBy('examDate', 'desc')
-        .limit(this.data.pageSize)
+        .count();
+
+      var result = await db.collection('physical_exam')
+        .where({ userId: userInfo._id })
+        .orderBy('createdAt', 'desc')
+        .skip(skip)
+        .limit(pageSize)
         .get();
 
-      const list = result.data || [];
+      var list = result.data || [];
       this.setData({
-        reportList: this.data.page === 1 ? list : [...this.data.reportList, ...list],
-        hasMore: list.length >= this.data.pageSize,
+        reportList: this.data.page === 1 ? list : this.data.reportList.concat(list),
+        hasMore: list.length >= pageSize,
         page: this.data.page + 1,
         loading: false
       });
     } catch (err) {
       this.setData({ loading: false });
       console.error('加载体检报告失败:', err);
-      wx.showToast({ title: '功能开发中', icon: 'none' });
     }
   },
 
   onViewDetail(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/physical-exam/detail?id=${id}` });
-  },
-
-  onAdd() {
-    wx.navigateTo({ url: '/pages/physical-exam/edit' });
+    var id = e.currentTarget.dataset.id;
+    wx.navigateTo({ url: '/pages/physical-exam/detail?id=' + id });
   }
 });

@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
     
     const result = await db.collection('health_records')
       .where({ userId })
-      .orderBy('recordDate', 'desc')
+      .orderBy('createdAt', 'desc')
       .skip(skip)
       .limit(limit)
       .get();

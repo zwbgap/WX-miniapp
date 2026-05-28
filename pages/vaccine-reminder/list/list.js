@@ -7,6 +7,8 @@ Page({
     pendingCount: 0,
     doneCount: 0,
     overdueCount: 0,
+    viewUserId: '',
+    isDoctorView: false,
 
     statusTabs: [
       { title: '全部', value: '' },
@@ -15,8 +17,11 @@ Page({
     ]
   },
 
-  onLoad: function() {
+  onLoad: function(options) {
     console.log('[list] onLoad');
+    if (options.userId) {
+      this.setData({ viewUserId: options.userId, isDoctorView: true });
+    }
   },
 
   onShow: function() {
@@ -45,17 +50,23 @@ Page({
     this.setData({ loading: true });
 
     try {
-      var userInfo = wx.getStorageSync('userInfo');
-      if (!userInfo || !userInfo._id) {
-        console.log('[list] 未登录，停止加载');
-        this.setData({ loading: false });
-        return;
+      var userId;
+      if (this.data.viewUserId) {
+        userId = this.data.viewUserId;
+      } else {
+        var userInfo = wx.getStorageSync('userInfo');
+        if (!userInfo || !userInfo._id) {
+          console.log('[list] 未登录，停止加载');
+          this.setData({ loading: false });
+          return;
+        }
+        userId = userInfo._id;
       }
 
-      console.log('[list] 调用云函数 getVaccines, userId=', userInfo._id);
+      console.log('[list] 调用云函数 getVaccines, userId=', userId);
       var result = await wx.cloud.callFunction({
         name: 'getVaccines',
-        data: { userId: userInfo._id }
+        data: { userId: userId }
       });
 
       console.log('[list] 云函数返回:', JSON.stringify(result.result));

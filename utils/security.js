@@ -174,6 +174,63 @@ function validateInput(input, type) {
   return pattern.test(input || '');
 }
 
+function getUserIdentity() {
+  const app = getApp();
+  const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
+  if (!userInfo) return null;
+  return userInfo.identity || userInfo.role || null;
+}
+
+function checkDoctorIdentity() {
+  const identity = getUserIdentity();
+  return identity === 'doctor';
+}
+
+function checkAdminIdentity() {
+  const identity = getUserIdentity();
+  return identity === 'admin';
+}
+
+function checkUserIdentity() {
+  const identity = getUserIdentity();
+  return !identity || identity === 'user';
+}
+
+function redirectToLogin() {
+  wx.redirectTo({ url: '/pages/login/login' });
+}
+
+function ensureDoctor() {
+  if (!checkDoctorIdentity()) {
+    redirectToLogin();
+    return false;
+  }
+  return true;
+}
+
+function ensureAdmin() {
+  if (!checkAdminIdentity()) {
+    redirectToLogin();
+    return false;
+  }
+  return true;
+}
+
+function ensureUser() {
+  if (!checkUserIdentity()) {
+    const identity = getUserIdentity();
+    if (identity === 'doctor') {
+      wx.redirectTo({ url: '/pages/doctor/index/index' });
+    } else if (identity === 'admin') {
+      wx.redirectTo({ url: '/pages/admin/index/index' });
+    } else {
+      redirectToLogin();
+    }
+    return false;
+  }
+  return true;
+}
+
 module.exports = {
   maskPhone: maskPhone,
   maskIdCard: maskIdCard,
@@ -185,5 +242,13 @@ module.exports = {
   secureRead: secureRead,
   checkPermission: checkPermission,
   sanitizeHtml: sanitizeHtml,
-  validateInput: validateInput
+  validateInput: validateInput,
+  getUserIdentity: getUserIdentity,
+  checkDoctorIdentity: checkDoctorIdentity,
+  checkAdminIdentity: checkAdminIdentity,
+  checkUserIdentity: checkUserIdentity,
+  redirectToLogin: redirectToLogin,
+  ensureDoctor: ensureDoctor,
+  ensureAdmin: ensureAdmin,
+  ensureUser: ensureUser
 };

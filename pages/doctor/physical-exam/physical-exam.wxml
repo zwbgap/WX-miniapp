@@ -1,0 +1,133 @@
+<view class="exam-container">
+  <view class="page-header">
+    <view class="header-title">体检报告管理</view>
+    <view class="header-desc">为绑定用户发送体检报告</view>
+  </view>
+
+  <van-tabs active="{{currentTab}}" color="#07c160" bind:change="onTabChange">
+    <van-tab title="发送报告"></van-tab>
+    <van-tab title="已发记录"></van-tab>
+  </van-tabs>
+
+  <view wx:if="{{currentTab === 0}}">
+    <view class="section">
+      <view class="section-title">选择用户</view>
+
+      <view class="empty-state" wx:if="{{users.length === 0}}">
+        <text class="empty-icon">👤</text>
+        <text class="empty-text">暂无绑定用户</text>
+        <text class="empty-hint">用户绑定医生后会自动出现</text>
+      </view>
+
+      <view class="user-grid" wx:else>
+        <view
+          class="user-card {{selectedUserId === item._id ? 'selected' : ''}}"
+          wx:for="{{users}}"
+          wx:key="_id"
+          bind:tap="onSelectUser"
+          data-id="{{item._id}}"
+        >
+          <image 
+            class="user-avatar" 
+            src="{{item.avatarUrl || '/images/default-avatar.png'}}" 
+            mode="aspectFill"
+          />
+          <view class="user-info">
+            <text class="user-name">{{item.profile.xingming || item.nickName || item.account}}</text>
+            <text class="user-account">账号：{{item.account}}</text>
+          </view>
+          <view class="select-indicator {{selectedUserId === item._id ? 'checked' : ''}}">
+            <van-icon wx:if="{{selectedUserId === item._id}}" name="success" size="32rpx" color="#ffffff" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section" wx:if="{{selectedUserId}}">
+      <view class="section-title">报告信息</view>
+
+      <view class="form-card">
+        <van-field
+          label="报告标题"
+          value="{{form.title}}"
+          placeholder="请输入报告标题"
+          left-icon="file-text-o"
+          clearable
+          bind:change="onTitleInput"
+        />
+        <van-field
+          label="报告日期"
+          value="{{form.reportDate}}"
+          placeholder="请选择报告日期"
+          left-icon="calendar-o"
+          is-link
+          bind:tap="onOpenDatePicker"
+        />
+      </view>
+
+      <view class="content-section">
+        <view class="content-header">
+          <text class="content-label">报告内容</text>
+          <text class="content-counter">{{contentLength}}/{{contentMax}}</text>
+        </view>
+        <textarea
+          class="content-textarea"
+          value="{{form.content}}"
+          placeholder="请输入体检报告详细内容，最多1000字"
+          maxlength="{{contentMax}}"
+          bindinput="onContentInput"
+        />
+      </view>
+
+      <view class="action-row">
+        <van-button
+          type="primary"
+          size="large"
+          round
+          block
+          loading="{{loading}}"
+          loading-text="发送中..."
+          bind:tap="onSubmit"
+        >
+          发送报告
+        </van-button>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{currentTab === 1}}">
+    <view class="reports-list" wx:if="{{reports.length > 0}}">
+      <view class="report-card" wx:for="{{reports}}" wx:key="_id" bind:tap="onViewReport" data-id="{{item._id}}">
+        <view class="report-card-head">
+          <view class="report-icon">📋</view>
+          <view class="report-info">
+            <text class="report-title">{{item.title || '体检报告'}}</text>
+            <text class="report-user">发送至：{{item.userName || '--'}}（{{item.userAccount || '--'}}）</text>
+          </view>
+        </view>
+        <view class="report-card-body">
+          <text>{{item.content}}</text>
+        </view>
+        <view class="report-card-foot">
+          <text>报告日期：{{item.reportDate || '--'}}</text>
+          <van-tag type="success" size="medium">已发送</van-tag>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">📋</text>
+      <text class="empty-text">暂无发送记录</text>
+      <text class="empty-hint">发送的报告会记录在这里</text>
+    </view>
+  </view>
+
+  <van-popup show="{{showDatePicker}}" position="bottom" round custom-style="height: 400rpx;" transition-duration="300">
+    <van-datetime-picker
+      type="date"
+      value="{{currentDate}}"
+      bind:confirm="onDateConfirm"
+      bind:cancel="onDateCancel"
+    />
+  </van-popup>
+</view>

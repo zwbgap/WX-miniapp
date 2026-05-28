@@ -1,0 +1,6 @@
+{
+  "name": "getDoctorCount",
+  "description": "统计医生数量",
+  "timeout": 10,
+  "envVariables": {}
+}

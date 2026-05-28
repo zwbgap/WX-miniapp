@@ -1,0 +1,53 @@
+<view class="admin-container">
+  <view class="custom-nav">
+    <view class="nav-title">管理员后台</view>
+  </view>
+  
+  <view class="admin-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="admin-info">
+        <view class="admin-avatar">👑</view>
+        <view class="admin-badge">管理员</view>
+        <view class="admin-name">{{adminInfo.nickName || '管理员'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="menu-section">
+    <view class="menu-title">管理功能</view>
+    <view class="menu-item" bind:tap="onNavInviteCode">
+      <view class="menu-item-icon icon-blue">🎫</view>
+      <view class="menu-item-text">生成医生邀请码</view>
+      <view class="menu-item-arrow"></view>
+    </view>
+    <view class="menu-item" bind:tap="onNavDoctors">
+      <view class="menu-item-icon icon-green">👩⚕️</view>
+      <view class="menu-item-text">医生管理</view>
+      <view class="menu-item-arrow"></view>
+    </view>
+    <view class="menu-item" bind:tap="onNavUsers">
+      <view class="menu-item-icon icon-orange">👥</view>
+      <view class="menu-item-text">用户管理</view>
+      <view class="menu-item-arrow"></view>
+    </view>
+    <view class="menu-item" bind:tap="onNavBindings">
+      <view class="menu-item-icon icon-purple">🔗</view>
+      <view class="menu-item-text">医生-用户绑定</view>
+      <view class="menu-item-arrow"></view>
+    </view>
+  </view>
+
+  <view class="danger-section">
+    <view class="menu-title">危险操作</view>
+    <view class="menu-item" bind:tap="onClearAllData">
+      <view class="menu-item-icon icon-red">⚠️</view>
+      <view class="menu-item-text">一键清除所有数据</view>
+      <view class="menu-item-arrow"></view>
+    </view>
+  </view>
+
+  <view class="logout-section">
+    <button class="logout-btn" bind:tap="onLogout">退出登录</button>
+  </view>
+</view>

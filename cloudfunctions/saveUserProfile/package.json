@@ -1,0 +1,9 @@
+{
+  "name": "saveUserProfile",
+  "version": "1.0.0",
+  "description": "保存用户档案（包含医生绑定）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

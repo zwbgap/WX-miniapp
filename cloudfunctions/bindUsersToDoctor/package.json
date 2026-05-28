@@ -1,0 +1,9 @@
+{
+  "name": "bindUsersToDoctor",
+  "version": "1.0.0",
+  "description": "绑定用户到医生",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

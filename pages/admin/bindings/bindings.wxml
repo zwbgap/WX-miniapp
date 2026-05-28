@@ -1,0 +1,96 @@
+<view class="bindings-container">
+  <view class="page-header">
+    <view class="header-title">医生-用户绑定</view>
+    <view class="header-desc">管理医生与用户的绑定关系</view>
+  </view>
+
+  <view class="bindings-list">
+    <van-cell-group inset wx:if="{{bindings.length > 0}}">
+      <van-swipe-cell wx:for="{{bindings}}" wx:key="_id" right-width="{{ 120 }}">
+        <van-cell
+          title="{{item.doctorName}}"
+          label="绑定 {{item.userCount}} 个用户"
+          bind:tap="onViewBinding"
+          data-doctor-id="{{item.doctorId}}"
+        >
+          <template slot="icon">
+            <view class="doctor-avatar">
+              <image wx:if="{{item.doctorAvatar}}" src="{{item.doctorAvatar}}" mode="aspectFill" />
+              <text wx:else>👨‍⚕️</text>
+            </view>
+          </template>
+        </van-cell>
+        <view slot="right" class="swipe-action">
+          <view class="unbind-btn" bind:tap="onUnbind" data-doctor-id="{{item.doctorId}}">解除绑定</view>
+        </view>
+      </van-swipe-cell>
+    </van-cell-group>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">🔗</text>
+      <text class="empty-text">暂无绑定关系</text>
+    </view>
+  </view>
+
+  <view class="add-section">
+    <van-button type="primary" size="large" round block bind:tap="onAddBinding">
+      添加绑定
+    </van-button>
+  </view>
+
+  <!-- 添加绑定弹窗 -->
+  <van-popup show="{{ showPopup }}" position="bottom" round custom-style="height: 70vh;">
+    <view class="popup-content">
+      <view class="popup-header">
+        <view class="popup-title">添加绑定</view>
+        <view class="popup-close" bind:tap="onClosePopup">关闭</view>
+      </view>
+
+      <view class="select-section">
+        <view class="select-label">选择医生</view>
+        <van-radio-group value="{{ selectedDoctorId }}" bind:change="onDoctorChange">
+          <van-cell-group>
+            <van-cell
+              wx:for="{{doctors}}"
+              wx:key="_id"
+              title="{{item.nickName || item.account}}"
+              clickable
+              data-id="{{item._id}}"
+              bind:click="onSelectDoctor"
+            >
+              <template slot="right-icon">
+                <van-radio name="{{item._id}}" />
+              </template>
+            </van-cell>
+          </van-cell-group>
+        </van-radio-group>
+      </view>
+
+      <view class="select-section">
+        <view class="select-label">选择用户</view>
+        <van-checkbox-group value="{{ selectedUserIds }}" bind:change="onUserChange">
+          <van-cell-group>
+            <van-cell
+              wx:for="{{users}}"
+              wx:key="_id"
+              title="{{item.nickName || item.account}}"
+              clickable
+              data-id="{{item._id}}"
+              bind:click="onSelectUser"
+            >
+              <template slot="right-icon">
+                <van-checkbox name="{{item._id}}" />
+              </template>
+            </van-cell>
+          </van-cell-group>
+        </van-checkbox-group>
+      </view>
+
+      <view class="popup-action">
+        <van-button type="primary" size="large" round block bind:tap="onConfirmBinding">
+          确认绑定
+        </van-button>
+      </view>
+    </view>
+  </van-popup>
+</view>

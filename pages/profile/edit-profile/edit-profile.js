@@ -23,7 +23,13 @@ Page({
     bloodTypeColumns: ['A型', 'B型', 'AB型', 'O型'],
     pickerVisible: false,
     pickerType: '',
-    pickerValue: 0
+    pickerValue: 0,
+
+    doctorPickerVisible: false,
+    doctors: [],
+    selectedDoctorId: null,
+    selectedDoctor: null,
+    selectedDoctorName: '未绑定'
   },
 
   onLoad() {
@@ -45,30 +51,39 @@ Page({
       });
 
       const db = wx.cloud.database();
-      const result = await db.collection('health_records')
+
+      // 从 user_profiles 加载已保存数据
+      const profileResult = await db.collection('user_profiles')
         .where({ userId: userInfo._id })
         .limit(1)
         .get();
 
-      if (result.data && result.data.length > 0) {
-        const record = result.data[0];
+      if (profileResult.data && profileResult.data.length > 0) {
+        const p = profileResult.data[0];
         this.setData({
           form: {
             ...this.data.form,
-            xingming: record.xingming || '',
-            nianling: record.nianling ? String(record.nianling) : '',
-            xuexing: record.xuexing || '',
-            shengao: record.shengao ? String(record.shengao) : '',
-            jiazu_gaoxueya: record.jiazu_gaoxueya || '无',
-            jiazu_tangniaobing: record.jiazu_tangniaobing || '无',
-            jiazu_xinzang: record.jiazu_xinzang || '无',
-            jiazu_qita: record.jiazu_qita || '',
-            jinji_lianxiren: record.jinji_lianxiren || '',
-            jinji_dianhua: record.jinji_dianhua || '',
-            jinji_yibao: record.jinji_yibao || '职工医保',
-            jinjicheng_duixiang: record.jinjicheng_duixiang || '无'
+            xingming: p.xingming || '',
+            nianling: p.nianling ? String(p.nianling) : '',
+            xuexing: p.xuexing || '',
+            shengao: p.shengao ? String(p.shengao) : '',
+            jiazu_gaoxueya: p.jiazu_gaoxueya || '无',
+            jiazu_tangniaobing: p.jiazu_tangniaobing || '无',
+            jiazu_xinzang: p.jiazu_xinzang || '无',
+            jiazu_qita: p.jiazu_qita || '',
+            jinji_lianxiren: p.jinji_lianxiren || '',
+            jinji_dianhua: p.jinji_dianhua || '',
+            jinji_yibao: p.jinji_yibao || '职工医保',
+            jinjicheng_duixiang: p.jinjicheng_duixiang || '无'
           }
         });
+        if (p.doctorId && p.doctorInfo) {
+          this.setData({
+            selectedDoctorId: p.doctorId,
+            selectedDoctor: p.doctorInfo,
+            selectedDoctorName: p.doctorInfo.nickName || '未知医生'
+          });
+        }
       }
 
       this.setData({ loading: false });
@@ -76,6 +91,19 @@ Page({
       console.error('加载用户数据失败:', err);
       this.setData({ loading: false });
       wx.showToast({ title: '加载失败', icon: 'none' });
+    }
+  },
+
+  async loadDoctors() {
+    try {
+      const result = await wx.cloud.callFunction({
+        name: 'getDoctors'
+      });
+      if (result.result.code === 0) {
+        this.setData({ doctors: result.result.data });
+      }
+    } catch (err) {
+      console.error('加载医生列表失败:', err);
     }
   },
 
@@ -115,6 +143,52 @@ Page({
 
   onPickerCancel() {
     this.setData({ pickerVisible: false });
+  },
+
+  onOpenDoctorPicker() {
+    this.loadDoctors();
+    this.setData({ doctorPickerVisible: true });
+  },
+
+  onDoctorPickerCancel() {
+    this.setData({ doctorPickerVisible: false });
+  },
+
+  onSelectDoctor(e) {
+    const doctorId = e.currentTarget.dataset.id;
+    
+    if (this.data.selectedDoctorId === doctorId) {
+      this.setData({ selectedDoctorId: null });
+    } else {
+      this.setData({ selectedDoctorId: doctorId });
+    }
+  },
+
+  onDoctorPickerConfirm() {
+    if (!this.data.selectedDoctorId) {
+      wx.showToast({ title: '请选择医生', icon: 'none' });
+      return;
+    }
+    
+    const doctor = this.data.doctors.find(d => d._id === this.data.selectedDoctorId);
+    
+    if (doctor) {
+      this.setData({
+        selectedDoctor: {
+          _id: doctor._id,
+          account: doctor.account,
+          nickName: doctor.nickName,
+          employeeId: doctor.employeeId,
+          phone: doctor.phone,
+          department: doctor.department,
+          title: doctor.title
+        },
+        selectedDoctorName: doctor.nickName || doctor.account,
+        doctorPickerVisible: false
+      });
+      
+      wx.showToast({ title: '绑定成功', icon: 'success' });
+    }
   },
 
   validateForm() {
@@ -197,10 +271,23 @@ Page({
         await db.collection('health_records').add({ data: recordData });
       }
 
-      wx.showToast({ title: '保存成功', icon: 'success' });
-      setTimeout(() => {
-        wx.navigateBack();
-      }, 1000);
+      const profileResult = await wx.cloud.callFunction({
+        name: 'saveUserProfile',
+        data: {
+          userId: userInfo._id,
+          profile: recordData,
+          doctorId: this.data.selectedDoctorId
+        }
+      });
+
+      if (profileResult.result.code === 0) {
+        wx.showToast({ title: '保存成功', icon: 'success' });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1000);
+      } else {
+        wx.showToast({ title: profileResult.result.message, icon: 'none' });
+      }
     } catch (err) {
       console.error('保存失败:', err);
       wx.showToast({ title: '保存失败: ' + err.message, icon: 'none' });

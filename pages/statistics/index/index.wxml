@@ -2,6 +2,11 @@
   <van-loading wx:if="{{loading}}" custom-class="page-loading" />
 
   <block wx:else>
+    <view class="page-header">
+      <view class="header-title">健康数据统计</view>
+      <view class="header-desc">基于最新健康档案</view>
+    </view>
+
     <view class="score-hero">
       <view class="score-hero-bg"></view>
       <view class="score-hero-content">
@@ -13,34 +18,131 @@
         </view>
         <view class="score-info">
           <view class="score-title">综合健康评分</view>
-          <view class="score-desc">持续改善中，请继续保持</view>
+          <view class="score-level {{healthScore >= 75 ? 'level-good' : 'level-warning'}}">
+            {{healthScore >= 90 ? '优秀' : (healthScore >= 75 ? '良好' : (healthScore >= 60 ? '一般' : '需改善'))}}
+          </view>
         </view>
       </view>
       <view class="score-stats">
         <view class="score-stat-item">
-          <text class="score-stat-value">{{overviewStats.avgSleep}}</text>
-          <text class="score-stat-label">均睡眠</text>
-        </view>
-        <view class="score-stat-item">
-          <text class="score-stat-value">{{overviewStats.avgWeight}}</text>
-          <text class="score-stat-label">均体重</text>
-        </view>
-        <view class="score-stat-item">
-          <text class="score-stat-value">{{overviewStats.medicationRate}}</text>
-          <text class="score-stat-label">依从性</text>
-        </view>
-        <view class="score-stat-item">
           <text class="score-stat-value">{{overviewStats.recordCount}}</text>
-          <text class="score-stat-label">记录</text>
+          <text class="score-stat-label">份档案</text>
+        </view>
+        <view class="score-stat-item">
+          <text class="score-stat-value">{{overviewStats.avgSleep}}</text>
+          <text class="score-stat-label">日均睡眠</text>
         </view>
       </view>
     </view>
 
-    <view class="card">
+    <view class="card" wx:if="{{latestRecord}}">
       <view class="card-header">
         <view class="card-dot" style="background-color:#1989fa;"></view>
-        <text class="card-title">睡眠趋势（近7天）</text>
-        <text class="card-more" bind:tap="onNavSleep">详情</text>
+        <text class="card-title">身体指标</text>
+        <text class="card-more" bind:tap="onNavHealthRecord">详情</text>
+      </view>
+      <view class="body-metrics">
+        <view class="metric-item">
+          <view class="metric-icon-wrap" style="background-color: rgba(25, 137, 250, 0.1);">
+            <van-icon name="ascending" size="36rpx" color="#1989fa" />
+          </view>
+          <view class="metric-info">
+            <text class="metric-value">{{latestRecord.shengao || '--'}}</text>
+            <text class="metric-unit">cm</text>
+          </view>
+          <text class="metric-label">身高</text>
+        </view>
+        <view class="metric-divider"></view>
+        <view class="metric-item">
+          <view class="metric-icon-wrap" style="background-color: rgba(7, 193, 96, 0.1);">
+            <van-icon name="balance-o" size="36rpx" color="#07c160" />
+          </view>
+          <view class="metric-info">
+            <text class="metric-value">{{latestRecord.tizhong || '--'}}</text>
+            <text class="metric-unit">kg</text>
+          </view>
+          <text class="metric-label">体重</text>
+        </view>
+        <view class="metric-divider"></view>
+        <view class="metric-item">
+          <view class="metric-icon-wrap" style="background-color: rgba(255, 151, 106, 0.1);">
+            <van-icon name="chart-trending-o" size="36rpx" color="#ff976a" />
+          </view>
+          <view class="metric-info">
+            <text class="metric-value" style="color: {{bmiColor}};">{{bmi || '--'}}</text>
+            <text class="metric-unit">BMI</text>
+          </view>
+          <text class="metric-label {{bmiLevel ? 'level-' + bmiLevelClass : ''}}">{{bmiLevel || '未知'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{latestRecord}}">
+      <view class="card-header">
+        <view class="card-dot" style="background-color:#07c160;"></view>
+        <text class="card-title">生活习惯</text>
+      </view>
+      <view class="lifestyle-grid">
+        <view class="lifestyle-item">
+          <view class="lifestyle-icon-wrap" style="background-color: rgba(150, 151, 153, 0.1);">
+            <van-icon name="fire-o" size="32rpx" color="#969799" />
+          </view>
+          <text class="lifestyle-label">吸烟</text>
+          <text class="lifestyle-value {{lifestyleData.xiyan === '无' ? 'value-good' : 'value-warning'}}">{{lifestyleData.xiyan}}</text>
+        </view>
+        <view class="lifestyle-item">
+          <view class="lifestyle-icon-wrap" style="background-color: rgba(150, 151, 153, 0.1);">
+            <van-icon name="coupon-o" size="32rpx" color="#969799" />
+          </view>
+          <text class="lifestyle-label">饮酒</text>
+          <text class="lifestyle-value {{lifestyleData.yinjiul === '无' ? 'value-good' : 'value-warning'}}">{{lifestyleData.yinjiul}}</text>
+        </view>
+        <view class="lifestyle-item">
+          <view class="lifestyle-icon-wrap" style="background-color: rgba(150, 151, 153, 0.1);">
+            <van-icon name="aim" size="32rpx" color="#969799" />
+          </view>
+          <text class="lifestyle-label">运动</text>
+          <text class="lifestyle-value {{lifestyleData.yundong !== '从不' ? 'value-good' : 'value-warning'}}">{{lifestyleData.yundong}}</text>
+        </view>
+        <view class="lifestyle-item">
+          <view class="lifestyle-icon-wrap" style="background-color: rgba(150, 151, 153, 0.1);">
+            <van-icon name="rest" size="32rpx" color="#969799" />
+          </view>
+          <text class="lifestyle-label">饮食</text>
+          <text class="lifestyle-value {{lifestyleData.yinshi === '规律' ? 'value-good' : 'value-warning'}}">{{lifestyleData.yinshi}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{healthAlerts.length > 0}}">
+      <view class="card-header">
+        <view class="card-dot" style="background-color:#ee0a24;"></view>
+        <text class="card-title">健康提醒</text>
+      </view>
+      <view class="alerts-list">
+        <view class="alert-item" wx:for="{{healthAlerts}}" wx:key="index">
+          <van-icon name="{{item.icon}}" size="32rpx" color="{{item.type === 'danger' ? '#ee0a24' : (item.type === 'warning' ? '#ff976a' : '#1989fa')}}" />
+          <text class="alert-text">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{hasSleepData}}">
+      <view class="card-header">
+        <view class="card-dot" style="background-color:#1989fa;"></view>
+        <text class="card-title">睡眠时长趋势（近7天）</text>
+      </view>
+      <view class="sleep-overview">
+        <view class="sleep-avg">
+          <text class="sleep-avg-label">日平均睡眠</text>
+          <text class="sleep-avg-value">{{sleepAvgDuration >= 1 ? sleepAvgDuration.toFixed(1) : ''}}</text>
+          <text class="sleep-avg-unit">小时</text>
+        </view>
+        <view class="sleep-avg">
+          <text class="sleep-avg-label">记录天数</text>
+          <text class="sleep-avg-value">{{sleepTotalDays}}</text>
+          <text class="sleep-avg-unit">天</text>
+        </view>
       </view>
       <view class="chart-wrap">
         <view class="chart-y-axis">
@@ -51,12 +153,12 @@
         <view class="chart-content">
           <view class="chart-bars-row">
             <view
-              class="chart-bar-sleep"
+              class="chart-bar"
               wx:for="{{sleepTrend}}"
               wx:key="date"
               style="height: {{item.hours / sleepMaxHours * 160}}rpx;"
             >
-              <view class="bar-value">{{item.hours}}h</view>
+              <view class="bar-value">{{item.hours > 0 ? item.hours + 'h' : ''}}</view>
             </view>
           </view>
           <view class="chart-x-labels">
@@ -64,114 +166,61 @@
           </view>
         </view>
       </view>
-    </view>
-
-    <view class="card">
-      <view class="card-header">
-        <view class="card-dot" style="background-color:#07c160;"></view>
-        <text class="card-title">体重变化（近10次）</text>
-        <text class="card-more" bind:tap="onNavWeight">详情</text>
-      </view>
-      <view class="chart-wrap" wx:if="{{weightTrend.length > 0}}">
-        <view class="chart-y-axis">
-          <text>{{weightMaxKg}}kg</text>
-          <text>{{weightMaxKg / 2}}kg</text>
-          <text>0kg</text>
-        </view>
-        <view class="chart-content">
-          <view class="chart-line-row">
-            <view
-              class="chart-dot-wrap"
-              wx:for="{{weightTrend}}"
-              wx:key="date"
-              style="left: {{index / (weightTrend.length - 1) * 80}}%;"
-            >
-              <view class="chart-dot"></view>
-              <view class="chart-dot-value">{{item.weight}}kg</view>
-            </view>
-            <view class="chart-line" style="width: 80%;"></view>
-          </view>
-          <view class="chart-x-labels">
-            <text wx:for="{{weightTrend}}" wx:key="date">{{item.date}}</text>
-          </view>
-        </view>
-      </view>
-      <view class="chart-empty" wx:else>
-        <text>暂无体重数据</text>
+      <view class="sleep-tips">
+        <text class="text-xs text-secondary">建议每日睡眠 7-8 小时，保持规律作息有益健康</text>
       </view>
     </view>
 
-    <view class="card-row">
-      <view class="card card-half">
-        <view class="card-header mini-header">
-          <view class="card-dot" style="background-color:#07c160;"></view>
-          <text class="card-title">健康雷达</text>
-        </view>
-        <view class="radar-wrap">
-          <view class="radar-item">
-            <view class="radar-label">睡眠</view>
-            <view class="radar-bar-wrap">
-              <view class="radar-bar" style="width: {{radarData.sleep}}%; background: #1989fa;"></view>
-            </view>
-            <view class="radar-value">{{radarData.sleep}}%</view>
-          </view>
-          <view class="radar-item">
-            <view class="radar-label">运动</view>
-            <view class="radar-bar-wrap">
-              <view class="radar-bar" style="width: {{radarData.exercise}}%; background: #07c160;"></view>
-            </view>
-            <view class="radar-value">{{radarData.exercise}}%</view>
-          </view>
-          <view class="radar-item">
-            <view class="radar-label">营养</view>
-            <view class="radar-bar-wrap">
-              <view class="radar-bar" style="width: {{radarData.nutrition}}%; background: #ff976a;"></view>
-            </view>
-            <view class="radar-value">{{radarData.nutrition}}%</view>
-          </view>
-          <view class="radar-item">
-            <view class="radar-label">用药</view>
-            <view class="radar-bar-wrap">
-              <view class="radar-bar" style="width: {{radarData.medication}}%; background: #ee0a24;"></view>
-            </view>
-            <view class="radar-value">{{radarData.medication}}%</view>
-          </view>
-          <view class="radar-item">
-            <view class="radar-label">心情</view>
-            <view class="radar-bar-wrap">
-              <view class="radar-bar" style="width: {{radarData.mood}}%; background: #969799;"></view>
-            </view>
-            <view class="radar-value">{{radarData.mood}}%</view>
-          </view>
-        </view>
+    <view class="card empty-card" wx:if="{{!latestRecord}}">
+      <view class="empty-state">
+        <van-icon name="file-text-o" size="80rpx" color="#c8c9cc" />
+        <text class="empty-text">暂无健康档案</text>
+        <text class="empty-hint">请先创建健康档案以便查看统计数据</text>
+        <van-button type="primary" size="small" round bind:tap="onNavHealthRecord" class="mt-16">
+          立即创建
+        </van-button>
       </view>
+    </view>
 
+    <view class="card-row" wx:if="{{latestRecord}}">
       <view class="card card-half">
         <view class="card-header mini-header">
           <view class="card-dot" style="background-color:#ff976a;"></view>
-          <text class="card-title">用药依从</text>
+          <text class="card-title">用药信息</text>
         </view>
-        <view class="pie-wrap">
-          <view class="pie-chart">
-            <view
-              class="pie-ring"
-              style="background: conic-gradient(#07c160 {{adherenceData.taken / (adherenceData.total || 1) * 360}}deg, #f0f0f0 0deg);"
-            >
-              <view class="pie-inner">
-                <text class="pie-value">{{adherenceData.taken}}</text>
-                <text class="pie-label">已服用</text>
-              </view>
-            </view>
+        <view class="medication-info">
+          <view class="med-item">
+            <text class="med-label">用药类型</text>
+            <text class="med-value">{{latestRecord.yongyao_leixing || '无'}}</text>
           </view>
-          <view class="pie-legend">
-            <view class="legend-item">
-              <view class="legend-dot" style="background-color: #07c160;"></view>
-              <text>已服用 {{adherenceData.taken}} 次</text>
-            </view>
-            <view class="legend-item">
-              <view class="legend-dot" style="background-color: #f0f0f0;"></view>
-              <text>漏服 {{adherenceData.missed}} 次</text>
-            </view>
+          <view class="med-item">
+            <text class="med-label">药物名称</text>
+            <text class="med-value">{{latestRecord.yongyao_mingcheng || '无'}}</text>
+          </view>
+          <view class="med-item">
+            <text class="med-label">药物过敏</text>
+            <text class="med-value {{latestRecord.yongyao_guomin && latestRecord.yongyao_guomin !== '无' ? 'text-danger' : ''}}">{{latestRecord.yongyao_guomin || '无'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="card card-half">
+        <view class="card-header mini-header">
+          <view class="card-dot" style="background-color:#1989fa;"></view>
+          <text class="card-title">健康史</text>
+        </view>
+        <view class="medication-info">
+          <view class="med-item">
+            <text class="med-label">过敏史</text>
+            <text class="med-value {{latestRecord.guominshi && latestRecord.guominshi !== '无' ? 'text-warning' : ''}}">{{latestRecord.guominshi || '无'}}</text>
+          </view>
+          <view class="med-item">
+            <text class="med-label">疾病史</text>
+            <text class="med-value">{{latestRecord.jibingshi || '无'}}</text>
+          </view>
+          <view class="med-item">
+            <text class="med-label">健康状况</text>
+            <text class="med-value">{{latestRecord.jiankangzhuangkuang || '无'}}</text>
           </view>
         </view>
       </view>

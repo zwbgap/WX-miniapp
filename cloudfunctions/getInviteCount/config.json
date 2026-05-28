@@ -1,0 +1,6 @@
+{
+  "name": "getInviteCount",
+  "description": "统计邀请码数量",
+  "timeout": 10,
+  "envVariables": {}
+}

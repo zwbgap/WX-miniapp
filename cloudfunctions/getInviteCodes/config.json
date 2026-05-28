@@ -1,0 +1,6 @@
+{
+  "name": "getInviteCodes",
+  "description": "获取邀请码列表",
+  "timeout": 10,
+  "envVariables": {}
+}

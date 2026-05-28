@@ -1,0 +1,61 @@
+<view class="doctor-container">
+  <view class="doctor-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="user-info">
+        <image class="avatar" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+        <view class="user-detail">
+          <view class="user-name">{{userInfo.nickName || userInfo.account}}</view>
+          <view class="user-role">医生</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="content-area">
+    <view class="stats-card">
+      <view class="stats-item" bind:tap="onNavUsers">
+        <view class="stats-icon users-icon">👥</view>
+        <view class="stats-info">
+          <view class="stats-value">{{stats.userCount}}</view>
+          <view class="stats-label">绑定用户</view>
+        </view>
+      </view>
+      <view class="stats-item" bind:tap="onNavPhysicalExam">
+        <view class="stats-icon exam-icon">📝</view>
+        <view class="stats-info">
+          <view class="stats-value">{{stats.examCount}}</view>
+          <view class="stats-label">体检报告</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="menu-section">
+      <view class="menu-title">功能菜单</view>
+      <view class="menu-row">
+        <view class="menu-item" bind:tap="onNavUsers">
+          <view class="menu-icon blue-icon">👤</view>
+          <text class="menu-text">用户管理</text>
+          <text class="menu-desc">查看绑定用户</text>
+        </view>
+        <view class="menu-item" bind:tap="onNavPhysicalExam">
+          <view class="menu-icon green-icon">📝</view>
+          <text class="menu-text">体检报告</text>
+          <text class="menu-desc">录入与管理</text>
+        </view>
+      </view>
+      <view class="menu-row">
+        <view class="menu-item" bind:tap="onNavProfile">
+          <view class="menu-icon orange-icon">⚙️</view>
+          <text class="menu-text">编辑信息</text>
+          <text class="menu-desc">完善个人资料</text>
+        </view>
+        <view class="menu-item" bind:tap="onLogout">
+          <view class="menu-icon logout-icon">🚪</view>
+          <text class="menu-text">退出登录</text>
+          <text class="menu-desc">安全退出</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

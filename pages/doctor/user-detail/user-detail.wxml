@@ -1,0 +1,45 @@
+<view class="detail-container">
+  <view class="user-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="back-btn" bind:tap="onBack">← 返回</view>
+      <image 
+        class="avatar" 
+        src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" 
+        mode="aspectFill"
+      />
+      <view class="user-name">{{userInfo.nickName || userInfo.account}}</view>
+      <view class="user-account">账号: {{userInfo.account}}</view>
+    </view>
+  </view>
+
+  <view class="content-area">
+    <view class="section">
+      <view class="section-title">健康数据</view>
+      <view class="menu-row">
+        <view class="menu-item" bind:tap="onNavHealthRecord">
+          <view class="menu-icon green-icon">📊</view>
+          <text class="menu-text">健康档案</text>
+          <text class="menu-desc">查看用户的健康档案</text>
+        </view>
+        <view class="menu-item" bind:tap="onNavSleepRecord">
+          <view class="menu-icon purple-icon">😴</view>
+          <text class="menu-text">睡眠记录</text>
+          <text class="menu-desc">查看用户的睡眠记录</text>
+        </view>
+      </view>
+      <view class="menu-row">
+        <view class="menu-item" bind:tap="onNavVaccine">
+          <view class="menu-icon orange-icon">💉</view>
+          <text class="menu-text">疫苗接种</text>
+          <text class="menu-desc">查看疫苗提醒记录</text>
+        </view>
+        <view class="menu-item" bind:tap="onNavMedication">
+          <view class="menu-icon red-icon">💊</view>
+          <text class="menu-text">用药提醒</text>
+          <text class="menu-desc">查看用药提醒记录</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

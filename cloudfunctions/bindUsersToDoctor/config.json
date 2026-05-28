@@ -1,0 +1,6 @@
+{
+  "name": "bindUsersToDoctor",
+  "description": "绑定用户到医生",
+  "timeout": 10,
+  "envVariables": {}
+}

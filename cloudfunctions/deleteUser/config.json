@@ -1,0 +1,6 @@
+{
+  "name": "deleteUser",
+  "description": "删除用户账号",
+  "timeout": 10,
+  "envVariables": {}
+}

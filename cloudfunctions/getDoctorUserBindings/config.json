@@ -1,0 +1,6 @@
+{
+  "name": "getDoctorUserBindings",
+  "description": "获取医生用户绑定关系",
+  "timeout": 10,
+  "envVariables": {}
+}

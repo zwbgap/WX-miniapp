@@ -1,3 +1,5 @@
+const { ensureUser } = require('../../utils/security');
+
 Page({
   data: {
     userInfo: null,
@@ -34,11 +36,13 @@ Page({
   },
 
   onLoad() {
+    if (!ensureUser()) return;
     this.initUserInfo();
     this.loadAllData();
   },
 
   onShow() {
+    if (!ensureUser()) return;
     var app = getApp();
     if (app.globalData.isLoggedIn !== this.data.isLoggedIn) {
       this.initUserInfo();
@@ -85,25 +89,63 @@ Page({
         throw new Error('用户未登录');
       }
 
-      const result = await wx.cloud.callFunction({
-        name: 'getSleepStatistics',
-        data: { userId: userInfo._id, days: 7 }
-      });
+      const userId = userInfo._id;
 
-      if (result.result.code === 0) {
-        const data = result.result.data;
-        const sleepTrend = data.sleepTrend || [];
-        const maxHours = Math.max(...sleepTrend.map(item => item.hours || 0), 8);
+      const [healthResult, sleepResult] = await Promise.all([
+        wx.cloud.callFunction({
+          name: 'getHealthRecords',
+          data: { userId, page: 1, limit: 1 }
+        }).catch(function() { return null; }),
+        wx.cloud.callFunction({
+          name: 'getSleepStatistics',
+          data: { userId, days: 7 }
+        }).catch(function() { return null; })
+      ]);
 
-        this.setData({
-          healthScore: this.calculateHealthScore(data),
-          sleepTrend: sleepTrend,
-          sleepMaxHours: maxHours,
-          dashboardLoading: false
-        });
-      } else {
-        throw new Error(result.result.message);
+      var healthScore = 75;
+      if (healthResult && healthResult.result && healthResult.result.code === 0) {
+        var records = healthResult.result.data.records || [];
+        if (records.length > 0) {
+          var latest = records[0];
+          var h = parseFloat(latest.shengao);
+          var w = parseFloat(latest.tizhong);
+
+          if (h && w && h > 0 && w > 0) {
+            h = h / 100;
+            var bmi = w / (h * h);
+            if (bmi < 18.5) healthScore += 5;
+            else if (bmi < 24) healthScore += 15;
+            else if (bmi < 28) healthScore += 10;
+            else healthScore += 5;
+          }
+
+          var lifestyleScore = 0;
+          if (latest.xiyan === '无') lifestyleScore += 25;
+          if (latest.yinjiul === '无') lifestyleScore += 25;
+          if (latest.yundong !== '从不') lifestyleScore += 25;
+          if (latest.yinshi === '规律') lifestyleScore += 25;
+          healthScore = Math.round((healthScore * 0.7 + (lifestyleScore / 4) * 0.3));
+        }
       }
+
+      var sleepTrend = [];
+      var sleepMaxHours = 8;
+
+      if (sleepResult && sleepResult.result && sleepResult.result.code === 0) {
+        var data = sleepResult.result.data;
+        sleepTrend = data.sleepTrend || [];
+        if (sleepTrend.length > 0) {
+          var maxH = Math.max.apply(null, sleepTrend.map(function(item) { return item.hours || 0; }));
+          sleepMaxHours = Math.max(Math.ceil(maxH + 2), 8);
+        }
+      }
+
+      this.setData({
+        healthScore: Math.min(healthScore, 100),
+        sleepTrend: sleepTrend,
+        sleepMaxHours: sleepMaxHours,
+        dashboardLoading: false
+      });
     } catch (err) {
       console.error('加载首页数据失败:', err);
       this.setData({
@@ -111,19 +153,6 @@ Page({
         sleepTrend: this.getMockSleepTrend()
       });
     }
-  },
-
-  calculateHealthScore(data) {
-    const avgDuration = data.avgDuration || 0;
-    const totalDays = data.totalDays || 0;
-    
-    let score = 60;
-    if (totalDays >= 5) score += 10;
-    if (avgDuration >= 7) score += 20;
-    else if (avgDuration >= 6) score += 10;
-    if (avgDuration <= 8.5) score += 10;
-    
-    return Math.min(score, 100);
   },
 
   getTodayStr() {

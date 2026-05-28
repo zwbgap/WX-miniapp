@@ -1,6 +1,250 @@
+.container {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
+
+.page-loading {
+  padding-top: 300rpx;
+}
+
+.overview-row {
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  margin: 24rpx;
+  padding: 32rpx 0;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.04);
+}
+
+.overview-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.overview-value {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #1989fa;
+  line-height: 1.1;
+}
+
+.overview-unit {
+  font-size: 20rpx;
+  color: #969799;
+  margin-top: 2rpx;
+}
+
+.overview-label {
+  font-size: 22rpx;
+  color: #969799;
+  margin-top: 8rpx;
+}
+
+.overview-divider {
+  width: 2rpx;
+  height: 80rpx;
+  background-color: #f0f0f0;
+  align-self: center;
+}
+
+.chart-card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  margin: 0 24rpx 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.04);
+}
+
+.chart-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 32rpx;
+}
+
+.chart-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.chart-unit {
+  font-size: 22rpx;
+  color: #c8c9cc;
+}
+
+.chart-area {
+  display: flex;
+  flex-direction: row;
+  height: 360rpx;
+}
+
+.chart-y-axis {
+  width: 52rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 40rpx;
+  flex-shrink: 0;
+}
+
+.y-label {
+  font-size: 20rpx;
+  color: #c8c9cc;
+  text-align: right;
+  line-height: 1;
+}
+
+.chart-bars-area {
+  flex: 1;
+  position: relative;
+}
+
+.chart-grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 40rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.grid-line {
+  width: 100%;
+  height: 1rpx;
+  background-color: #f0f0f0;
+}
+
+.chart-bars-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 40rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar-value-tag {
+  font-size: 20rpx;
+  color: #1989fa;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+  white-space: nowrap;
+}
+
+.chart-bar {
+  width: 48rpx;
+  border-radius: 10rpx 10rpx 0 0;
+  background: linear-gradient(180deg, #69c0ff 0%, #1989fa 100%);
+  min-height: 0;
+  transition: height 0.4s ease;
+}
+
+.bar-date {
+  font-size: 20rpx;
+  color: #c8c9cc;
+  margin-top: 10rpx;
+  text-align: center;
+}
+
+.chart-tip {
+  text-align: center;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #f5f5f5;
+  margin-top: 8rpx;
+}
+
+.chart-tip text {
+  font-size: 22rpx;
+  color: #969799;
+}
+
+.empty-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-text {
+  font-size: 26rpx;
+  color: #969799;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  margin: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+  margin-bottom: 8rpx;
+}
+
+.card-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background-color: #1989fa;
+  margin-right: 12rpx;
+}
+
+.card-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.card-count {
+  font-size: 22rpx;
+  color: #969799;
+}
+
 .add-btn {
   position: fixed;
-  bottom: 64rpx;
+  bottom: calc(32rpx + env(safe-area-inset-bottom));
   left: 32rpx;
   right: 32rpx;
+  z-index: 99;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.mt-32 {
+  margin-top: 32rpx;
 }

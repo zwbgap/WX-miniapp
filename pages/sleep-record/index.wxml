@@ -1,25 +1,96 @@
 <view class="container">
-  <view class="page-section" wx:if="{{recordList.length > 0}}">
-    <van-cell-group>
-      <van-cell
-        wx:for="{{recordList}}"
-        wx:key="_id"
-        title="睡眠记录"
-        value="{{item.jiluriqi}}"
-        label="时长：{{item.durationDisplay || '--'}} | 质量：{{item.shuimianzhiliang || '--'}}分"
-        is-link
-        data-id="{{item._id}}"
-        bind:tap="onViewDetail"
-        bind:longpress="onDelete"
-      />
-    </van-cell-group>
-  </view>
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
 
-  <van-empty wx:elif="{{!loading}}" description="暂无睡眠记录" />
+  <block wx:else>
+    <view class="overview-row">
+      <view class="overview-item">
+        <view class="overview-value">{{avgDuration >= 1 ? avgDuration.toFixed(1) : '--'}}</view>
+        <view class="overview-unit">小时</view>
+        <view class="overview-label">日均睡眠</view>
+      </view>
+      <view class="overview-divider"></view>
+      <view class="overview-item">
+        <view class="overview-value">{{totalDays}}</view>
+        <view class="overview-unit">天</view>
+        <view class="overview-label">记录天数</view>
+      </view>
+      <view class="overview-divider"></view>
+      <view class="overview-item">
+        <view class="overview-value">{{recordList.length}}</view>
+        <view class="overview-unit">条</view>
+        <view class="overview-label">总记录</view>
+      </view>
+    </view>
 
-  <van-loading wx:if="{{loading}}" custom-class="flex-center mt-32" />
+    <view class="chart-card" wx:if="{{sleepTrend.length > 0}}">
+      <view class="chart-header">
+        <view class="chart-title">近7天 睡眠时长</view>
+        <text class="chart-unit">单位：小时</text>
+      </view>
 
-  <view class="add-btn">
+      <view class="chart-area">
+        <view class="chart-y-axis">
+          <text class="y-label">{{sleepMaxHours}}</text>
+          <text class="y-label">{{Math.round(sleepMaxHours * 0.75)}}</text>
+          <text class="y-label">{{Math.round(sleepMaxHours * 0.5)}}</text>
+          <text class="y-label">{{Math.round(sleepMaxHours * 0.25)}}</text>
+          <text class="y-label">0</text>
+        </view>
+
+        <view class="chart-bars-area">
+          <view class="chart-grid-lines">
+            <view class="grid-line"></view>
+            <view class="grid-line"></view>
+            <view class="grid-line"></view>
+            <view class="grid-line"></view>
+            <view class="grid-line"></view>
+          </view>
+
+          <view class="chart-bars-row">
+            <view class="bar-wrapper" wx:for="{{sleepTrend}}" wx:key="date">
+              <view class="bar-value-tag" wx:if="{{item.hours > 0}}">{{item.hours}}h</view>
+              <view
+                class="chart-bar"
+                style="height: {{item.hours / sleepMaxHours * 100}}%;"
+              ></view>
+              <text class="bar-date">{{item.date}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="chart-tip">
+        <text>建议每日睡眠 7-8 小时</text>
+      </view>
+    </view>
+
+    <view class="empty-chart" wx:elif="{{!loading}}">
+      <text class="empty-icon">😴</text>
+      <text class="empty-text">近7天暂无睡眠记录</text>
+    </view>
+
+    <view class="card" wx:if="{{recordList.length > 0}}">
+      <view class="card-header">
+        <view class="card-dot"></view>
+        <text class="card-title">历史记录</text>
+        <text class="card-count">共 {{recordList.length}} 条</text>
+      </view>
+      <van-cell-group>
+        <van-cell
+          wx:for="{{recordList}}"
+          wx:key="_id"
+          title="{{item.jiluriqi || '--'}}"
+          value="{{item.durationDisplay || '--'}}"
+          is-link
+          data-id="{{item._id}}"
+          bind:tap="onViewDetail"
+          bind:longpress="onDelete"
+        />
+      </van-cell-group>
+    </view>
+  </block>
+
+  <view class="add-btn" wx:if="{{!isDoctorView}}">
     <van-button type="primary" icon="plus" round block bind:tap="onAdd">
       添加睡眠记录
     </van-button>

@@ -3,7 +3,8 @@ Page({
     account: '',
     password: '',
     confirmPassword: '',
-    agreementChecked: false,
+    inviteCode: '',
+    identity: 'user',
     passwordVisible: false,
     confirmPasswordVisible: false,
     submitLoading: false
@@ -21,6 +22,10 @@ Page({
     this.setData({ confirmPassword: e.detail });
   },
 
+  onInviteCodeInput(e) {
+    this.setData({ inviteCode: e.detail });
+  },
+
   onTogglePasswordVisible() {
     this.setData({ passwordVisible: !this.data.passwordVisible });
   },
@@ -29,14 +34,16 @@ Page({
     this.setData({ confirmPasswordVisible: !this.data.confirmPasswordVisible });
   },
 
-  onToggleAgreement() {
-    this.setData({ agreementChecked: !this.data.agreementChecked });
+  onSelectIdentity(e) {
+    const identity = e.currentTarget.dataset.identity;
+    this.setData({ identity });
   },
 
   async onSubmit() {
     var account = this.data.account.trim();
     var password = this.data.password;
     var confirmPassword = this.data.confirmPassword;
+    var identity = this.data.identity;
 
     if (!account) {
       wx.showToast({ title: '请输入账号', icon: 'none' });
@@ -58,8 +65,8 @@ Page({
       wx.showToast({ title: '两次密码输入不一致', icon: 'none' });
       return;
     }
-    if (!this.data.agreementChecked) {
-      wx.showToast({ title: '请先同意用户协议', icon: 'none' });
+    if (identity === 'doctor' && !this.data.inviteCode) {
+      wx.showToast({ title: '请输入邀请码', icon: 'none' });
       return;
     }
 
@@ -70,7 +77,9 @@ Page({
         name: 'register',
         data: {
           account: account,
-          password: password
+          password: password,
+          identity: identity,
+          inviteCode: identity === 'doctor' ? this.data.inviteCode : ''
         }
       });
 
@@ -92,23 +101,5 @@ Page({
 
   onGoLogin() {
     wx.navigateBack();
-  },
-
-  onAgreementTap() {
-    wx.showModal({
-      title: '用户协议',
-      content: '感谢您使用个人健康档案管理系统。本协议规定了您使用本服务的条款和条件...',
-      showCancel: false,
-      confirmText: '我知道了'
-    });
-  },
-
-  onPrivacyTap() {
-    wx.showModal({
-      title: '隐私政策',
-      content: '我们重视您的隐私。本隐私政策说明了我们如何收集、使用和保护您的个人信息...',
-      showCancel: false,
-      confirmText: '我知道了'
-    });
   }
 });

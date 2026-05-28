@@ -1,3 +1,5 @@
+const { ensureUser } = require('../../utils/security');
+
 Page({
   data: {
     newsList: [],
@@ -7,10 +9,12 @@ Page({
   },
 
   onLoad: function() {
+    if (!ensureUser()) return;
     this.loadNews();
   },
 
   onShow: function() {
+    ensureUser();
   },
 
   onPullDownRefresh: function() {

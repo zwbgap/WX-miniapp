@@ -1,0 +1,6 @@
+{
+  "name": "addDoctor",
+  "description": "添加医生账号",
+  "timeout": 3,
+  "envVariables": {}
+}

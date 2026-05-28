@@ -9,6 +9,13 @@
   padding-top: 300rpx;
 }
 
+.page-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  padding: 32rpx 32rpx 16rpx;
+}
+
 /* 浮动编辑按钮 */
 .edit-fab {
   position: fixed;
@@ -59,95 +66,95 @@
   color: #1a1a1a;
 }
 
-/* ========== 基本信息网格 ========== */
-.info-grid {
+.card-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background-color: #1989fa;
+  margin-right: 16rpx;
+}
+
+/* ========== 身体指标卡片 ========== */
+.body-index-card {
+  background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+  border: 1rpx solid #e6f0ff;
+}
+
+.index-item {
+  padding: 16rpx 0;
+}
+
+.index-item + .index-item {
+  border-top: 1rpx solid #f0f7ff;
+}
+
+.index-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.info-item {
-  width: 50%;
-  padding: 12rpx 0;
+.index-label {
+  font-size: 28rpx;
+  color: #646566;
 }
 
-.info-label {
-  display: block;
+.index-value-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.index-value {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.index-unit {
   font-size: 24rpx;
   color: #969799;
-  margin-bottom: 8rpx;
+  margin-left: 8rpx;
 }
 
-.info-value {
-  font-size: 30rpx;
-  color: #323233;
-  font-weight: 500;
+/* ========== BMI 预览 ========== */
+.bmi-section {
+  background: linear-gradient(135deg, #e6f9f0 0%, #ffffff 100%);
+  border: 1rpx solid #ccefe0;
+  border-radius: 24rpx;
+  margin: 24rpx;
+  padding: 32rpx;
+  text-align: center;
 }
 
-.info-value.highlight {
+.bmi-title {
+  font-size: 26rpx;
+  color: #969799;
+  margin-bottom: 12rpx;
+}
+
+.bmi-value {
+  font-size: 72rpx;
   font-weight: 700;
-  color: #ee0a24;
-}
-
-.info-value-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 30rpx;
-  font-weight: 500;
-}
-
-/* ========== 身体指标 ========== */
-.metrics-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  padding: 16rpx 0 32rpx;
-}
-
-.metric-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-}
-
-.metric-value {
-  font-size: 52rpx;
-  font-weight: 700;
-  color: #1989fa;
+  color: #07c160;
   line-height: 1.1;
 }
 
-.metric-unit {
+.bmi-level {
+  display: inline-block;
+  padding: 8rpx 24rpx;
+  background: rgba(7, 193, 96, 0.1);
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #07c160;
+  margin-top: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.bmi-tips {
   font-size: 22rpx;
   color: #969799;
-  margin-top: 4rpx;
-}
-
-.metric-label {
-  font-size: 24rpx;
-  color: #646566;
-  margin-top: 8rpx;
-  font-weight: 500;
-}
-
-.metric-divider {
-  width: 2rpx;
-  height: 80rpx;
-  background-color: #f0f0f0;
-}
-
-/* BMI 进度条 */
-.bmi-bar-section {
-  padding: 0 4rpx;
-}
-
-.bmi-range-labels {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 12rpx;
 }
 
 /* ========== 健康史 ========== */
@@ -191,12 +198,40 @@
   background-color: #07c160;
 }
 
+.history-tag.primary {
+  background-color: #1989fa;
+}
+
 .history-content {
   flex: 1;
   font-size: 28rpx;
   color: #323233;
   line-height: 1.6;
   word-break: break-all;
+}
+
+/* ========== 生活方式 ========== */
+.field-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.field-row + .field-row {
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.field-label {
+  font-size: 28rpx;
+  color: #646566;
+}
+
+.field-value {
+  font-size: 28rpx;
+  color: #323233;
+  font-weight: 500;
 }
 
 /* ========== 更新时间 ========== */
@@ -208,4 +243,21 @@
 .bottom-safe {
   height: calc(120rpx + constant(safe-area-inset-bottom));
   height: calc(120rpx + env(safe-area-inset-bottom));
+}
+
+/* ========== 文字颜色 ========== */
+.text-xs {
+  font-size: 22rpx;
+}
+
+.text-sm {
+  font-size: 24rpx;
+}
+
+.text-secondary {
+  color: #969799;
+}
+
+.ml-8 {
+  margin-left: 8rpx;
 }

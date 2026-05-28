@@ -1,0 +1,177 @@
+<view class="users-container">
+  <view class="search-bar">
+    <van-search
+      value="{{keyword}}"
+      placeholder="搜索用户账号或姓名"
+      show-action
+      bind:search="onSearch"
+      bind:change="onKeywordChange"
+    />
+  </view>
+
+  <view class="users-list" wx:if="{{users.length > 0}}">
+    <view class="user-card" wx:for="{{users}}" wx:key="_id" bind:tap="onUserDetail" data-id="{{item._id}}">
+      <view class="card-header">
+        <image 
+          class="card-avatar" 
+          src="{{item.avatarUrl || '/images/default-avatar.png'}}" 
+          mode="aspectFill"
+        />
+        <view class="card-user-info">
+          <view class="card-name">{{item.nickName || item.account}}</view>
+          <view class="card-account">账号：{{item.account}}</view>
+        </view>
+        <van-icon name="arrow" size="32rpx" color="#c8c9cc" />
+      </view>
+
+      <view class="card-health">
+        <view class="health-title">
+          <view class="card-dot"></view>
+          <text>基本信息</text>
+        </view>
+
+        <view class="health-body">
+          <view class="health-item">
+            <view class="health-icon" style="background-color: rgba(25, 137, 250, 0.1);">
+              <van-icon name="ascending" size="28rpx" color="#1989fa" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">身高</text>
+              <text class="health-value">{{item.profile.shengao || '--'}} cm</text>
+            </view>
+          </view>
+          <view class="health-item">
+            <view class="health-icon" style="background-color: rgba(7, 193, 96, 0.1);">
+              <van-icon name="balance-o" size="28rpx" color="#07c160" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">体重</text>
+              <text class="health-value">{{item.profile.tizhong || '--'}} kg</text>
+            </view>
+          </view>
+          <view class="health-item" wx:if="{{item.profile.xingming}}">
+            <view class="health-icon" style="background-color: rgba(150, 151, 153, 0.1);">
+              <van-icon name="contact-o" size="28rpx" color="#646566" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">姓名</text>
+              <text class="health-value">{{item.profile.xingming}}</text>
+            </view>
+          </view>
+          <view class="health-item" wx:if="{{item.profile.nianling}}">
+            <view class="health-icon" style="background-color: rgba(255, 151, 106, 0.1);">
+              <van-icon name="birthday-cake-o" size="28rpx" color="#ff976a" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">年龄</text>
+              <text class="health-value">{{item.profile.nianling}} 岁</text>
+            </view>
+          </view>
+          <view class="health-item" wx:if="{{item.profile.xuexing}}">
+            <view class="health-icon" style="background-color: rgba(238, 10, 36, 0.1);">
+              <van-icon name="info-o" size="28rpx" color="#ee0a24" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">血型</text>
+              <text class="health-value">{{item.profile.xuexing}}</text>
+            </view>
+          </view>
+          <view class="health-item">
+            <view class="health-icon" style="background-color: rgba(150, 151, 153, 0.1);">
+              <van-icon name="fire-o" size="28rpx" color="#969799" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">吸烟</text>
+              <text class="health-value {{item.profile.xiyan !== '无' ? 'warn' : ''}}">{{item.profile.xiyan}}</text>
+            </view>
+          </view>
+          <view class="health-item">
+            <view class="health-icon" style="background-color: rgba(150, 151, 153, 0.1);">
+              <van-icon name="coupon-o" size="28rpx" color="#969799" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">饮酒</text>
+              <text class="health-value {{item.profile.yinjiul !== '无' ? 'warn' : ''}}">{{item.profile.yinjiul}}</text>
+            </view>
+          </view>
+          <view class="health-item">
+            <view class="health-icon" style="background-color: rgba(147, 51, 234, 0.1);">
+              <van-icon name="rest" size="28rpx" color="#9333ea" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">饮食</text>
+              <text class="health-value">{{item.profile.yinshi}}</text>
+            </view>
+          </view>
+          <view class="health-item" wx:if="{{item.profile.jinji_lianxiren}}">
+            <view class="health-icon" style="background-color: rgba(238, 10, 36, 0.1);">
+              <van-icon name="friends-o" size="28rpx" color="#ee0a24" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">紧急联系人</text>
+              <text class="health-value">{{item.profile.jinji_lianxiren}}</text>
+            </view>
+          </view>
+          <view class="health-item" wx:if="{{item.profile.jinji_dianhua}}">
+            <view class="health-icon" style="background-color: rgba(238, 10, 36, 0.1);">
+              <van-icon name="phone-o" size="28rpx" color="#ee0a24" />
+            </view>
+            <view class="health-info">
+              <text class="health-label">联系电话</text>
+              <text class="health-value">{{item.profile.jinji_dianhua}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="health-warn-section" wx:if="{{item.profile.guominshi || item.profile.jibingshi || item.profile.yongyao_leixing || item.profile.yongyao_guomin || item.profile.jiankangzhuangkuang}}">
+          <view class="warn-title">⚠️ 关注项</view>
+          <view class="warn-list">
+            <view class="warn-item" wx:if="{{item.profile.guominshi && item.profile.guominshi !== '无'}}">
+              <text class="warn-label">过敏史</text>
+              <text class="warn-value">{{item.profile.guominshi}}</text>
+            </view>
+            <view class="warn-item" wx:if="{{item.profile.jibingshi && item.profile.jibingshi !== '无'}}">
+              <text class="warn-label">疾病史</text>
+              <text class="warn-value">{{item.profile.jibingshi}}</text>
+            </view>
+            <view class="warn-item" wx:if="{{item.profile.jiankangzhuangkuang}}">
+              <text class="warn-label">健康状况</text>
+              <text class="warn-value">{{item.profile.jiankangzhuangkuang}}</text>
+            </view>
+            <view class="warn-item" wx:if="{{item.profile.yongyao_leixing}}">
+              <text class="warn-label">用药类型</text>
+              <text class="warn-value">{{item.profile.yongyao_leixing}}</text>
+            </view>
+            <view class="warn-item" wx:if="{{item.profile.yongyao_mingcheng}}">
+              <text class="warn-label">药物名称</text>
+              <text class="warn-value">{{item.profile.yongyao_mingcheng}}</text>
+            </view>
+            <view class="warn-item" wx:if="{{item.profile.yongyao_guomin && item.profile.yongyao_guomin !== '无'}}">
+              <text class="warn-label">药物过敏</text>
+              <text class="warn-value danger">{{item.profile.yongyao_guomin}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="card-footer">
+        <text class="footer-link">查看全部数据</text>
+        <van-icon name="arrow" size="24rpx" color="#1989fa" />
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">👤</text>
+    <text class="empty-text">暂无绑定用户</text>
+    <text class="empty-hint">用户绑定医生后会自动出现在这里</text>
+  </view>
+
+  <van-pagination
+    wx:if="{{total > pageSize}}"
+    current="{{page}}"
+    total="{{total}}"
+    page-size="{{pageSize}}"
+    bind:change="onPageChange"
+  />
+</view>

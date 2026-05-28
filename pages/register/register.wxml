@@ -4,6 +4,29 @@
     <view class="register-subtitle">注册后可使用全部健康管理功能</view>
   </view>
 
+  <!-- 身份选择 -->
+  <view class="identity-selector">
+    <view class="selector-title">选择身份</view>
+    <view class="identity-options">
+      <view
+        class="identity-option {{identity === 'user' ? 'active' : ''}}"
+        bind:tap="onSelectIdentity"
+        data-identity="user"
+      >
+        <view class="identity-icon user-icon">👤</view>
+        <text class="identity-label">用户</text>
+      </view>
+      <view
+        class="identity-option {{identity === 'doctor' ? 'active' : ''}}"
+        bind:tap="onSelectIdentity"
+        data-identity="doctor"
+      >
+        <view class="identity-icon doctor-icon">👨‍⚕️</view>
+        <text class="identity-label">医生</text>
+      </view>
+    </view>
+  </view>
+
   <van-cell-group>
     <van-field
       value="{{account}}"
@@ -32,6 +55,15 @@
       bind:change="onConfirmPasswordInput"
       bind:click-right-icon="onToggleConfirmPasswordVisible"
     />
+
+    <van-field
+      wx:if="{{identity === 'doctor'}}"
+      value="{{inviteCode}}"
+      placeholder="请输入管理员提供的邀请码"
+      left-icon="coupon-o"
+      clearable
+      bind:change="onInviteCodeInput"
+    />
   </van-cell-group>
 
   <view class="register-btn-area">
@@ -44,7 +76,12 @@
       loading-text="注册中..."
       bind:tap="onSubmit"
     >
-      注册
+      {{identity === 'doctor' ? '医生注册' : '用户注册'}}
     </van-button>
+  </view>
+
+  <view class="register-footer">
+    <text class="text-sm text-secondary">已有账号？</text>
+    <text class="text-sm register-link" bind:tap="onGoLogin">立即登录</text>
   </view>
 </view>

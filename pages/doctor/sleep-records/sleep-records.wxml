@@ -1,0 +1,34 @@
+<view class="records-container">
+  <view class="search-bar">
+    <van-search
+      value="{{keyword}}"
+      placeholder="搜索用户姓名"
+      show-action
+      bind:search="onSearch"
+      bind:change="onKeywordChange"
+    />
+  </view>
+
+  <view class="records-list">
+    <van-cell-group inset wx:if="{{records.length > 0}}">
+      <van-cell
+        wx:for="{{records}}"
+        wx:key="_id"
+        title="{{item.userId}}"
+        value="{{item.date || '-'}}"
+        right-icon="arrow-right"
+        bind:tap="onRecordDetail"
+        data-id="{{item._id}}"
+      >
+        <template slot="icon">
+          <view class="record-avatar">😴</view>
+        </template>
+      </van-cell>
+    </van-cell-group>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">😴</text>
+      <text class="empty-text">暂无睡眠记录</text>
+    </view>
+  </view>
+</view>

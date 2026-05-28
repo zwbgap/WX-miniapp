@@ -4,10 +4,15 @@ Page({
     loading: false,
     page: 1,
     pageSize: 10,
-    hasMore: true
+    hasMore: true,
+    viewUserId: '',
+    isDoctorView: false
   },
 
-  onLoad() {
+  onLoad(options) {
+    if (options.userId) {
+      this.setData({ viewUserId: options.userId, isDoctorView: true });
+    }
     this.loadRecords();
   },
 
@@ -26,15 +31,21 @@ Page({
     if (this.data.loading) return;
     this.setData({ loading: true });
     try {
-      const userInfo = wx.getStorageSync('userInfo');
-      if (!userInfo || !userInfo._id) {
-        throw new Error('用户未登录');
+      var userId;
+      if (this.data.viewUserId) {
+        userId = this.data.viewUserId;
+      } else {
+        const userInfo = wx.getStorageSync('userInfo');
+        if (!userInfo || !userInfo._id) {
+          throw new Error('用户未登录');
+        }
+        userId = userInfo._id;
       }
 
       const result = await wx.cloud.callFunction({
         name: 'getHealthRecords',
         data: {
-          userId: userInfo._id,
+          userId: userId,
           page: this.data.page,
           limit: this.data.pageSize
         }

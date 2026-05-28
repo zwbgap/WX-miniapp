@@ -56,16 +56,55 @@
 
       <van-field
         label="血型"
-        value="{{form.xuexing || ''}}"
+        value="{{form.xuexing}}"
         placeholder="请选择血型"
-        left-icon="medel-o"
-        is-link
-        readonly
-        data-type="xuexing"
-        bind:tap="onOpenPicker"
+        left-icon="birthday-cake-o"
+        type="text"
+        clearable
+        required
+        data-field="xuexing"
+        bind:change="onFieldChange"
       />
 
       <van-field label="身高" value="{{form.shengao}}" type="number" placeholder="请输入身高(cm)" left-icon="ascending" clearable required data-field="shengao" bind:change="onFieldChange" />
+    </view>
+
+    <view class="card">
+      <view class="card-header">
+        <view class="card-dot" style="background-color: #07c160;"></view>
+        <text class="card-title">绑定医生</text>
+      </view>
+
+      <view class="doctor-bind-section">
+        <van-field
+          label="绑定医生"
+          value="{{selectedDoctorName}}"
+          placeholder="请选择医生"
+          left-icon="user-circle-o"
+          is-link
+          readonly
+          bind:tap="onOpenDoctorPicker"
+        />
+        
+        <view wx:if="{{selectedDoctor}}" class="doctor-info">
+          <view class="doctor-info-row">
+            <text class="doctor-info-label">工号</text>
+            <text class="doctor-info-value">{{selectedDoctor.employeeId || '--'}}</text>
+          </view>
+          <view class="doctor-info-row">
+            <text class="doctor-info-label">科室</text>
+            <text class="doctor-info-value">{{selectedDoctor.department || '--'}}</text>
+          </view>
+          <view class="doctor-info-row">
+            <text class="doctor-info-label">职称</text>
+            <text class="doctor-info-value">{{selectedDoctor.title || '--'}}</text>
+          </view>
+          <view class="doctor-info-row">
+            <text class="doctor-info-label">电话</text>
+            <text class="doctor-info-value">{{selectedDoctor.phone || '--'}}</text>
+          </view>
+        </view>
+      </view>
     </view>
 
     <view class="card">
@@ -142,6 +181,52 @@
 
   <van-popup show="{{pickerVisible}}" position="bottom" round bind:close="onPickerCancel">
     <van-picker columns="{{bloodTypeColumns}}" default-index="{{pickerValue}}" show-toolbar title="选择血型" bind:confirm="onPickerConfirm" bind:cancel="onPickerCancel" />
+  </van-popup>
+
+  <van-popup show="{{doctorPickerVisible}}" position="bottom" round custom-style="height: 75%;">
+    <view class="doctor-picker-header">
+      <text class="picker-title">选择医生</text>
+      <van-button type="text" size="small" bind:tap="onDoctorPickerCancel">取消</van-button>
+    </view>
+    <scroll-view scroll-y class="doctor-picker-content">
+      <view wx:if="{{doctors.length === 0}}" class="empty-state">
+        <text class="empty-icon">👨‍⚕️</text>
+        <text class="empty-text">暂无医生</text>
+      </view>
+      <view wx:else>
+        <view 
+          wx:for="{{doctors}}" 
+          wx:key="_id" 
+          class="doctor-picker-item"
+          class="{{selectedDoctorId === item._id ? 'selected' : ''}}"
+          bind:tap="onSelectDoctor"
+          data-id="{{item._id}}"
+        >
+          <view class="doctor-picker-avatar">👨‍⚕️</view>
+          <view class="doctor-picker-info">
+            <view class="doctor-picker-name">{{item.nickName || item.account}}</view>
+            <view class="doctor-picker-detail">
+              <text wx:if="{{item.department}}" class="detail-tag">{{item.department}}</text>
+              <text wx:if="{{item.employeeId}}" class="detail-tag">{{item.employeeId}}</text>
+              <text wx:if="{{item.title}}" class="detail-tag">{{item.title}}</text>
+            </view>
+          </view>
+          <view wx:if="{{selectedDoctorId === item._id}}" class="doctor-picker-check">✓</view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="doctor-picker-footer">
+      <van-button 
+        size="large" 
+        round 
+        block 
+        type="primary" 
+        disabled="{{!selectedDoctorId}}"
+        bind:tap="onDoctorPickerConfirm"
+      >
+        确认绑定
+      </van-button>
+    </view>
   </van-popup>
 
   <view class="bottom-safe"></view>

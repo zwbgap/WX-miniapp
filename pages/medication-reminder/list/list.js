@@ -21,10 +21,15 @@ Page({
       { title: '全部', key: 'all' },
       { title: '进行中', key: 'active' },
       { title: '已完成', key: 'done' }
-    ]
+    ],
+    viewUserId: '',
+    isDoctorView: false
   },
 
-  onLoad() {
+  onLoad(options) {
+    if (options.userId) {
+      this.setData({ viewUserId: options.userId, isDoctorView: true });
+    }
     this.loadReminders();
     this.loadTodayReminders();
   },
@@ -49,15 +54,21 @@ Page({
     if (this.data.loading) return;
     this.setData({ loading: true });
     try {
-      const userInfo = wx.getStorageSync('userInfo');
-      if (!userInfo || !userInfo._id) {
-        this.setData({ loading: false });
-        return;
+      var userId;
+      if (this.data.viewUserId) {
+        userId = this.data.viewUserId;
+      } else {
+        const userInfo = wx.getStorageSync('userInfo');
+        if (!userInfo || !userInfo._id) {
+          this.setData({ loading: false });
+          return;
+        }
+        userId = userInfo._id;
       }
 
       const result = await wx.cloud.callFunction({
         name: 'getMedications',
-        data: { userId: userInfo._id }
+        data: { userId: userId }
       });
 
       if (result.result.code === 0) {
@@ -79,12 +90,18 @@ Page({
 
   async loadTodayReminders() {
     try {
-      const userInfo = wx.getStorageSync('userInfo');
-      if (!userInfo || !userInfo._id) return;
+      var userId;
+      if (this.data.viewUserId) {
+        userId = this.data.viewUserId;
+      } else {
+        const userInfo = wx.getStorageSync('userInfo');
+        if (!userInfo || !userInfo._id) return;
+        userId = userInfo._id;
+      }
 
       const result = await wx.cloud.callFunction({
         name: 'getMedications',
-        data: { userId: userInfo._id }
+        data: { userId: userId }
       });
 
       if (result.result.code === 0) {

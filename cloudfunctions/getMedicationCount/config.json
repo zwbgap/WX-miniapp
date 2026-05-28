@@ -1,0 +1,6 @@
+{
+  "name": "getMedicationCount",
+  "description": "统计用药提醒数量",
+  "timeout": 3,
+  "envVariables": {}
+}
