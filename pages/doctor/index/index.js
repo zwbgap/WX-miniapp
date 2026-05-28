@@ -35,6 +35,8 @@ Page({
     try {
       const userInfo = wx.getStorageSync('userInfo');
       const doctorId = userInfo._id;
+      console.log('loadStats，doctorId:', doctorId);
+      
       const db = wx.cloud.database();
 
       const [userResult, examResult] = await Promise.all([
@@ -47,6 +49,9 @@ Page({
           .count()
           .catch(function() { return { total: 0 }; })
       ]);
+      
+      console.log('userResult:', userResult);
+      console.log('examResult:', examResult);
 
       this.setData({
         stats: {

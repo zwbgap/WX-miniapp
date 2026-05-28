@@ -15,7 +15,7 @@
         <van-cell
           title="{{item.nickName || item.account}}"
           label="账号: {{item.account}}"
-          bind:tap="onUserDetail"
+          catchtap="onUserDetail"
           data-id="{{item._id}}"
         >
           <template slot="icon">

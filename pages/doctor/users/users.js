@@ -16,6 +16,7 @@ Page({
 
   onShow() {
     if (!ensureDoctor()) return;
+    this.loadBoundUsers();
   },
 
   async loadBoundUsers() {

@@ -27,44 +27,54 @@
     </view>
   </view>
 
-  <van-cell-group>
-    <van-field
-      value="{{account}}"
-      placeholder="请输入账号（3-20位）"
-      left-icon="user-o"
-      clearable
-      bind:change="onAccountInput"
-    />
+  <view class="register-form-card">
+    <van-cell-group>
+      <van-field
+        value="{{account}}"
+        placeholder="请输入账号（3-20位）"
+        left-icon="user-o"
+        clearable
+        bind:input="onAccountInput"
+      />
 
-    <van-field
-      value="{{password}}"
-      type="{{passwordVisible ? 'text' : 'password'}}"
-      placeholder="请设置密码（6-20位）"
-      left-icon="lock"
-      right-icon="{{passwordVisible ? 'eye-o' : 'closed-eye'}}"
-      bind:change="onPasswordInput"
-      bind:click-right-icon="onTogglePasswordVisible"
-    />
+      <view class="password-input-wrapper">
+        <van-field
+          value="{{password}}"
+          type="{{passwordVisible ? 'text' : 'password'}}"
+          placeholder="请设置密码（6-20位）"
+          left-icon="lock"
+          bind:input="onPasswordInput"
+        />
+        <view class="custom-eye-icon" bind:tap="onTogglePasswordVisible">
+          <text wx:if="{{passwordVisible}}">👁️</text>
+          <text wx:else>🙈</text>
+        </view>
+      </view>
 
-    <van-field
-      value="{{confirmPassword}}"
-      type="{{confirmPasswordVisible ? 'text' : 'password'}}"
-      placeholder="请再次输入密码"
-      left-icon="lock"
-      right-icon="{{confirmPasswordVisible ? 'eye-o' : 'closed-eye'}}"
-      bind:change="onConfirmPasswordInput"
-      bind:click-right-icon="onToggleConfirmPasswordVisible"
-    />
+      <view class="password-input-wrapper">
+        <van-field
+          value="{{confirmPassword}}"
+          type="{{confirmPasswordVisible ? 'text' : 'password'}}"
+          placeholder="请再次输入密码"
+          left-icon="lock"
+          bind:input="onConfirmPasswordInput"
+        />
+        <view class="custom-eye-icon" bind:tap="onToggleConfirmPasswordVisible">
+          <text wx:if="{{confirmPasswordVisible}}">👁️</text>
+          <text wx:else>🙈</text>
+        </view>
+      </view>
 
-    <van-field
-      wx:if="{{identity === 'doctor'}}"
-      value="{{inviteCode}}"
-      placeholder="请输入管理员提供的邀请码"
-      left-icon="coupon-o"
-      clearable
-      bind:change="onInviteCodeInput"
-    />
-  </van-cell-group>
+      <van-field
+        wx:if="{{identity === 'doctor'}}"
+        value="{{inviteCode}}"
+        placeholder="请输入管理员提供的邀请码"
+        left-icon="coupon-o"
+        clearable
+        bind:input="onInviteCodeInput"
+      />
+    </van-cell-group>
+  </view>
 
   <view class="register-btn-area">
     <van-button

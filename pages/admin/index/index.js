@@ -29,10 +29,6 @@ Page({
     wx.navigateTo({ url: '/pages/admin/users/users' });
   },
 
-  onNavBindings() {
-    wx.navigateTo({ url: '/pages/admin/bindings/bindings' });
-  },
-
   onClearAllData() {
     wx.showModal({
       title: '危险操作',

@@ -13,9 +13,10 @@
 
 ## 项目统计
 
-- **代码行数**: 约 19,500 行
+- **代码行数**: 约 20,000+ 行
 - **主要模块**: 12 个功能模块
-- **云函数**: 15+ 个
+- **云函数**: 50+ 个
+- **用户角色**: 用户、医生、管理员
 
 ## 项目结构
 
@@ -36,41 +37,56 @@
 │   ├── addVaccine/           # 添加疫苗提醒
 │   ├── updateVaccine/        # 更新疫苗提醒
 │   ├── deleteVaccine/        # 删除疫苗提醒
-│   ├── getMedicationReminders/ # 获取用药提醒
-│   ├── addMedicationReminder/ # 添加用药提醒
+│   ├── getMedications/       # 获取用药提醒
+│   ├── addMedication/        # 添加用药提醒
 │   ├── aiConsultation/       # AI健康咨询（DeepSeek）
 │   ├── generateHealthNews/   # 生成健康资讯
 │   ├── newsFavorite/         # 资讯收藏
-│   └── updateUser/           # 更新用户信息
+│   ├── updateUser/           # 更新用户信息
+│   ├── saveUserProfile/      # 保存用户档案（含医生绑定）
+│   ├── getBoundUsers/        # 获取医生绑定的用户
+│   ├── unbindUser/           # 解除医生与用户绑定
+│   ├── getDoctors/           # 获取医生列表
+│   ├── addDoctor/            # 添加医生
+│   ├── getInviteCodes/       # 获取邀请码
+│   ├── generateInviteCodes/  # 生成邀请码
+│   └── ...                  # 其他云函数
 ├── pages/
 │   ├── index/                 # 首页 - 功能导航与健康概览
-│   ├── login/                 # 登录页 - 账号登录
+│   ├── login/                 # 登录页 - 账号登录（含密码显示切换）
+│   ├── register/              # 注册页 - 账号注册（含密码显示切换）
 │   ├── health-record/         # 健康档案 - 档案列表管理
 │   │   ├── index/             # 档案列表
 │   │   ├── detail/            # 档案详情
 │   │   └── edit/              # 编辑档案
 │   ├── vaccine-reminder/      # 疫苗提醒
-│   │   ├── index/             # 疫苗列表
-│   │   ├── add/               # 添加疫苗
-│   │   └── list/              # 提醒列表
 │   ├── sleep-record/          # 睡眠记录
-│   │   └── index/             # 睡眠记录管理
 │   ├── health-news/           # 健康资讯
-│   │   ├── index/             # 资讯首页
-│   │   ├── list/              # 资讯列表
-│   │   ├── detail/            # 资讯详情
-│   │   └── favorites/         # 我的收藏
 │   ├── ai-consult/            # AI健康咨询
 │   ├── medication-reminder/    # 用药提醒
-│   │   ├── index/             # 提醒首页
-│   │   └── setting/           # 设置提醒
-│   ├── statistics/            # 数据统计
 │   ├── physical-exam/         # 体检报告
-│   └── profile/               # 个人中心
-│       ├── index/             # 个人信息
-│       ├── edit-profile/      # 快速编辑
-│       ├── settings/          # 设置
-│       └── about/             # 关于我们
+│   ├── statistics/            # 数据统计
+│   ├── profile/               # 个人中心
+│   │   ├── index/             # 个人信息
+│   │   └── edit-profile/      # 编辑档案（含医生绑定/解绑）
+│   ├── doctor/                # 医生端模块
+│   │   ├── index/             # 医生首页
+│   │   ├── users/             # 绑定用户列表
+│   │   ├── user-detail/       # 用户详情（含解除绑定）
+│   │   ├── health-records/    # 用户健康档案
+│   │   ├── sleep-records/     # 用户睡眠记录
+│   │   ├── vaccines/          # 用户疫苗
+│   │   ├── medications/       # 用户用药
+│   │   ├── physical-exam/     # 用户体检报告
+│   │   ├── manage/            # 医生管理
+│   │   └── profile/           # 医生个人资料
+│   └── admin/                 # 管理员端模块
+│       ├── index/             # 管理员首页
+│       ├── invite-code/       # 邀请码管理
+│       ├── doctors/           # 医生列表
+│       ├── doctor-detail/     # 医生详情
+│       ├── users/             # 用户列表
+│       └── user-detail/       # 用户详情
 ├── components/                 # 自定义组件目录
 └── images/                     # 图片资源目录
 ```
@@ -82,6 +98,8 @@
 - 个人信息管理
 - 头像自动生成（多种风格）
 - 快速编辑常用信息
+- **医生绑定/解绑功能**
+- **密码显示/隐藏切换**
 
 ### 2. 健康档案
 - 个人信息：姓名、年龄、血型、身高、体重
@@ -128,11 +146,26 @@
 - 体重变化记录
 - 档案数量统计
 
+### 9. 医生管理模块
+- 医生账号注册（需邀请码）
+- 查看绑定用户列表
+- 查看用户健康数据
+- 管理用户档案
+- **解除与用户的绑定**
+
+### 10. 管理员模块
+- 系统总览
+- 生成医生邀请码
+- 管理医生账号
+- 管理用户账号
+- 查看绑定关系
+
 ## 云数据库集合
 
 | 集合名称 | 说明 |
 |---------|------|
-| `users` | 用户信息 |
+| `users` | 用户信息（用户、医生、管理员） |
+| `user_profiles` | 用户档案（含医生绑定关系） |
 | `health_records` | 健康档案 |
 | `vaccine_reminders` | 疫苗提醒 |
 | `medication_reminders` | 用药提醒 |
@@ -140,6 +173,7 @@
 | `health_news` | 健康资讯 |
 | `news_favorites` | 资讯收藏 |
 | `ai_conversations` | AI对话记录 |
+| `invite_codes` | 医生邀请码 |
 
 ## 快速开始
 
@@ -185,6 +219,7 @@ npm install @vant/weapp -S --production
 
 在云开发控制台中创建以下集合：
 - `users`
+- `user_profiles`
 - `health_records`
 - `vaccine_reminders`
 - `medication_reminders`
@@ -192,26 +227,31 @@ npm install @vant/weapp -S --production
 - `health_news`
 - `news_favorites`
 - `ai_conversations`
+- `invite_codes`
 
 7. **部署云函数**
 
 在微信开发者工具中，右键点击 `cloudfunctions` 文件夹下的每个云函数，选择「上传并部署：云端安装依赖」。
 
-需要部署的云函数：
+**核心云函数（必须部署）**：
 - `accountLogin`
 - `register`
+- `saveUserProfile`
+- `getBoundUsers`
+- `unbindUser`
+- `getDoctors`
+- `addDoctor`
+- `generateInviteCodes`
+- `getInviteCodes`
 - `addHealthRecord`
 - `getHealthRecords`
-- `updateHealthRecord`
-- `deleteHealthRecord`
-- `getVaccines`
 - `addVaccine`
-- `updateVaccine`
-- `deleteVaccine`
-- `getMedicationReminders`
-- `addMedicationReminder`
-- `updateMedicationReminder`
-- `deleteMedicationReminder`
+- `getVaccines`
+- `addMedication`
+- `getMedications`
+- `addSleepRecord`
+- `getSleepRecords`
+- `addPhysicalExam`
 - `aiConsultation`
 - `generateHealthNews`
 - `newsFavorite`
@@ -240,11 +280,26 @@ npm install @vant/weapp -S --production
 - 健康资讯轮播展示
 - AI 健康咨询入口
 
+### 登录/注册
+- 身份选择（用户、医生、管理员）
+- 账号密码输入
+- **密码显示/隐藏切换（自定义眼睛图标）**
+- 记住密码功能
+- 医生注册需邀请码
+
 ### 健康档案
 - 生活方式记录
 - 家族病史登记
 - 应急信息管理
 - 用药信息登记
+- **医生绑定/解绑功能**
+
+### 医生端
+- 绑定用户列表
+- 查看用户详情
+- 查看用户健康数据
+- **解除用户绑定功能**
+- 管理用户档案
 
 ### AI 健康咨询
 - 可爱机器人医生形象
@@ -259,7 +314,46 @@ npm install @vant/weapp -S --production
 
 ## 更新日志
 
-### v2.0（当前版本）
+### v3.0（当前版本）- 2026-05-29
+
+#### 新增功能
+- ✨ **医生-用户绑定系统**：
+  - 用户端可选择并绑定医生
+  - 医生端可查看绑定用户列表
+  - 支持双方发起解除绑定
+- ✨ **管理员模块**：
+  - 生成医生邀请码
+  - 管理医生和用户账号
+  - 系统数据统计
+- ✨ **用户档案系统**：独立的 `user_profiles` 集合存储用户档案和绑定关系
+- ✨ **密码显示/隐藏切换**：自定义眼睛图标，支持密码可见性切换
+
+#### UI/UX 优化
+- 🎨 **登录/注册页面美化**：
+  - 渐变背景
+  - 卡片式布局
+  - 圆角和阴影效果
+  - 更好的视觉层次
+- 🎨 **医生端界面优化**：用户列表卡片、详情页面美化
+- 🔧 **用户体验改进**：
+  - 绑定医生后立即保存
+  - 解除绑定时的二次确认
+  - 医生端用户列表刷新逻辑
+
+#### Bug 修复
+- 🐛 **数据库字段冲突问题**：修复 `doctorInfo` 为 `null` 时更新失败的问题
+- 🐛 **绑定用户不显示问题**：修复医生端用户列表不刷新的问题
+- 🐛 **密码切换图标无响应**：改用自定义眼睛图标替代 Vant 内置图标
+- 🐛 **云函数权限问题**：解绑操作改为使用云函数处理，避免客户端权限问题
+- 🐛 **重复绑定问题**：优化 `saveUserProfile` 云函数的更新逻辑
+
+#### 技术改进
+- 🔧 **云函数优化**：新增 `unbindUser`、`saveUserProfile`、`getBoundUsers` 等云函数
+- 🔧 **状态管理改进**：医生端 `onShow` 生命周期中刷新用户列表
+- 🔧 **错误处理优化**：添加详细的调试日志和错误提示
+- 🔧 **代码结构优化**：分离登录/注册、医生管理、管理员管理等模块
+
+### v2.0
 - 全面迁移至云开发架构
 - 新增 AI 健康咨询功能（DeepSeek）
 - 新增健康资讯自动生成
@@ -276,11 +370,88 @@ npm install @vant/weapp -S --production
 - 用药提醒
 - 睡眠记录
 
+## 核心功能说明
+
+### 医生-用户绑定流程
+
+#### 用户绑定医生
+1. 用户进入「个人中心」→「编辑档案」
+2. 点击「选择医生」，从医生列表中选择
+3. 系统自动保存绑定关系到 `user_profiles` 集合
+4. 医生端刷新后即可看到该用户
+
+#### 双方解绑
+- **用户端**：编辑档案页面 → 点击「解除绑定」
+- **医生端**：用户详情页面 → 点击「解除绑定」
+- 解绑后双方关联关系清除，数据不删除
+
+### 密码显示/隐藏功能
+
+- 使用自定义 Emoji 图标（👁️ 显示 / 🙈 隐藏）
+- 点击图标切换密码可见性
+- 避免 Vant 内置图标点击无响应的问题
+
+### 数据库设计说明
+
+#### user_profiles 集合结构
+```javascript
+{
+  userId: "用户ID",
+  doctorId: "绑定的医生ID（可为null）",
+  doctorInfo: { /* 医生信息对象，可为null */ },
+  /* 其他用户档案字段 */,
+  createdAt: "创建时间",
+  updatedAt: "更新时间"
+}
+```
+
+## 常见问题排查
+
+### 问题1：用户绑定医生后，医生端不显示
+**解决方案**：
+- 确保 `saveUserProfile` 云函数已部署
+- 检查云数据库中 `user_profiles` 集合的 `doctorId` 字段是否正确保存
+- 刷新医生端页面（或重新进入）
+
+### 问题2：解除绑定后重新绑定失败
+**解决方案**：
+- 检查 `user_profiles` 集合中 `doctorInfo` 字段是否为 `null`
+- 如有问题，在云开发控制台删除该记录重新绑定
+- 确保使用最新版的 `saveUserProfile` 云函数
+
+### 问题3：密码眼睛图标点击无反应
+**解决方案**：
+- 确认使用了自定义眼睛图标（不是 Vant 内置图标）
+- 检查 WXML 中的 `bind:tap` 事件绑定是否正确
+- 查看控制台是否有日志输出
+
+### 问题4：云函数部署失败
+**解决方案**：
+- 检查云开发环境是否正确开通
+- 确认云函数的 `package.json` 文件存在
+- 尝试右键选择「云端安装依赖」重新部署
+- 查看云开发控制台的云函数日志
+
 ## 注意事项
 
-1. 首次部署云函数需要手动上传并安装依赖
-2. AI 相关功能需要配置 DeepSeek API Key
-3. 部分页面需要用户登录后才能使用
-4. Vant Weapp 组件已在 `app.json` 中全局注册
-5. 头像使用 DiceBear API 随机生成多种风格
-6. 资讯配图使用 Picsum Photos 随机图片服务
+1. **首次部署**：云函数需要手动上传并安装依赖
+2. **AI 功能**：AI 相关功能需要配置 DeepSeek API Key
+3. **登录状态**：部分页面需要用户登录后才能使用
+4. **组件注册**：Vant Weapp 组件已在 `app.json` 中全局注册
+5. **头像生成**：使用 DiceBear API 随机生成多种风格头像
+6. **资讯配图**：使用 Picsum Photos 随机图片服务
+7. **医生注册**：医生账号注册需要管理员生成的邀请码
+8. **数据安全**：云数据库规则需要正确配置，确保数据安全
+9. **云函数权限**：部分敏感操作（如解绑）使用云函数处理，避免客户端权限问题
+
+## 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+## 许可证
+
+MIT License
+
+---
+
+**健康小助手，让健康管理更简单！** 🏥✨

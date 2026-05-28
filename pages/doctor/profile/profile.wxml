@@ -11,117 +11,187 @@
       </view>
     </view>
 
-    <view class="form-section">
-      <view class="section-title">基本信息 <text class="required-hint">（必填）</text></view>
-      
-      <view class="form-card">
-        <view class="form-row">
-          <view class="form-item">
-            <view class="form-label"><text class="required-star">*</text>姓名</view>
-            <input 
-              class="form-input" 
-              value="{{form.nickName}}" 
-              placeholder="请输入姓名" 
-              data-field="nickName"
-              bindinput="onFieldChange"
-            />
+    <block wx:if="{{isAdminView}}">
+      <view class="form-section">
+        <view class="section-title">基本信息</view>
+
+        <view class="form-card">
+          <view class="info-row">
+            <view class="info-label">姓名</view>
+            <view class="info-value">{{form.nickName || '未填写'}}</view>
           </view>
-          <view class="form-item">
-            <view class="form-label"><text class="required-star">*</text>工号</view>
-            <input 
-              class="form-input" 
-              value="{{form.employeeId}}" 
-              placeholder="请输入工号" 
-              data-field="employeeId"
-              bindinput="onFieldChange"
-            />
+          <view class="info-row">
+            <view class="info-label">工号</view>
+            <view class="info-value">{{form.employeeId || '未填写'}}</view>
           </view>
-        </view>
-        
-        <view class="form-row">
-          <view class="form-item">
-            <view class="form-label"><text class="required-star">*</text>电话号码</view>
-            <input 
-              class="form-input" 
-              type="number"
-              value="{{form.phone}}" 
-              placeholder="请输入手机号" 
-              data-field="phone"
-              bindinput="onFieldChange"
-            />
+          <view class="info-row">
+            <view class="info-label">电话号码</view>
+            <view class="info-value">{{form.phone || '未填写'}}</view>
           </view>
-          <view class="form-item">
-            <view class="form-label"><text class="required-star">*</text>科室</view>
-            <input 
-              class="form-input" 
-              value="{{form.department}}" 
-              placeholder="请输入科室" 
-              data-field="department"
-              bindinput="onFieldChange"
-            />
+          <view class="info-row">
+            <view class="info-label">科室</view>
+            <view class="info-value">{{form.department || '未填写'}}</view>
           </view>
-        </view>
-        
-        <view class="form-row single">
-          <view class="form-item full">
-            <view class="form-label"><text class="required-star">*</text>职称</view>
-            <input 
-              class="form-input" 
-              value="{{form.title}}" 
-              placeholder="请输入职称" 
-              data-field="title"
-              bindinput="onFieldChange"
-            />
+          <view class="info-row">
+            <view class="info-label">职称</view>
+            <view class="info-value">{{form.title || '未填写'}}</view>
           </view>
         </view>
       </view>
-    </view>
 
-    <view class="form-section">
-      <view class="section-title">联系方式 <text class="optional-hint">（选填）</text></view>
-      
-      <view class="form-card">
-        <view class="form-row single">
-          <view class="form-item full">
-            <view class="form-label">邮箱</view>
-            <input 
-              class="form-input" 
-              value="{{form.email}}" 
-              placeholder="请输入邮箱" 
-              data-field="email"
-              bindinput="onFieldChange"
-            />
+      <view class="form-section">
+        <view class="section-title">联系方式</view>
+
+        <view class="form-card">
+          <view class="info-row">
+            <view class="info-label">邮箱</view>
+            <view class="info-value">{{form.email || '未填写'}}</view>
           </view>
-        </view>
-        
-        <view class="form-row single">
-          <view class="form-item full">
-            <view class="form-label">办公地址</view>
-            <input 
-              class="form-input" 
-              value="{{form.address}}" 
-              placeholder="请输入办公地址" 
-              data-field="address"
-              bindinput="onFieldChange"
-            />
+          <view class="info-row">
+            <view class="info-label">办公地址</view>
+            <view class="info-value">{{form.address || '未填写'}}</view>
           </view>
         </view>
       </view>
-    </view>
 
-    <view class="action-section">
-      <van-button 
-        size="large" 
-        round 
-        block 
-        type="primary" 
-        loading="{{submitting}}" 
-        loading-text="保存中..."
-        bind:tap="onSubmit"
-      >
-        保存信息
-      </van-button>
-    </view>
+      <view class="form-section">
+        <view class="section-title">注册信息</view>
+
+        <view class="form-card">
+          <view class="info-row">
+            <view class="info-label">注册邀请码</view>
+            <view class="info-value invite-code">{{inviteCode || '无'}}</view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="form-section">
+        <view class="section-title">基本信息 <text class="required-hint">（必填）</text></view>
+
+        <view class="form-card">
+          <view class="form-row">
+            <view class="form-item">
+              <view class="form-label"><text class="required-star">*</text>姓名</view>
+              <input
+                class="form-input"
+                value="{{form.nickName}}"
+                placeholder="请输入姓名"
+                data-field="nickName"
+                bindinput="onFieldChange"
+              />
+            </view>
+            <view class="form-item">
+              <view class="form-label"><text class="required-star">*</text>工号</view>
+              <input
+                class="form-input"
+                value="{{form.employeeId}}"
+                placeholder="请输入工号"
+                data-field="employeeId"
+                bindinput="onFieldChange"
+              />
+            </view>
+          </view>
+
+          <view class="form-row">
+            <view class="form-item">
+              <view class="form-label"><text class="required-star">*</text>电话号码</view>
+              <input
+                class="form-input"
+                type="number"
+                value="{{form.phone}}"
+                placeholder="请输入手机号"
+                data-field="phone"
+                bindinput="onFieldChange"
+              />
+            </view>
+            <view class="form-item">
+              <view class="form-label"><text class="required-star">*</text>科室</view>
+              <input
+                class="form-input"
+                value="{{form.department}}"
+                placeholder="请输入科室"
+                data-field="department"
+                bindinput="onFieldChange"
+              />
+            </view>
+          </view>
+
+          <view class="form-row single">
+            <view class="form-item full">
+              <view class="form-label"><text class="required-star">*</text>职称</view>
+              <input
+                class="form-input"
+                value="{{form.title}}"
+                placeholder="请输入职称"
+                data-field="title"
+                bindinput="onFieldChange"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-section">
+        <view class="section-title">注册信息</view>
+
+        <view class="form-card">
+          <view class="form-row single">
+            <view class="form-item full">
+              <view class="form-label">注册邀请码</view>
+              <view class="form-value invite-code">{{inviteCode || '无'}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-section">
+        <view class="section-title">联系方式 <text class="optional-hint">（选填）</text></view>
+
+        <view class="form-card">
+          <view class="form-row single">
+            <view class="form-item full">
+              <view class="form-label">邮箱</view>
+              <input
+                class="form-input"
+                value="{{form.email}}"
+                placeholder="请输入邮箱"
+                data-field="email"
+                bindinput="onFieldChange"
+              />
+            </view>
+          </view>
+
+          <view class="form-row single">
+            <view class="form-item full">
+              <view class="form-label">办公地址</view>
+              <input
+                class="form-input"
+                value="{{form.address}}"
+                placeholder="请输入办公地址"
+                data-field="address"
+                bindinput="onFieldChange"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="action-section">
+        <van-button
+          size="large"
+          round
+          block
+          type="primary"
+          loading="{{submitting}}"
+          loading-text="保存中..."
+          bind:tap="onSubmit"
+        >
+          保存信息
+        </van-button>
+      </view>
+    </block>
   </block>
 
   <view class="bottom-safe"></view>

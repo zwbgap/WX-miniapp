@@ -46,15 +46,19 @@
         clearable
         bind:input="onAccountInput"
       />
-      <van-field
-        value="{{password}}"
-        type="{{passwordVisible ? 'text' : 'password'}}"
-        placeholder="请输入密码"
-        left-icon="lock"
-        right-icon="{{passwordVisible ? 'eye-o' : 'closed-eye'}}"
-        bind:input="onPasswordInput"
-        bind:click-right-icon="onTogglePasswordVisible"
-      />
+      <view class="password-input-wrapper">
+        <van-field
+          value="{{password}}"
+          type="{{passwordVisible ? 'text' : 'password'}}"
+          placeholder="请输入密码"
+          left-icon="lock"
+          bind:input="onPasswordInput"
+        />
+        <view class="custom-eye-icon" bind:tap="onTogglePasswordVisible">
+          <text wx:if="{{passwordVisible}}">👁️</text>
+          <text wx:else>🙈</text>
+        </view>
+      </view>
     </van-cell-group>
 
     <view class="account-options">

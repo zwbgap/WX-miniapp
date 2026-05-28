@@ -44,8 +44,9 @@
     "pages/admin/index/index",
     "pages/admin/invite-code/invite-code",
     "pages/admin/doctors/doctors",
+    "pages/admin/doctor-detail/doctor-detail",
     "pages/admin/users/users",
-    "pages/admin/bindings/bindings"
+    "pages/admin/user-detail/user-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

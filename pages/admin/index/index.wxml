@@ -31,11 +31,6 @@
       <view class="menu-item-text">用户管理</view>
       <view class="menu-item-arrow"></view>
     </view>
-    <view class="menu-item" bind:tap="onNavBindings">
-      <view class="menu-item-icon icon-purple">🔗</view>
-      <view class="menu-item-text">医生-用户绑定</view>
-      <view class="menu-item-arrow"></view>
-    </view>
   </view>
 
   <view class="danger-section">

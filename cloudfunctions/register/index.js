@@ -73,6 +73,7 @@ exports.main = async (event, context) => {
         password: password,
         avatarUrl: avatarUrl,
         identity: finalIdentity,
+        inviteCode: inviteCode || '',
         createdAt: db.serverDate()
       }
     });

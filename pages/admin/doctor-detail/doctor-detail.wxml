@@ -1,0 +1,76 @@
+<view class="doctor-detail-container">
+  <van-loading wx:if="{{loading}}" custom-class="page-loading" />
+
+  <block wx:else-if="{{doctor}}">
+    <view class="profile-header">
+      <view class="header-bg"></view>
+      <view class="header-content">
+        <view class="doctor-avatar">
+          <image wx:if="{{doctor.avatarUrl}}" src="{{doctor.avatarUrl}}" mode="aspectFill" />
+          <text wx:else>👨‍⚕️</text>
+        </view>
+        <view class="doctor-name">{{doctor.nickName || doctor.account}}</view>
+        <view class="doctor-badge">医生账号: {{doctor.account}}</view>
+      </view>
+    </view>
+
+    <view class="form-section">
+      <view class="section-title">基本信息</view>
+
+      <view class="form-card">
+        <view class="info-row">
+          <view class="info-label">姓名</view>
+          <view class="info-value">{{doctor.nickName || '未填写'}}</view>
+        </view>
+        <view class="info-row">
+          <view class="info-label">工号</view>
+          <view class="info-value">{{doctor.employeeId || '未填写'}}</view>
+        </view>
+        <view class="info-row">
+          <view class="info-label">电话号码</view>
+          <view class="info-value">{{doctor.phone || '未填写'}}</view>
+        </view>
+        <view class="info-row">
+          <view class="info-label">科室</view>
+          <view class="info-value">{{doctor.department || '未填写'}}</view>
+        </view>
+        <view class="info-row">
+          <view class="info-label">职称</view>
+          <view class="info-value">{{doctor.title || '未填写'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-section">
+      <view class="section-title">联系方式</view>
+
+      <view class="form-card">
+        <view class="info-row">
+          <view class="info-label">邮箱</view>
+          <view class="info-value">{{doctor.email || '未填写'}}</view>
+        </view>
+        <view class="info-row">
+          <view class="info-label">办公地址</view>
+          <view class="info-value">{{doctor.address || '未填写'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-section">
+      <view class="section-title">注册信息</view>
+
+      <view class="form-card">
+        <view class="info-row">
+          <view class="info-label">注册邀请码</view>
+          <view class="info-value invite-code">{{inviteCode || '无'}}</view>
+        </view>
+        <view class="info-row">
+          <view class="info-label">注册时间</view>
+          <view class="info-value">{{formattedCreatedAt}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="bottom-safe"></view>
+</view>

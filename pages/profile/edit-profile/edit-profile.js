@@ -52,7 +52,6 @@ Page({
 
       const db = wx.cloud.database();
 
-      // 从 user_profiles 加载已保存数据
       const profileResult = await db.collection('user_profiles')
         .where({ userId: userInfo._id })
         .limit(1)
@@ -164,7 +163,7 @@ Page({
     }
   },
 
-  onDoctorPickerConfirm() {
+  async onDoctorPickerConfirm() {
     if (!this.data.selectedDoctorId) {
       wx.showToast({ title: '请选择医生', icon: 'none' });
       return;
@@ -187,7 +186,101 @@ Page({
         doctorPickerVisible: false
       });
       
+      // 立即保存绑定关系
+      await this.saveDoctorBinding();
+    }
+  },
+
+  async saveDoctorBinding() {
+    try {
+      const userInfo = wx.getStorageSync('userInfo');
+      if (!userInfo || !userInfo._id) {
+        return;
+      }
+
+      const db = wx.cloud.database();
+      const profileResult = await db.collection('user_profiles')
+        .where({ userId: userInfo._id })
+        .limit(1)
+        .get();
+
+      if (profileResult.data && profileResult.data.length > 0) {
+        // 更新现有记录
+        const updateData = {
+          updatedAt: db.serverDate()
+        };
+        
+        // 只有当 selectedDoctorId 存在时才设置
+        if (this.data.selectedDoctorId) {
+          updateData.doctorId = this.data.selectedDoctorId;
+          updateData.doctorInfo = this.data.selectedDoctor;
+        }
+        
+        await db.collection('user_profiles')
+          .doc(profileResult.data[0]._id)
+          .update({ data: updateData });
+      }
+
       wx.showToast({ title: '绑定成功', icon: 'success' });
+    } catch (err) {
+      console.error('保存医生绑定失败:', err);
+      wx.showToast({ title: '绑定失败', icon: 'none' });
+    }
+  },
+
+  onUnbindDoctor() {
+    wx.showModal({
+      title: '解除绑定',
+      content: '确定要解除与该医生的绑定关系吗？解除后将无法查看该医生发送的体检报告。',
+      confirmColor: '#ee0a24',
+      success: async (res) => {
+        if (res.confirm) {
+          await this.doUnbind();
+        }
+      }
+    });
+  },
+
+  async doUnbind() {
+    try {
+      wx.showLoading({ title: '操作中...' });
+      const userInfo = wx.getStorageSync('userInfo');
+      if (!userInfo || !userInfo._id) {
+        wx.hideLoading();
+        return;
+      }
+
+      const db = wx.cloud.database();
+      const profileResult = await db.collection('user_profiles')
+        .where({ userId: userInfo._id })
+        .limit(1)
+        .get();
+
+      if (profileResult.data && profileResult.data.length > 0) {
+        // 直接设置为 null，简单直接
+        await db.collection('user_profiles')
+          .doc(profileResult.data[0]._id)
+          .update({
+            data: {
+              doctorId: null,
+              doctorInfo: null,
+              updatedAt: db.serverDate()
+            }
+          });
+      }
+
+      this.setData({
+        selectedDoctorId: null,
+        selectedDoctor: null,
+        selectedDoctorName: '未绑定'
+      });
+
+      wx.hideLoading();
+      wx.showToast({ title: '解除绑定成功', icon: 'success' });
+    } catch (err) {
+      wx.hideLoading();
+      console.error('解除绑定失败:', err);
+      wx.showToast({ title: '解除绑定失败', icon: 'none' });
     }
   },
 
@@ -271,6 +364,7 @@ Page({
         await db.collection('health_records').add({ data: recordData });
       }
 
+      console.log('保存用户档案，userId:', userInfo._id, 'doctorId:', this.data.selectedDoctorId);
       const profileResult = await wx.cloud.callFunction({
         name: 'saveUserProfile',
         data: {
@@ -279,6 +373,7 @@ Page({
           doctorId: this.data.selectedDoctorId
         }
       });
+      console.log('保存用户档案返回:', profileResult.result);
 
       if (profileResult.result.code === 0) {
         wx.showToast({ title: '保存成功', icon: 'success' });

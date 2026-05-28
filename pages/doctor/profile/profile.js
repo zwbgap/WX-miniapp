@@ -12,16 +12,72 @@ Page({
       title: '',
       email: '',
       address: ''
+    },
+    inviteCode: '',
+    isAdminView: false,
+    isEditable: false
+  },
+
+  onLoad(options) {
+    if (options.mode === 'admin') {
+      this.setData({ 
+        isAdminView: true,
+        isEditable: false
+      });
+      if (options.doctorId) {
+        this.loadDoctorInfoById(options.doctorId);
+      }
+    } else {
+      if (!ensureDoctor()) return;
+      this.loadDoctorInfo();
     }
   },
 
-  onLoad() {
-    if (!ensureDoctor()) return;
-    this.loadDoctorInfo();
+  onShow() {
+    if (!this.data.isAdminView) {
+      ensureDoctor();
+    }
   },
 
-  onShow() {
-    ensureDoctor();
+  async loadDoctorInfoById(doctorId) {
+    this.setData({ loading: true });
+    try {
+      const db = wx.cloud.database();
+      const result = await db.collection('users').doc(doctorId).get();
+      
+      if (result.data) {
+        const doctor = result.data;
+        let inviteCode = doctor.inviteCode || '';
+        
+        if (!inviteCode && doctor.account) {
+          const inviteResult = await db.collection('doctor_invites')
+            .where({ usedBy: doctor.account })
+            .get();
+          
+          if (inviteResult.data.length > 0) {
+            inviteCode = inviteResult.data[0].code;
+          }
+        }
+        
+        this.setData({
+          form: {
+            nickName: doctor.nickName || '',
+            employeeId: doctor.employeeId || '',
+            phone: doctor.phone || '',
+            department: doctor.department || '',
+            title: doctor.title || '',
+            email: doctor.email || '',
+            address: doctor.address || ''
+          },
+          inviteCode: inviteCode
+        });
+      }
+    } catch (err) {
+      console.error('加载医生信息失败:', err);
+      wx.showToast({ title: '加载失败', icon: 'none' });
+    } finally {
+      this.setData({ loading: false });
+    }
   },
 
   async loadDoctorInfo() {
@@ -38,6 +94,25 @@ Page({
       
       if (result.data) {
         const doctor = result.data;
+        let inviteCode = doctor.inviteCode || '';
+        
+        console.log('doctor信息:', doctor);
+        console.log('从users读取的inviteCode:', inviteCode);
+        
+        // 如果users集合中没有邀请码，直接从doctor_invites集合查询
+        if (!inviteCode && doctor.account) {
+          const inviteResult = await db.collection('doctor_invites')
+            .where({ usedBy: doctor.account })
+            .get();
+          
+          console.log('doctor_invites查询结果:', inviteResult);
+          
+          if (inviteResult.data.length > 0) {
+            inviteCode = inviteResult.data[0].code;
+            console.log('找到邀请码:', inviteCode);
+          }
+        }
+        
         this.setData({
           form: {
             nickName: doctor.nickName || '',
@@ -47,7 +122,8 @@ Page({
             title: doctor.title || '',
             email: doctor.email || '',
             address: doctor.address || ''
-          }
+          },
+          inviteCode: inviteCode
         });
       }
     } catch (err) {

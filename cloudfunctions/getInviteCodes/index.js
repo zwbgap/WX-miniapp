@@ -13,12 +13,42 @@ exports.main = async (event, context) => {
       .skip((pageIndex - 1) * pageSize)
       .limit(pageSize)
       .get();
+    
+    // 收集所有已使用的邀请码的 usedBy
+    const usedByAccounts = [];
+    const inviteList = result.data;
+    
+    for (const invite of inviteList) {
+      if (invite.used && invite.usedBy) {
+        usedByAccounts.push(invite.usedBy);
+      }
+    }
+    
+    // 查询对应的医生信息
+    let doctorMap = {};
+    if (usedByAccounts.length > 0) {
+      const doctorResult = await db.collection('users')
+        .where({
+          account: db.command.in(usedByAccounts)
+        })
+        .get();
+      
+      for (const doctor of doctorResult.data) {
+        doctorMap[doctor.account] = doctor;
+      }
+    }
+    
+    // 组装数据
+    const finalList = inviteList.map(invite => ({
+      ...invite,
+      doctorInfo: (invite.used && invite.usedBy) ? doctorMap[invite.usedBy] : null
+    }));
 
     return {
       code: 0,
       message: '获取成功',
       data: {
-        list: result.data,
+        list: finalList,
         total: countResult.total,
         pageSize,
         pageIndex

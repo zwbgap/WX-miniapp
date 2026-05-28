@@ -27,11 +27,15 @@ Page({
   },
 
   onTogglePasswordVisible() {
+    console.log('切换密码可见性，当前状态:', this.data.passwordVisible);
     this.setData({ passwordVisible: !this.data.passwordVisible });
+    console.log('切换后状态:', !this.data.passwordVisible);
   },
 
   onToggleConfirmPasswordVisible() {
+    console.log('切换确认密码可见性，当前状态:', this.data.confirmPasswordVisible);
     this.setData({ confirmPasswordVisible: !this.data.confirmPasswordVisible });
+    console.log('切换后状态:', !this.data.confirmPasswordVisible);
   },
 
   onSelectIdentity(e) {

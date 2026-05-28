@@ -1,4 +1,4 @@
-.profile-container {
+.user-detail-container {
   min-height: 100vh;
   background-color: #f5f5f5;
 }
@@ -18,7 +18,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #07c160 0%, #06b6d4 100%);
+  background: linear-gradient(135deg, #1989fa 0%, #06b6d4 100%);
   border-radius: 0 0 48rpx 48rpx;
 }
 
@@ -31,7 +31,7 @@
   z-index: 1;
 }
 
-.doctor-avatar {
+.user-avatar {
   width: 140rpx;
   height: 140rpx;
   border-radius: 50%;
@@ -42,9 +42,15 @@
   font-size: 64rpx;
   margin-bottom: 20rpx;
   border: 4rpx solid rgba(255, 255, 255, 0.6);
+  overflow: hidden;
 }
 
-.doctor-name {
+.user-avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.user-name {
   font-size: 40rpx;
   font-weight: 600;
   color: #ffffff;
@@ -52,7 +58,7 @@
   text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
 }
 
-.doctor-badge {
+.user-badge {
   background-color: rgba(255, 255, 255, 0.25);
   color: #ffffff;
   padding: 8rpx 24rpx;
@@ -71,18 +77,6 @@
   color: #333333;
   margin-bottom: 20rpx;
   padding-left: 8rpx;
-}
-
-.required-hint {
-  font-size: 24rpx;
-  color: #969799;
-  font-weight: normal;
-}
-
-.optional-hint {
-  font-size: 24rpx;
-  color: #969799;
-  font-weight: normal;
 }
 
 .form-card {
@@ -115,86 +109,38 @@
   font-weight: 500;
 }
 
-.info-value.invite-code {
+.info-value.bound {
   color: #07c160;
+}
+
+.info-value.unbound {
+  color: #969799;
+}
+
+.info-value.doctor-name {
+  color: #1989fa;
   font-weight: 600;
-  letter-spacing: 2rpx;
-}
-
-.form-row {
-  display: flex;
-  gap: 24rpx;
-  margin-bottom: 24rpx;
-}
-
-.form-row:last-child {
-  margin-bottom: 0;
-}
-
-.form-row.single {
-  display: block;
-}
-
-.form-item {
-  flex: 1;
-}
-
-.form-item.full {
-  width: 100%;
-}
-
-.form-label {
-  font-size: 28rpx;
-  color: #333333;
-  margin-bottom: 12rpx;
-  display: flex;
-  align-items: center;
-}
-
-.required-star {
-  color: #ee0a24;
-  font-size: 28rpx;
-  margin-right: 4rpx;
-}
-
-.form-input {
-  width: 100%;
-  height: 80rpx;
-  background-color: #f7f8fa;
-  border-radius: 16rpx;
-  padding: 0 24rpx;
-  font-size: 28rpx;
-  color: #333333;
-  box-sizing: border-box;
-}
-
-.form-input::placeholder {
-  color: #c8c9cc;
-}
-
-.form-value {
-  font-size: 28rpx;
-  color: #333333;
-  height: 80rpx;
-  display: flex;
-  align-items: center;
-  padding: 0 24rpx;
-  background-color: #f7f8fa;
-  border-radius: 16rpx;
-}
-
-.invite-code {
-  color: #07c160;
-  font-weight: 600;
-  letter-spacing: 2rpx;
-}
-
-.action-section {
-  padding: 32rpx;
-  padding-bottom: 60rpx;
 }
 
 .bottom-safe {
   height: constant(safe-area-inset-bottom);
   height: env(safe-area-inset-bottom);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 32rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #969799;
 }

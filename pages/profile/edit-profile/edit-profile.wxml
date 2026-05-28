@@ -103,6 +103,12 @@
             <text class="doctor-info-label">电话</text>
             <text class="doctor-info-value">{{selectedDoctor.phone || '--'}}</text>
           </view>
+          
+          <view class="unbind-section">
+            <van-button type="danger" size="small" block bind:tap="onUnbindDoctor">
+              解除绑定
+            </van-button>
+          </view>
         </view>
       </view>
     </view>

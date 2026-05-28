@@ -64,6 +64,10 @@
   padding: 24rpx 32rpx;
 }
 
+.section {
+  margin-bottom: 32rpx;
+}
+
 .section-title {
   font-size: 30rpx;
   font-weight: 700;
@@ -99,6 +103,12 @@
   background-color: #f9fafb;
 }
 
+.danger-item {
+  width: 100%;
+  border: 2rpx solid #fee2e2;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+}
+
 .menu-icon {
   width: 72rpx;
   height: 72rpx;
@@ -126,6 +136,10 @@
   background-color: #fee2e2;
 }
 
+.danger-icon {
+  background-color: #fee2e2;
+}
+
 .menu-text {
   font-size: 28rpx;
   color: #1a1a1a;
@@ -137,4 +151,8 @@
   font-size: 22rpx;
   color: #969799;
   text-align: center;
+}
+
+.danger-item .menu-text {
+  color: #dc2626;
 }

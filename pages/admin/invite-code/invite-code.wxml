@@ -59,16 +59,41 @@
 
   <view class="history-section">
     <view class="section-title">历史邀请码</view>
-    <van-cell-group inset wx:if="{{history.length > 0}}">
-      <van-cell
-        wx:for="{{history}}"
-        wx:key="_id"
-        title="{{item.code}}"
-        label="{{item.account || '不限制账号'}}"
-        value="{{item.used ? '已使用' : '未使用'}}"
-        value-class="{{item.used ? 'used-status' : 'unused-status'}}"
-      />
-    </van-cell-group>
+    <view class="history-list" wx:if="{{history.length > 0}}">
+      <view class="history-card" wx:for="{{history}}" wx:key="_id">
+        <view class="card-header">
+          <view class="invite-code">{{item.code}}</view>
+          <view class="status-badge {{item.used ? 'used' : 'unused'}}">
+            {{item.used ? '已使用' : '未使用'}}
+          </view>
+        </view>
+        
+        <view class="card-body">
+          <view class="info-row">
+            <view class="info-label">指定账号</view>
+            <view class="info-value">{{item.account || '不限制'}}</view>
+          </view>
+          
+          <view class="info-row" wx:if="{{item.used && item.doctorInfo}}">
+            <view class="info-label">使用医生</view>
+            <view class="info-value doctor-info">
+              <text class="doctor-name">{{item.doctorInfo.nickName || item.doctorInfo.account}}</text>
+              <text class="doctor-account">({{item.doctorInfo.account}})</text>
+            </view>
+          </view>
+          
+          <view class="info-row" wx:if="{{item.used && item.usedAt}}">
+            <view class="info-label">使用时间</view>
+            <view class="info-value">{{item.usedAt}}</view>
+          </view>
+          
+          <view class="info-row">
+            <view class="info-label">生成时间</view>
+            <view class="info-value">{{item.createdAt}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
     <view class="empty-state" wx:else>
       <text>暂无历史邀请码</text>
     </view>

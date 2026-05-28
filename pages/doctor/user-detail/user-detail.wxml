@@ -41,5 +41,16 @@
         </view>
       </view>
     </view>
+
+    <view class="section danger-section">
+      <view class="section-title">操作</view>
+      <view class="menu-row">
+        <view class="menu-item danger-item" bind:tap="onUnbindUser">
+          <view class="menu-icon danger-icon">🔗</view>
+          <text class="menu-text">解除绑定</text>
+          <text class="menu-desc">解除与该用户的绑定关系</text>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
